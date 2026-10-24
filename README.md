@@ -10,9 +10,9 @@
   
 <br><br>
 
-<pictures>
+<picture>
 <img src="src/services.svg" alt="services" width="100">
-</pictures>
+</picture>
   
 [![cnsh.life](src/cnshlife.svg)](https://cnsh.life)
 [![community](src/community.svg)](https://asterisk-community.knoblab.xyz)
