@@ -27,7 +27,7 @@
 | Module | Repository / Scope | License | Description |
 | :--- | :--- | :--- | :--- |
 | **cnsh.life** | [cnsh.life](https://github.com/kuchipatchi09/everytime) | **GNU AGPL-3.0** | 학교생활 정보 포털 클라이언트 |
-| **Community Frontend** | `[asterisk-community-frontend](https://github.com/knoblab/asterisk-community-frontend)` | **MIT License** | 커뮤니티 웹 프론트엔드 클라이언트 |
+| **Community Frontend** | [asterisk-community-frontend](https://github.com/knoblab/asterisk-community-frontend) | **MIT License** | 커뮤니티 웹 프론트엔드 클라이언트 |
 | **Community Backend** | `asterisk-community-backend` | **Proprietary** | 백엔드 API 서버, 데이터베이스 및 운영 엔진 |
 
 - **`cnsh.life` (AGPL-3.0):** 코드를 포크하거나 수정하여 네트워크를 통해 서비스로 제공할 경우, 수정된 전체 소스코드를 동일한 AGPL-3.0 조건으로 사용자에게 공개해야 합니다.
