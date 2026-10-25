@@ -253,8 +253,6 @@ export const App: React.FC = () => {
           <div className="nav-controls-right">
             <a
               href="https://cnsh.life"
-              target="_blank"
-              rel="noopener noreferrer"
               className="nav-ext-pill"
             >
               <span>cnsh.life</span>
@@ -262,8 +260,6 @@ export const App: React.FC = () => {
             </a>
             <a
               href="https://cnsh.space"
-              target="_blank"
-              rel="noopener noreferrer"
               className="nav-ext-pill"
             >
               <span>cnsh.space</span>
@@ -369,8 +365,6 @@ export const App: React.FC = () => {
             <div className="drawer-ext-links" style={{ marginTop: "20px" }}>
               <a
                 href="https://cnsh.life"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="drawer-ext-item"
               >
                 <span>cnsh.life</span>
@@ -378,13 +372,9 @@ export const App: React.FC = () => {
               </a>
               <a
                 href="https://cnsh.space"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="drawer-ext-item"
               >
-                <span>
-                  asterisk<span className="ast-star">*</span> cnsh.space
-                </span>
+                <span>cnsh.space</span>
                 <ExternalArrowIcon size={12} />
               </a>
             </div>
@@ -422,7 +412,7 @@ export const App: React.FC = () => {
                     <div className="brand-chapter-meta">
                       <span>충남과학고등학교 웹 서비스</span>
                       <span className="brand-chapter-submeta">
-                        cnsh.life · asterisk<span className="ast-star">*</span> cnsh.space
+                        cnsh.life · cnsh.space
                       </span>
                     </div>
 
@@ -439,10 +429,7 @@ export const App: React.FC = () => {
                           는 충남과학고등학교(CNSH) 학생들을 위한 웹 서비스
                           브랜드입니다. 시간표·급식·방과후·실시간 일과를 확인하는 포털{" "}
                           <strong>cnsh.life</strong>와 재학생 전용 게시판{" "}
-                          <strong>
-                            asterisk<span className="ast-star">*</span> cnsh.space
-                          </strong>
-                          를 운영하며, 두 서비스에 동일한 디자인 시스템을 적용하고
+                          <strong>cnsh.space</strong>를 운영하며, 두 서비스에 동일한 디자인 시스템을 적용하고
                           있습니다.
                         </p>
                       </div>
@@ -535,8 +522,6 @@ export const App: React.FC = () => {
                         <div className="service-editorial-actions">
                           <a
                             href={srv.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
                             className="btn-primary-action"
                           >
                             <span>{renderWithCenteredStar(srv.title)} 바로가기</span>
@@ -557,7 +542,7 @@ export const App: React.FC = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="status-mini-pill"
-                              title="asterisk* cnsh.space 서버 상태 확인"
+                              title="cnsh.space 서버 상태 확인"
                             >
                               <span>서버 상태</span>
                               <ExternalArrowIcon size={10} />
@@ -1332,9 +1317,7 @@ export const App: React.FC = () => {
                       </tr>
                       <tr>
                         <td>
-                          <strong>
-                            asterisk<span className="ast-star">*</span> cnsh.space (FE)
-                          </strong>
+                          <strong>cnsh.space (FE)</strong>
                         </td>
                         <td>학생 커뮤니티 웹 클라이언트</td>
                         <td style={{ fontFamily: "var(--font-mono)" }}>
@@ -1356,9 +1339,7 @@ export const App: React.FC = () => {
                       </tr>
                       <tr>
                         <td>
-                          <strong>
-                            asterisk<span className="ast-star">*</span> cnsh.space (BE)
-                          </strong>
+                          <strong>cnsh.space (BE)</strong>
                         </td>
                         <td>학생 인증, DB, 보안 및 @asterisk AI 서버</td>
                         <td style={{ fontFamily: "var(--font-mono)" }}>
@@ -1685,7 +1666,7 @@ export const App: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="status-mini-pill"
-              title="asterisk* cnsh.space 서버 상태"
+              title="cnsh.space 서버 상태"
             >
               <span>status</span>
               <ExternalArrowIcon size={10} />
