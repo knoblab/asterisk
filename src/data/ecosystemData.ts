@@ -141,9 +141,9 @@ export const servicesData: ServiceDetail[] = [
   },
   {
     id: "community",
-    title: "asterisk community",
-    domain: "asterisk-community.knoblab.xyz",
-    url: "https://asterisk-community.knoblab.xyz",
+    title: "asterisk* cnsh.space",
+    domain: "cnsh.space",
+    url: "https://cnsh.space",
     repoName: "knoblab/asterisk-community-frontend",
     repoUrl: "https://github.com/knoblab/asterisk-community-frontend",
     tier: "재학생 커뮤니티",
@@ -195,7 +195,7 @@ export const brandChapters: BrandChapter[] = [
     num: "02",
     title: "와일드카드(*)",
     paragraphs: [
-      "프로그래밍에서 * 기호는 모든 조건을 가리키는 와일드카드(Everything)로 쓰입니다. 시간표와 급식을 확인하는 포털(cnsh.life)부터 학생 게시판(asterisk community)까지 학교 생활에 필요한 여러 서비스를 하나로 묶는다는 뜻을 담았습니다.",
+      "프로그래밍에서 * 기호는 모든 조건을 가리키는 와일드카드(Everything)로 쓰입니다. 시간표와 급식을 확인하는 포털(cnsh.life)부터 학생 게시판(asterisk* cnsh.space)까지 학교 생활에 필요한 여러 서비스를 하나로 묶는다는 뜻을 담았습니다.",
     ],
   },
   {
@@ -234,7 +234,7 @@ export const licenseSpecs: LicenseSpec[] = [
   },
   {
     id: "mit",
-    moduleName: "asterisk community (Frontend)",
+    moduleName: "asterisk* cnsh.space (Frontend)",
     repoLabel: "knoblab/asterisk-community-frontend",
     repoUrl: "https://github.com/knoblab/asterisk-community-frontend",
     spdx: "MIT License",
@@ -246,7 +246,7 @@ export const licenseSpecs: LicenseSpec[] = [
   },
   {
     id: "proprietary",
-    moduleName: "asterisk community (Backend) & Brand",
+    moduleName: "asterisk* cnsh.space (Backend) & Brand",
     repoLabel: "Knoblab Private / Brand Assets",
     spdx: "Proprietary",
     summary:
@@ -312,7 +312,7 @@ export const creditsList: CreditProfile[] = [
         description: "워드마크, 무채색 색상 체계, 공통 UI 컴포넌트 디자인",
       },
       {
-        title: "asterisk community 프론트·백엔드 헤드 개발",
+        title: "asterisk* cnsh.space 프론트·백엔드 헤드 개발",
         description: "커뮤니티 웹 클라이언트, 통합 로그인(SSO), @asterisk AI 서버 개발",
       },
       {

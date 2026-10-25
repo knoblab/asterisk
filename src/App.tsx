@@ -261,12 +261,12 @@ export const App: React.FC = () => {
               <ExternalArrowIcon size={11} />
             </a>
             <a
-              href="https://asterisk-community.knoblab.xyz"
+              href="https://cnsh.space"
               target="_blank"
               rel="noopener noreferrer"
               className="nav-ext-pill"
             >
-              <span>community</span>
+              <span>cnsh.space</span>
               <ExternalArrowIcon size={11} />
             </a>
           </div>
@@ -377,12 +377,14 @@ export const App: React.FC = () => {
                 <ExternalArrowIcon size={12} />
               </a>
               <a
-                href="https://asterisk-community.knoblab.xyz"
+                href="https://cnsh.space"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="drawer-ext-item"
               >
-                <span>asterisk community</span>
+                <span>
+                  asterisk<span className="ast-star">*</span> cnsh.space
+                </span>
                 <ExternalArrowIcon size={12} />
               </a>
             </div>
@@ -420,7 +422,7 @@ export const App: React.FC = () => {
                     <div className="brand-chapter-meta">
                       <span>충남과학고등학교 웹 서비스</span>
                       <span className="brand-chapter-submeta">
-                        cnsh.life · asterisk community
+                        cnsh.life · asterisk<span className="ast-star">*</span> cnsh.space
                       </span>
                     </div>
 
@@ -437,8 +439,11 @@ export const App: React.FC = () => {
                           는 충남과학고등학교(CNSH) 학생들을 위한 웹 서비스
                           브랜드입니다. 시간표·급식·방과후·실시간 일과를 확인하는 포털{" "}
                           <strong>cnsh.life</strong>와 재학생 전용 게시판{" "}
-                          <strong>asterisk community</strong>를 운영하며, 두 서비스에
-                          동일한 디자인 시스템을 적용하고 있습니다.
+                          <strong>
+                            asterisk<span className="ast-star">*</span> cnsh.space
+                          </strong>
+                          를 운영하며, 두 서비스에 동일한 디자인 시스템을 적용하고
+                          있습니다.
                         </p>
                       </div>
                     </div>
@@ -502,7 +507,7 @@ export const App: React.FC = () => {
 
                       <div className="brand-chapter-content">
                         <h3>
-                          {srv.title} — {srv.tagline}
+                          {renderWithCenteredStar(srv.title)} — {srv.tagline}
                         </h3>
                         <p
                           style={{
@@ -534,7 +539,7 @@ export const App: React.FC = () => {
                             rel="noopener noreferrer"
                             className="btn-primary-action"
                           >
-                            <span>{srv.title} 바로가기</span>
+                            <span>{renderWithCenteredStar(srv.title)} 바로가기</span>
                             <ExternalArrowIcon size={13} />
                           </a>
                           <a
@@ -552,7 +557,7 @@ export const App: React.FC = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="status-mini-pill"
-                              title="asterisk community 서버 상태 확인"
+                              title="asterisk* cnsh.space 서버 상태 확인"
                             >
                               <span>서버 상태</span>
                               <ExternalArrowIcon size={10} />
@@ -1327,7 +1332,9 @@ export const App: React.FC = () => {
                       </tr>
                       <tr>
                         <td>
-                          <strong>asterisk community (FE)</strong>
+                          <strong>
+                            asterisk<span className="ast-star">*</span> cnsh.space (FE)
+                          </strong>
                         </td>
                         <td>학생 커뮤니티 웹 클라이언트</td>
                         <td style={{ fontFamily: "var(--font-mono)" }}>
@@ -1349,7 +1356,9 @@ export const App: React.FC = () => {
                       </tr>
                       <tr>
                         <td>
-                          <strong>asterisk community (BE)</strong>
+                          <strong>
+                            asterisk<span className="ast-star">*</span> cnsh.space (BE)
+                          </strong>
                         </td>
                         <td>학생 인증, DB, 보안 및 @asterisk AI 서버</td>
                         <td style={{ fontFamily: "var(--font-mono)" }}>
@@ -1676,7 +1685,7 @@ export const App: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               className="status-mini-pill"
-              title="asterisk community 서버 상태"
+              title="asterisk* cnsh.space 서버 상태"
             >
               <span>status</span>
               <ExternalArrowIcon size={10} />
