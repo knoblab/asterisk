@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   monochromeTokens,
   servicesData,
+  twoTrackStrategyData,
   brandChapters,
   licenseSpecs,
   fontLicensesList,
@@ -427,7 +428,7 @@ export const App: React.FC = () => {
                 <div className="brand-chapters-container">
                   <article className="brand-chapter-block">
                     <div className="brand-chapter-meta">
-                      <span>충남과학고등학교 웹 서비스</span>
+                      <span>충남과학고 디지털 생태계</span>
                       <span className="brand-chapter-submeta">
                         cnsh.life · cnsh.space
                       </span>
@@ -435,19 +436,24 @@ export const App: React.FC = () => {
 
                     <div className="brand-chapter-content">
                       <h3>
-                        학교생활 포털과 재학생 커뮤니티를 아우르는 프로젝트, asterisk
-                        <span className="ast-star">*</span>
+                        {renderWithCenteredStar(
+                          "학교생활 포털과 재학생 커뮤니티를 아우르는 투트랙 프로젝트, asterisk*"
+                        )}
                       </h3>
                       <div className="brand-prose-wrap">
                         <p>
                           <strong>
                             asterisk<span className="ast-star">*</span>
                           </strong>
-                          는 충남과학고등학교(CNSH) 학생들을 위한 웹 서비스
-                          브랜드입니다. 시간표·급식·방과후·실시간 일과를 확인하는 포털{" "}
-                          <strong>cnsh.life</strong>와 재학생 전용 게시판{" "}
-                          <strong>cnsh.space</strong>를 운영하며, 두 서비스에 동일한 디자인 시스템을 적용하고
-                          있습니다.
+                          는 충남과학고등학교(CNSH) 학생들의 24시간 학교생활을 지원하기 위해
+                          설계된 디지털 생태계 브랜드입니다.
+                        </p>
+                        <p>
+                          수업 직전 10초 만에 시간표·급식·시정표를 확인하는 초경량 일상 포털{" "}
+                          <strong>cnsh.life (Life Track)</strong>와, 재학생 기수 인증을 거쳐 깊이 있는 학술
+                          토론과 지능형 AI 상담을 나누는 고신뢰 커뮤니티{" "}
+                          <strong>cnsh.space (Space Track)</strong>의 <strong>투트랙(Two-Track)</strong> 구조로
+                          운영되며, 단일한 미니멀 모노크롬 디자인 시스템을 공유합니다.
                         </p>
                       </div>
                     </div>
@@ -455,7 +461,111 @@ export const App: React.FC = () => {
                 </div>
               </section>
 
-              {/* 2. The Story of asterisk* */}
+              {/* 2. Two-Track Architecture (Life & Space) */}
+              <section className="section-end-double">
+                <div className="brand-story-title-row">
+                  <h2>Two-Track Architecture</h2>
+                </div>
+
+                <div className="brand-chapters-container">
+                  <article className="brand-chapter-block">
+                    <div className="brand-chapter-meta">
+                      <span>투트랙 전략 및 설계 철학</span>
+                      <span className="brand-chapter-submeta">
+                        Zero-Barrier vs High-Trust
+                      </span>
+                    </div>
+
+                    <div className="brand-chapter-content">
+                      <h3>
+                        {renderWithCenteredStar(
+                          "0초 진입의 일상 나침반(Life)과 신뢰 기반의 지능형 광장(Space)"
+                        )}
+                      </h3>
+                      <div className="brand-prose-wrap">
+                        <p>{twoTrackStrategyData.summary}</p>
+                        {twoTrackStrategyData.philosophy.map((para, pIdx) => (
+                          <p key={pIdx}>{renderWithCenteredStar(para)}</p>
+                        ))}
+                      </div>
+
+                      {/* 비교 매트릭스 표 */}
+                      <div style={{ marginTop: "28px", marginBottom: "36px" }}>
+                        <div
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            color: "var(--color-graphite)",
+                            marginBottom: "12px",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          // LIFE TRACK vs SPACE TRACK SPECIFICATION MATRIX
+                        </div>
+                        <div className="matrix-table-wrap">
+                          <table className="matrix-table">
+                            <thead>
+                              <tr>
+                                <th style={{ width: "22%" }}>구분 (Dimension)</th>
+                                <th style={{ width: "39%" }}>
+                                  cnsh.life (Life Track)
+                                </th>
+                                <th style={{ width: "39%" }}>
+                                  cnsh.space (Space Track)
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {twoTrackStrategyData.matrixRows.map((row, rIdx) => (
+                                <tr key={rIdx}>
+                                  <td>
+                                    <strong style={{ fontFamily: "var(--font-mono)" }}>
+                                      {row.dimension}
+                                    </strong>
+                                  </td>
+                                  <td>{renderWithCenteredStar(row.lifeTrack)}</td>
+                                  <td>{renderWithCenteredStar(row.spaceTrack)}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      {/* 시너지 3대 포인트 */}
+                      <div>
+                        <div
+                          style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            color: "var(--color-graphite)",
+                            marginBottom: "14px",
+                            letterSpacing: "0.02em",
+                          }}
+                        >
+                          // ECOSYSTEM SYNERGY
+                        </div>
+                        <div className="service-features-clean">
+                          {twoTrackStrategyData.synergies.map((syn, sIdx) => (
+                            <div key={sIdx} className="service-feature-item">
+                              <div className="service-feature-name">
+                                {renderWithCenteredStar(syn.title)}
+                              </div>
+                              <p className="service-feature-desc">
+                                {renderWithCenteredStar(syn.description)}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </section>
+
+              {/* 3. The Story of asterisk* */}
               <section className="section-end-double">
                 <div className="brand-story-title-row">
                   <h2>
@@ -490,7 +600,7 @@ export const App: React.FC = () => {
                 </div>
               </section>
 
-              {/* 3. Core Services */}
+              {/* 4. Core Services */}
               <section className="section-end-double" style={{ marginBottom: 0 }}>
                 <div className="brand-story-title-row">
                   <h2>Core Services</h2>
@@ -503,7 +613,24 @@ export const App: React.FC = () => {
                       className="brand-chapter-block with-subtle-sep"
                     >
                       <div className="brand-chapter-meta">
-                        <span>{srv.tier}</span>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                          <span
+                            className={
+                              srv.trackType === "Life Track"
+                                ? "ast-badge ast-badge-solid"
+                                : "ast-badge ast-badge-outline"
+                            }
+                            style={{
+                              alignSelf: "flex-start",
+                              height: "20px",
+                              fontSize: "10.5px",
+                              padding: "0 6px",
+                            }}
+                          >
+                            {srv.trackType}
+                          </span>
+                          <span>{srv.tier}</span>
+                        </div>
                         <span className="brand-chapter-submeta">
                           {srv.domain}
                         </span>

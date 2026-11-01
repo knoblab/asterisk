@@ -98,6 +98,7 @@ export interface ServiceDetail {
   repoName: string;
   repoUrl: string;
   tier: string;
+  trackType: "Life Track" | "Space Track";
   license: string;
   tagline: string;
   description: string;
@@ -116,26 +117,36 @@ export const servicesData: ServiceDetail[] = [
     repoName: "kuchipatchi09/everytime",
     repoUrl: "https://github.com/kuchipatchi09/everytime",
     tier: "학교생활 포털",
+    trackType: "Life Track",
     license: "GNU AGPL-3.0",
-    tagline: "시간표 · 급식 · 방과후 · 타이머",
+    tagline: "학교생활 유틸리티 · 실시간 시정 · NEIS 연동",
     description:
-      "충남과학고 일과표(수·금·일 특수 시정 포함)를 바탕으로 현재 교시 진행 상황, 급식, 방과후, 학교 공지를 한 화면에서 보여줍니다.",
+      "충남과학고 특유의 일과(수·금·일 특수 시정표)에 최적화된 초경량 포털입니다. 별도 로그인 없이 접속 0초 만에 현재 교시 잔여 시간, 나이스 시간표, 조·중·석식 식단 및 알레르기, 방과후 수업, 학교 공지를 한눈에 파악할 수 있는 일상 유틸리티 나침반입니다.",
     modules: [
       {
-        name: "실시간 시정 & 천체 배경",
-        description: "현재 교시 남은 시간 표시 및 시간대별 하늘·천체 배경 전환",
+        name: "실시간 시정 & 천체 렌더링",
+        description:
+          "수·금·일 특수 시정표 실시간 카운트다운(NOW) 및 충남과학고 좌표 기반 일출·일몰·달 위상·별자리 시각화",
       },
       {
-        name: "NEIS 시간표 & 특수 일과",
-        description: "학급별 시간표 조회 및 수·금·일 일과표 자동 반영",
+        name: "NEIS 시간표 & 수업 교체",
+        description:
+          "학년/반별 나이스 연동 시간표 조회 및 주간 시간표 변경 자동 동기화",
       },
       {
-        name: "급식 식단 & 방과후",
-        description: "조·중·석식 메뉴와 알레르기 정보, 주간 방과후 일정 확인",
+        name: "급식 식단 & 알레르기 분석",
+        description:
+          "시간대 기반 조·중·석식 자동 포커스 및 1~18번 알레르기 유발 항원 식별",
       },
       {
-        name: "자습 타이머 & 웹앱(PWA)",
-        description: "백색소음 타이머 및 모바일 홈 화면 추가 지원",
+        name: "방과후 편성 & 학교 공지",
+        description:
+          "요일별/반별 방과후 수업 편성표 및 공식 홈페이지 공지·가정통신문 크롤링 프록시",
+      },
+      {
+        name: "면학실 자습 타이머 & PWA",
+        description:
+          "백색소음/빗소리 재생 뽀모도로 자습 타이머 및 모바일/태블릿 홈 화면 설치 지원",
       },
     ],
   },
@@ -147,30 +158,119 @@ export const servicesData: ServiceDetail[] = [
     repoName: "knoblab/asterisk-community-frontend",
     repoUrl: "https://github.com/knoblab/asterisk-community-frontend",
     tier: "재학생 커뮤니티",
+    trackType: "Space Track",
     license: "MIT / Proprietary",
-    tagline: "재학생 게시판 & @asterisk AI",
+    tagline: "재학생 인증 커뮤니티 · 고성능 미디어 · asterisk* AI",
     description:
-      "Knoblab 통합 계정으로 인증된 충남과학고 학생 전용 게시판입니다. 댓글에서 @asterisk를 호출해 급식이나 학사 일정을 바로 물어볼 수 있습니다.",
+      "Knoblab SSO 통합 계정 기반으로 외부인을 차단하고 기수 배지를 부여받는 충남과학고 전용 고신뢰 광장입니다. KaTeX 수식과 45MB 무인코딩 비디오 스트리밍을 지원하며, 7종의 학내 도구를 자유자재로 구동하는 asterisk* AI(Jev Router)가 탑재되어 있습니다.",
     modules: [
       {
-        name: "재학생 인증 & 기수 배지",
-        description: "Knoblab 통합 로그인 연동 및 입학 기수(33기 등) 표시",
+        name: "재학생 기수 인증 & 8대 게시판",
+        description:
+          "Knoblab SSO 연동(31·32·33기 등 배지 부여), 공지·자유·질문·정보·자료 등 목적별 게시판 및 인기글 랭킹",
       },
       {
-        name: "카테고리별 게시판",
-        description: "질문·자료·정보·잡담 등 8개 게시판 및 인기글 분류",
+        name: "과학고 특화 KaTeX 수식 & 마크다운",
+        description:
+          "물리·수학 LaTeX 인라인/디스플레이 수식, GFM 표, 코드 블록 완전 렌더링",
       },
       {
-        name: "@asterisk AI 응답",
-        description: "댓글 멘션 시 급식·일정·게시글을 조회해 자동 답변",
+        name: "45MB 비디오 스트리밍 & 보안",
+        description:
+          "클라이언트 썸네일 자동 추출, 무인코딩 Nginx Range Requests(HTTP 206) 스트리밍 및 파일 매직 넘버 검증",
       },
       {
-        name: "파일 검증 & 보안",
-        description: "첨부파일 시그니처(매직 넘버) 검사 및 비인가 요청 차단",
+        name: "asterisk* AI & 7종 도구 연계",
+        description:
+          "Jev 엔진 기반 초고속 LLM 라우팅(Flash/Claude/GPT) 및 급식·시간표·게시글·Vision OCR 7종 도구 온디맨드 주입",
       },
     ],
   },
 ];
+
+export interface ComparisonMatrixRow {
+  dimension: string;
+  lifeTrack: string;
+  spaceTrack: string;
+}
+
+export interface SynergyPoint {
+  title: string;
+  description: string;
+}
+
+export interface TwoTrackStrategy {
+  headline: string;
+  summary: string;
+  philosophy: string[];
+  matrixRows: ComparisonMatrixRow[];
+  synergies: SynergyPoint[];
+}
+
+export const twoTrackStrategyData: TwoTrackStrategy = {
+  headline: "Life & Space: 왜 투트랙(Two-Track) 전략인가",
+  summary:
+    "학교 생활의 즉각적인 유틸리티 요구와 안전하고 깊이 있는 학내 커뮤니티는 요구되는 사용자 맥락과 기술 아키텍처가 근본적으로 다릅니다. asterisk*는 이를 억지로 하나의 앱에 우겨넣는 대신, 성격에 맞는 두 개의 전문 트랙으로 나누어 각각의 완성도를 극대화했습니다.",
+  philosophy: [
+    "쉬는 시간 10초, 이동 중, 혹은 수업 종이 치기 직전 학생이 확인해야 하는 일과 정보는 단 0.1초의 지체나 로그인 장벽 없이 즉시 열려야 합니다 (Life Track).",
+    "반면 질문 답변, 과제 자료 공유, 기수 간 교류는 외부인이 침입할 수 없는 폐쇄적 신뢰와 철저한 학생 인증, 그리고 풍부한 수식·미디어 엔진을 필요로 합니다 (Space Track).",
+    "두 트랙은 분리되어 있지만, 공통의 모노크롬 디자인 시스템과 asterisk* AI의 데이터 연계 엔진을 통해 하나의 통합된 학내 생태계로 완성됩니다.",
+  ],
+  matrixRows: [
+    {
+      dimension: "서비스 명칭 & 도메인",
+      lifeTrack: "cnsh.life (학교생활 포털)",
+      spaceTrack: "cnsh.space (재학생 커뮤니티)",
+    },
+    {
+      dimension: "핵심 미션 (Core Mission)",
+      lifeTrack: "0초 진입의 일상 시정표 및 학사 정보 안내 나침반",
+      spaceTrack: "고신뢰 학내 토론, 학술·수식 교류 및 지능형 AI 광장",
+    },
+    {
+      dimension: "접근성 및 인증 (Access)",
+      lifeTrack: "무인증 0초 즉시 접속 (Zero-Barrier, PWA 오프라인 지원)",
+      spaceTrack: "Knoblab SSO 재학생 기수 인증 (Verified Members Only)",
+    },
+    {
+      dimension: "기술 아키텍처 (Architecture)",
+      lifeTrack: "Serverless Client-Side SPA (NEIS/공공 API 직접 통신)",
+      spaceTrack: "Fullstack + Nginx 45MB 비디오 스트리밍 + Jev AI Gateway",
+    },
+    {
+      dimension: "특화 기능군 (Key Features)",
+      lifeTrack: "수·금·일 특수 시정표 카운트다운, 급식, 천체 배경, 자습 타이머",
+      spaceTrack: "KaTeX 수식, 동영상/이미지 업로드, 8대 게시판, @asterisk AI",
+    },
+    {
+      dimension: "인공지능 연계 (AI Integration)",
+      lifeTrack: "정규화된 학사·급식·시정 데이터의 원천 소스 제공",
+      spaceTrack: "Jev 엔진이 7종 내부 도구로 포털 데이터를 호출해 인라인 답변",
+    },
+    {
+      dimension: "라이선스 정책 (License)",
+      lifeTrack: "GNU AGPL-3.0 (투명한 공공성 지향 오픈소스)",
+      spaceTrack: "MIT (Frontend) / Proprietary (개인정보·보안 백엔드)",
+    },
+  ],
+  synergies: [
+    {
+      title: "일관된 모노크롬 디자인 시스템",
+      description:
+        "Paper(#F7F6F2)와 Carbon(#1C1C1E), 1px 실선 테두리, Asta Sans와 Pretendard 서체를 양쪽 서비스에 공통 적용하여 도메인을 넘나들어도 동일한 브랜드 경험을 누립니다.",
+    },
+    {
+      title: "asterisk* AI를 통한 실시간 데이터 융합",
+      description:
+        "cnsh.space의 @asterisk AI는 cnsh.life의 핵심 데이터인 급식과 시간표를 내부 도구(school_meal, school_timetable)로 품고 있어, 게시판 대화 중에도 포털의 데이터를 즉시 불러와 답변합니다.",
+    },
+    {
+      title: "충곽인의 하루 24시간 생활 사이클 완성",
+      description:
+        "아침 기상부터 등교, 수업, 급식, 방과후, 야간 자습까지는 cnsh.life가 일과를 안내하고, 방과 후 토론, 질문, 동아리 프로젝트, 정보 나눔은 cnsh.space가 담아냅니다.",
+    },
+  ],
+};
 
 export interface BrandChapter {
   num: string;
