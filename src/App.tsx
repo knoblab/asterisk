@@ -145,22 +145,38 @@ const getTabFromLocation = (): ActiveTab => {
   if (path === "credits") return "credits";
   if (path === "overview") return "overview";
 
-  // 2. Query parameter check (e.g. ?tab=ai or ?/ai)
-  const searchParams = new URLSearchParams(window.location.search);
-  const tabParam = searchParams.get("tab")?.toLowerCase();
-  if (tabParam === "ai") return "ai";
-  if (tabParam === "design") return "design";
-  if (tabParam === "license") return "license";
-  if (tabParam === "credits") return "credits";
-  if (tabParam === "overview") return "overview";
+  // 2. Query parameter check (e.g. ?ai, ?/ai, ?tab=ai, ?license, etc.)
+  if (window.location.search && window.location.search.length > 1) {
+    const rawSearch = window.location.search.slice(1).toLowerCase();
+    const cleanSearch = rawSearch.startsWith("/")
+      ? rawSearch.slice(1)
+      : rawSearch;
+    const firstParam = cleanSearch.split("&")[0].split("=")[0];
+
+    if (firstParam === "ai") return "ai";
+    if (firstParam === "design") return "design";
+    if (firstParam === "license") return "license";
+    if (firstParam === "credits") return "credits";
+    if (firstParam === "overview") return "overview";
+
+    const searchParams = new URLSearchParams(window.location.search);
+    const tabParam = searchParams.get("tab")?.toLowerCase();
+    if (tabParam === "ai") return "ai";
+    if (tabParam === "design") return "design";
+    if (tabParam === "license") return "license";
+    if (tabParam === "credits") return "credits";
+    if (tabParam === "overview") return "overview";
+  }
 
   // 3. Hash fallback (e.g. #ai, #/ai, #license)
-  const hash = window.location.hash.toLowerCase().replace(/^#\/?/, "");
-  if (hash === "ai") return "ai";
-  if (hash === "design") return "design";
-  if (hash === "license") return "license";
-  if (hash === "credits") return "credits";
-  if (hash === "overview") return "overview";
+  if (window.location.hash) {
+    const hash = window.location.hash.toLowerCase().replace(/^#\/?/, "");
+    if (hash === "ai") return "ai";
+    if (hash === "design") return "design";
+    if (hash === "license") return "license";
+    if (hash === "credits") return "credits";
+    if (hash === "overview") return "overview";
+  }
 
   return "overview";
 };
@@ -190,6 +206,17 @@ export const App: React.FC = () => {
 
   // Sync tab with URL navigation and PopState / HashChange
   useEffect(() => {
+    // If the initial URL had a query like ?ai or ?/ai or ?tab=ai, clean it up to /ai
+    const initialTab = getTabFromLocation();
+    const cleanPath = tabToPath(initialTab);
+    if (window.location.search) {
+      window.history.replaceState(
+        { tab: initialTab },
+        "",
+        cleanPath + window.location.hash
+      );
+    }
+
     const handlePopState = () => {
       const tab = getTabFromLocation();
       setActiveTab(tab);

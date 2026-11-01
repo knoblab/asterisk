@@ -31,16 +31,17 @@
     <link rel="alternate icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/favicon.png" />
 
-    <!-- SPA Redirect Handler for GitHub Pages -->
+    <!-- SPA Redirect Handler for GitHub Pages & Static Hosts -->
     <script>
       (function(l) {
-        if (l.search[1] === '/' ) {
-          var decoded = l.search.slice(1).split('&').map(function(s) { 
-            return s.replace(/~and~/g, '&');
-          }).join('?');
-          window.history.replaceState(null, null,
-              l.pathname.slice(0, -1) + decoded + l.hash
-          );
+        if (l.search && l.search.length > 1) {
+          var query = l.search.slice(1);
+          var path = query.startsWith('/') ? query.slice(1) : query;
+          var cleanPath = path.split('&')[0];
+          var knownTabs = ['ai', 'license', 'design', 'credits', 'overview'];
+          if (knownTabs.indexOf(cleanPath.toLowerCase()) !== -1) {
+            window.history.replaceState(null, null, '/' + cleanPath + l.hash);
+          }
         }
       }(window.location));
     </script>
