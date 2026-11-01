@@ -11,7 +11,7 @@ import {
 } from "./data/ecosystemData";
 import { AsteriskAiTab } from "./components/AsteriskAiTab";
 
-type ActiveTab = "overview" | "ai" | "design" | "license" | "credits";
+type ActiveTab = "overview" | "ai" | "design" | "license" | "credits" | "terms" | "privacy";
 
 /**
  * 텍스트 내의 '*' 기호를 수직 정중앙 정렬된 .ast-star 스팬으로 변환
@@ -143,6 +143,8 @@ const getTabFromLocation = (): ActiveTab => {
   if (path === "design") return "design";
   if (path === "license") return "license";
   if (path === "credits") return "credits";
+  if (path === "terms") return "terms";
+  if (path === "privacy") return "privacy";
   if (path === "overview") return "overview";
 
   // 2. Query parameter check (e.g. ?ai, ?/ai, ?tab=ai, ?license, etc.)
@@ -157,6 +159,8 @@ const getTabFromLocation = (): ActiveTab => {
     if (firstParam === "design") return "design";
     if (firstParam === "license") return "license";
     if (firstParam === "credits") return "credits";
+    if (firstParam === "terms") return "terms";
+    if (firstParam === "privacy") return "privacy";
     if (firstParam === "overview") return "overview";
 
     const searchParams = new URLSearchParams(window.location.search);
@@ -165,6 +169,8 @@ const getTabFromLocation = (): ActiveTab => {
     if (tabParam === "design") return "design";
     if (tabParam === "license") return "license";
     if (tabParam === "credits") return "credits";
+    if (tabParam === "terms") return "terms";
+    if (tabParam === "privacy") return "privacy";
     if (tabParam === "overview") return "overview";
   }
 
@@ -175,6 +181,8 @@ const getTabFromLocation = (): ActiveTab => {
     if (hash === "design") return "design";
     if (hash === "license") return "license";
     if (hash === "credits") return "credits";
+    if (hash === "terms") return "terms";
+    if (hash === "privacy") return "privacy";
     if (hash === "overview") return "overview";
   }
 
@@ -241,6 +249,8 @@ export const App: React.FC = () => {
       design: "디자인 시스템 — asterisk*",
       license: "라이선스 & 거버넌스 — asterisk*",
       credits: "크레딧 — asterisk*",
+      terms: "서비스 이용약관 — asterisk*",
+      privacy: "개인정보 처리방침 — asterisk*",
     };
     document.title = titles[activeTab] || titles.overview;
   }, [activeTab]);
@@ -368,13 +378,103 @@ export const App: React.FC = () => {
             </a>
             <a
               href="/credits"
-              className={activeTab === "credits" ? "active" : ""}
               onClick={(e) => {
                 e.preventDefault();
                 switchView("credits");
               }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
             >
               크레딧
+            </a>
+            <a
+              href="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("terms");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              이용약관
+            </a>
+            <a
+              href="/privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("privacy");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              개인정보처리방침
+            </a>
+            <a
+              href="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("terms");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              이용약관
+            </a>
+            <a
+              href="/privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("privacy");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              개인정보처리방침
             </a>
           </nav>
 
@@ -1858,6 +1958,114 @@ export const App: React.FC = () => {
                   })}
                 </div>
               </section>
+            </div>
+          )}
+
+          {/* ==============================================================
+              VIEW 5: 이용약관 (TERMS)
+              ============================================================== */}
+          {activeTab === "terms" && (
+            <div
+              className="page-transition-wrap"
+              style={{ paddingTop: "24px" }}
+            >
+              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <button
+                  type="button"
+                  onClick={() => switchView("overview")}
+                  style={{
+                    background: "none",
+                    border: 0,
+                    padding: 0,
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "inherit",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  ← 소개로 돌아가기
+                </button>
+                <a
+                  href="/terms/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: "12px",
+                    color: "inherit",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px",
+                  }}
+                >
+                  새 창으로 열기 ↗
+                </a>
+              </div>
+              <iframe
+                src="/terms/index.html"
+                title="asterisk* 서비스 이용약관"
+                style={{
+                  width: "100%",
+                  height: "85vh",
+                  border: "1px solid var(--color-silver)",
+                  background: "var(--color-paper)",
+                }}
+              />
+            </div>
+          )}
+
+          {/* ==============================================================
+              VIEW 6: 개인정보 처리방침 (PRIVACY)
+              ============================================================== */}
+          {activeTab === "privacy" && (
+            <div
+              className="page-transition-wrap"
+              style={{ paddingTop: "24px" }}
+            >
+              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <button
+                  type="button"
+                  onClick={() => switchView("overview")}
+                  style={{
+                    background: "none",
+                    border: 0,
+                    padding: 0,
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: "inherit",
+                    cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
+                  }}
+                >
+                  ← 소개로 돌아가기
+                </button>
+                <a
+                  href="/privacy/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: "12px",
+                    color: "inherit",
+                    textDecoration: "underline",
+                    textUnderlineOffset: "3px",
+                  }}
+                >
+                  새 창으로 열기 ↗
+                </a>
+              </div>
+              <iframe
+                src="/privacy/index.html"
+                title="asterisk* 개인정보 처리방침"
+                style={{
+                  width: "100%",
+                  height: "85vh",
+                  border: "1px solid var(--color-silver)",
+                  background: "var(--color-paper)",
+                }}
+              />
             </div>
           )}
         </div>
