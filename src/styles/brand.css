@@ -217,6 +217,7 @@ header {
   white-space: nowrap;
   flex-shrink: 0;
   border-radius: 2px;
+  text-decoration: none;
 }
 
 .desktop-nav button:hover,
@@ -224,7 +225,8 @@ header {
   border-color: var(--color-black);
 }
 
-.desktop-nav button.active {
+.desktop-nav button.active,
+.desktop-nav a.active {
   background: var(--color-black);
   color: var(--color-paper);
   border-color: var(--color-black);
@@ -404,6 +406,7 @@ header {
   cursor: pointer;
   transition: all 0.15s ease;
   border-radius: 2px;
+  text-decoration: none;
 }
 
 .drawer-nav-item:hover {

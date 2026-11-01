@@ -130,8 +130,45 @@ const BrandHeroFullscreen: React.FC = () => (
   </section>
 );
 
+const tabToPath = (tab: ActiveTab): string => {
+  return tab === "overview" ? "/" : `/${tab}`;
+};
+
+const getTabFromLocation = (): ActiveTab => {
+  if (typeof window === "undefined") return "overview";
+
+  // 1. Pathname check (e.g. /ai, /design, /license, /credits, /overview)
+  const path = window.location.pathname.toLowerCase().replace(/^\/+|\/+$/g, "");
+  if (path === "ai") return "ai";
+  if (path === "design") return "design";
+  if (path === "license") return "license";
+  if (path === "credits") return "credits";
+  if (path === "overview") return "overview";
+
+  // 2. Query parameter check (e.g. ?tab=ai or ?/ai)
+  const searchParams = new URLSearchParams(window.location.search);
+  const tabParam = searchParams.get("tab")?.toLowerCase();
+  if (tabParam === "ai") return "ai";
+  if (tabParam === "design") return "design";
+  if (tabParam === "license") return "license";
+  if (tabParam === "credits") return "credits";
+  if (tabParam === "overview") return "overview";
+
+  // 3. Hash fallback (e.g. #ai, #/ai, #license)
+  const hash = window.location.hash.toLowerCase().replace(/^#\/?/, "");
+  if (hash === "ai") return "ai";
+  if (hash === "design") return "design";
+  if (hash === "license") return "license";
+  if (hash === "credits") return "credits";
+  if (hash === "overview") return "overview";
+
+  return "overview";
+};
+
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("overview");
+  const [activeTab, setActiveTab] = useState<ActiveTab>(() =>
+    getTabFromLocation()
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [activeColor, setActiveColor] = useState<MonochromeToken>(
     monochromeTokens[0]
@@ -151,10 +188,47 @@ export const App: React.FC = () => {
     }
   }, [isDarkTheme]);
 
-  const switchView = (tab: ActiveTab) => {
+  // Sync tab with URL navigation and PopState / HashChange
+  useEffect(() => {
+    const handlePopState = () => {
+      const tab = getTabFromLocation();
+      setActiveTab(tab);
+      setMobileMenuOpen(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    window.addEventListener("hashchange", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("hashchange", handlePopState);
+    };
+  }, []);
+
+  // Update document title per active tab
+  useEffect(() => {
+    const titles: Record<ActiveTab, string> = {
+      overview: "asterisk* — The Answer to Campus Life, and Everything.",
+      ai: "asterisk* AI — The Answer to Campus Life, and Everything.",
+      design: "디자인 시스템 — asterisk*",
+      license: "라이선스 & 거버넌스 — asterisk*",
+      credits: "크레딧 — asterisk*",
+    };
+    document.title = titles[activeTab] || titles.overview;
+  }, [activeTab]);
+
+  const switchView = (tab: ActiveTab, updateHistory: boolean = true) => {
     setActiveTab(tab);
     setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (updateHistory) {
+      const targetPath = tabToPath(tab);
+      if (window.location.pathname !== targetPath) {
+        window.history.pushState({ tab }, "", targetPath);
+      }
+    }
   };
 
   const handleCopyText = (val: string, e?: React.MouseEvent) => {
@@ -206,10 +280,13 @@ export const App: React.FC = () => {
       {/* Header */}
       <header>
         <div className="head head-desktop">
-          <button
-            type="button"
+          <a
+            href="/"
             className="brand asterisk-brand"
-            onClick={() => switchView("overview")}
+            onClick={(e) => {
+              e.preventDefault();
+              switchView("overview");
+            }}
             aria-label="asterisk* 홈으로 이동"
           >
             <div className="asterisk-wordmark">
@@ -219,44 +296,59 @@ export const App: React.FC = () => {
                 <span className="asterisk-wordmark-star">*</span>
               </div>
             </div>
-          </button>
+          </a>
 
           <nav className="desktop-nav" aria-label="주요 메뉴">
-            <button
-              type="button"
+            <a
+              href="/"
               className={activeTab === "overview" ? "active" : ""}
-              onClick={() => switchView("overview")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("overview");
+              }}
             >
               소개
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/ai"
               className={activeTab === "ai" ? "active" : ""}
-              onClick={() => switchView("ai")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("ai");
+              }}
             >
               AI
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/design"
               className={activeTab === "design" ? "active" : ""}
-              onClick={() => switchView("design")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("design");
+              }}
             >
               디자인 시스템
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/license"
               className={activeTab === "license" ? "active" : ""}
-              onClick={() => switchView("license")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("license");
+              }}
             >
               라이선스
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="/credits"
               className={activeTab === "credits" ? "active" : ""}
-              onClick={() => switchView("credits")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("credits");
+              }}
             >
               크레딧
-            </button>
+            </a>
           </nav>
 
           <div className="nav-controls-right">
@@ -281,16 +373,19 @@ export const App: React.FC = () => {
         <div className="head head-mobile">
           <div className="head-mobile-left" />
           <div className="head-mobile-center">
-            <button
-              type="button"
+            <a
+              href="/"
               className="brand asterisk-brand-mobile"
-              onClick={() => switchView("overview")}
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("overview");
+              }}
               aria-label="asterisk* 홈으로 이동"
             >
               <span className="asterisk-wordmark-inline">
                 asterisk<span className="asterisk-wordmark-star">*</span>
               </span>
-            </button>
+            </a>
           </div>
           <div className="head-mobile-right">
             <button
@@ -333,51 +428,66 @@ export const App: React.FC = () => {
             </div>
 
             <nav className="drawer-nav">
-              <button
-                type="button"
+              <a
+                href="/"
                 className={`drawer-nav-item ${
                   activeTab === "overview" ? "active" : ""
                 }`}
-                onClick={() => switchView("overview")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("overview");
+                }}
               >
                 <span className="drawer-label">소개</span>
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="/ai"
                 className={`drawer-nav-item ${
                   activeTab === "ai" ? "active" : ""
                 }`}
-                onClick={() => switchView("ai")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("ai");
+                }}
               >
                 <span className="drawer-label">AI</span>
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="/design"
                 className={`drawer-nav-item ${
                   activeTab === "design" ? "active" : ""
                 }`}
-                onClick={() => switchView("design")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("design");
+                }}
               >
                 <span className="drawer-label">디자인 시스템</span>
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="/license"
                 className={`drawer-nav-item ${
                   activeTab === "license" ? "active" : ""
                 }`}
-                onClick={() => switchView("license")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("license");
+                }}
               >
                 <span className="drawer-label">라이선스</span>
-              </button>
-              <button
-                type="button"
+              </a>
+              <a
+                href="/credits"
                 className={`drawer-nav-item ${
                   activeTab === "credits" ? "active" : ""
                 }`}
-                onClick={() => switchView("credits")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("credits");
+                }}
               >
                 <span className="drawer-label">크레딧</span>
-              </button>
+              </a>
             </nav>
 
             <div className="drawer-ext-links" style={{ marginTop: "20px" }}>
@@ -1748,9 +1858,12 @@ export const App: React.FC = () => {
               flexWrap: "wrap",
             }}
           >
-            <button
-              type="button"
-              onClick={() => switchView("overview")}
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("overview");
+              }}
               style={{
                 background: "none",
                 border: 0,
@@ -1760,13 +1873,17 @@ export const App: React.FC = () => {
                 cursor: "pointer",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
+                color: "inherit",
               }}
             >
               소개
-            </button>
-            <button
-              type="button"
-              onClick={() => switchView("ai")}
+            </a>
+            <a
+              href="/ai"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("ai");
+              }}
               style={{
                 background: "none",
                 border: 0,
@@ -1776,13 +1893,17 @@ export const App: React.FC = () => {
                 cursor: "pointer",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
+                color: "inherit",
               }}
             >
               AI
-            </button>
-            <button
-              type="button"
-              onClick={() => switchView("design")}
+            </a>
+            <a
+              href="/design"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("design");
+              }}
               style={{
                 background: "none",
                 border: 0,
@@ -1792,13 +1913,17 @@ export const App: React.FC = () => {
                 cursor: "pointer",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
+                color: "inherit",
               }}
             >
               디자인 시스템
-            </button>
-            <button
-              type="button"
-              onClick={() => switchView("license")}
+            </a>
+            <a
+              href="/license"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("license");
+              }}
               style={{
                 background: "none",
                 border: 0,
@@ -1808,13 +1933,17 @@ export const App: React.FC = () => {
                 cursor: "pointer",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
+                color: "inherit",
               }}
             >
               라이선스
-            </button>
-            <button
-              type="button"
-              onClick={() => switchView("credits")}
+            </a>
+            <a
+              href="/credits"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("credits");
+              }}
               style={{
                 background: "none",
                 border: 0,
@@ -1824,10 +1953,11 @@ export const App: React.FC = () => {
                 cursor: "pointer",
                 textDecoration: "underline",
                 textUnderlineOffset: "3px",
+                color: "inherit",
               }}
             >
               크레딧
-            </button>
+            </a>
             <a
               href="https://status.knoblab.xyz/"
               target="_blank"
