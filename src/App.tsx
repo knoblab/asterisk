@@ -8,8 +8,9 @@ import {
   creditsList,
   type MonochromeToken,
 } from "./data/ecosystemData";
+import { AsteriskAiTab } from "./components/AsteriskAiTab";
 
-type ActiveTab = "overview" | "design" | "license" | "credits";
+type ActiveTab = "overview" | "ai" | "design" | "license" | "credits";
 
 /**
  * 텍스트 내의 '*' 기호를 수직 정중앙 정렬된 .ast-star 스팬으로 변환
@@ -229,6 +230,13 @@ export const App: React.FC = () => {
             </button>
             <button
               type="button"
+              className={activeTab === "ai" ? "active" : ""}
+              onClick={() => switchView("ai")}
+            >
+              AI
+            </button>
+            <button
+              type="button"
               className={activeTab === "design" ? "active" : ""}
               onClick={() => switchView("design")}
             >
@@ -332,6 +340,15 @@ export const App: React.FC = () => {
                 onClick={() => switchView("overview")}
               >
                 <span className="drawer-label">소개</span>
+              </button>
+              <button
+                type="button"
+                className={`drawer-nav-item ${
+                  activeTab === "ai" ? "active" : ""
+                }`}
+                onClick={() => switchView("ai")}
+              >
+                <span className="drawer-label">AI</span>
               </button>
               <button
                 type="button"
@@ -558,7 +575,14 @@ export const App: React.FC = () => {
           )}
 
           {/* ==============================================================
-              VIEW 2: 디자인 시스템 (DESIGN SYSTEM)
+              VIEW 2: ASTERISK* AI (JEV ROUTER & INTERNAL TOOLS)
+              ============================================================== */}
+          {activeTab === "ai" && (
+            <AsteriskAiTab renderWithCenteredStar={renderWithCenteredStar} />
+          )}
+
+          {/* ==============================================================
+              VIEW 3: 디자인 시스템 (DESIGN SYSTEM)
               ============================================================== */}
           {activeTab === "design" && (
             <div
@@ -1612,6 +1636,22 @@ export const App: React.FC = () => {
               }}
             >
               소개
+            </button>
+            <button
+              type="button"
+              onClick={() => switchView("ai")}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+              }}
+            >
+              AI
             </button>
             <button
               type="button"
