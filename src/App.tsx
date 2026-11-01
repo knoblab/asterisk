@@ -378,20 +378,10 @@ export const App: React.FC = () => {
             </a>
             <a
               href="/credits"
+              className={activeTab === "credits" ? "active" : ""}
               onClick={(e) => {
                 e.preventDefault();
                 switchView("credits");
-              }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
               }}
             >
               크레딧
