@@ -396,86 +396,6 @@ export const App: React.FC = () => {
             >
               크레딧
             </a>
-            <a
-              href="/terms"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("terms");
-              }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
-            >
-              이용약관
-            </a>
-            <a
-              href="/privacy"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("privacy");
-              }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
-            >
-              개인정보처리방침
-            </a>
-            <a
-              href="/terms"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("terms");
-              }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
-            >
-              이용약관
-            </a>
-            <a
-              href="/privacy"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("privacy");
-              }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
-            >
-              개인정보처리방침
-            </a>
           </nav>
 
           <div className="nav-controls-right">
@@ -2194,6 +2114,46 @@ export const App: React.FC = () => {
               크레딧
             </a>
             <a
+              href="/terms"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("terms");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              이용약관
+            </a>
+            <a
+              href="/privacy"
+              onClick={(e) => {
+                e.preventDefault();
+                switchView("privacy");
+              }}
+              style={{
+                background: "none",
+                border: 0,
+                padding: 0,
+                fontFamily: "var(--font-mono)",
+                fontSize: "11.5px",
+                cursor: "pointer",
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+                color: "inherit",
+              }}
+            >
+              개인정보처리방침
+            </a>
+<a
               href="https://status.knoblab.xyz/"
               target="_blank"
               rel="noopener noreferrer"
