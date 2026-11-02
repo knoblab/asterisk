@@ -2255,6 +2255,269 @@ footer {
   color: var(--color-black);
 }
 
+/* ==========================================================================
+   asterisk* AI Tab: Timeline Processing Pipeline & Tool Ecosystem Styles
+   ========================================================================== */
+
+/* Full-width chapter block for timeline */
+@media (min-width: 900px) {
+  .brand-chapter-block.timeline-chapter-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .brand-chapter-block.timeline-chapter-block .brand-chapter-meta {
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-silver);
+  }
+
+  .brand-chapter-block.timeline-chapter-block .timeline-chapter-content {
+    width: 100%;
+  }
+}
+
+/* Timeline Container */
+.ai-timeline-container {
+  position: relative;
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* PC Desktop Timeline (min-width: 860px): Horizontal track & points */
+@media (min-width: 860px) {
+  .ai-timeline-track {
+    display: none;
+  }
+
+  .ai-timeline-steps {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    position: relative;
+    width: 100%;
+  }
+
+  .ai-timeline-step {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-width: 0;
+  }
+
+  .ai-timeline-node {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 20px;
+    margin-bottom: 14px;
+  }
+
+  .ai-timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-black);
+    border: 3px solid var(--color-paper);
+    box-shadow: 0 0 0 1px var(--color-black);
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+
+  .ai-timeline-step:hover .ai-timeline-dot {
+    transform: scale(1.2);
+  }
+
+  .ai-timeline-line-segment {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    right: -20px;
+    height: 2px;
+    background: var(--color-silver);
+    transform: translateY(-50%);
+    z-index: 1;
+  }
+
+  .ai-timeline-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-timeline-step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-telemetry);
+    letter-spacing: 0.05em;
+    display: block;
+  }
+
+  .ai-timeline-step-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--color-black);
+    margin: 0;
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+
+  .ai-timeline-step-desc {
+    font-size: 12px;
+    color: var(--color-graphite);
+    line-height: 1.55;
+    margin: 0;
+    word-break: keep-all;
+  }
+}
+
+/* Mobile Timeline (max-width: 859px): Vertical track & points */
+@media (max-width: 859px) {
+  .ai-timeline-container {
+    padding-left: 28px;
+    margin-top: 20px;
+  }
+
+  .ai-timeline-track {
+    display: block;
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 16px;
+    width: 2px;
+    background: var(--color-silver);
+  }
+
+  .ai-timeline-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    width: 100%;
+  }
+
+  .ai-timeline-step {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .ai-timeline-node {
+    position: absolute;
+    left: -28px;
+    top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+  }
+
+  .ai-timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-black);
+    border: 3px solid var(--color-paper);
+    box-shadow: 0 0 0 1px var(--color-black);
+    z-index: 2;
+  }
+
+  .ai-timeline-line-segment {
+    display: none;
+  }
+
+  .ai-timeline-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ai-timeline-step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-telemetry);
+    letter-spacing: 0.05em;
+    display: block;
+  }
+
+  .ai-timeline-step-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-black);
+    margin: 0;
+    line-height: 1.4;
+    word-break: keep-all;
+  }
+
+  .ai-timeline-step-desc {
+    font-size: 12.5px;
+    color: var(--color-graphite);
+    line-height: 1.55;
+    margin: 0;
+    word-break: keep-all;
+  }
+}
+
+/* Tool Ecosystem Table Primitives */
+.tool-id-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-black);
+  letter-spacing: -0.01em;
+  word-break: break-all;
+}
+
+.tool-category-text {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-carbon);
+  white-space: nowrap;
+}
+
+.tool-badge-pill {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--color-vellum);
+  border: 1px solid var(--color-silver);
+  border-radius: var(--radius-sm, 2px);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-black);
+  white-space: nowrap;
+}
+
+.tool-desc-text {
+  font-size: 13px;
+  color: var(--color-graphite);
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+.matrix-col-label {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-telemetry);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+@media (max-width: 639px) {
+  .matrix-col-label {
+    display: block;
+  }
+}
+
 
 
 

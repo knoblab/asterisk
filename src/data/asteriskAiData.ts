@@ -10,12 +10,13 @@ export interface AiModelSpec {
 
 export interface AiToolSpec {
   id: string;
-  name: string;
-  category: "academic" | "community" | "multimodal";
+  category: string;
   categoryLabel: string;
-  summary: string;
+  badgeName: string;
   description: string;
-  trigger: string;
+  name?: string;
+  summary?: string;
+  trigger?: string;
 }
 
 export interface AiPipelineStep {
@@ -117,109 +118,117 @@ export const aiCandidateModels: AiModelSpec[] = [
 ];
 
 export const aiInternalTools: AiToolSpec[] = [
-  // 학사 · 일과
+  // 학교 생활
   {
     id: "school_meal",
-    name: "학교 급식",
-    category: "academic",
-    categoryLabel: "학사 · 일과",
+    category: "school",
+    categoryLabel: "학교 생활",
+    badgeName: "급식 조회",
+    name: "급식 조회",
+    description: "오늘/내일 아침·점심·저녁 급식 및 영양·알레르기 안내",
     summary: "조·중·석식 식단 및 알레르기 유발 정보 안내",
-    description:
-      "나이스(NEIS) 교육정보 API를 연동하여 오늘, 내일, 모레, 어제 등 상대일과 특정 날짜의 아침·점심·저녁 식단과 알레르기 유발 번호를 정제하여 제공합니다.",
     trigger: "'급식', '오늘 학식', '내일 점심 메뉴', '석식 뭐 나와' 등 식단 질의 감지 시",
   },
   {
     id: "school_timetable",
-    name: "학교 시간표",
-    category: "academic",
-    categoryLabel: "학사 · 일과",
+    category: "school",
+    categoryLabel: "학교 생활",
+    badgeName: "시간표 조회",
+    name: "시간표 조회",
+    description: "학급별 실시간 시간표 및 오늘 학교 일과/야자 시간",
     summary: "학급별 시간표 실시간 조회 및 충남과학고 특수 일과표",
-    description:
-      "충남과학고 학년·반 시간표를 실시간 조회하고, 질문자 프로필에 설정된 학년/반을 자동 매핑합니다. 수요일 점심 80분 연장, 종례, 방과후, 야간자율학습(야자) 등 학교 특수 일과 진행 상황을 함께 안내합니다.",
     trigger: "'시간표', '오늘 1-2 시간표', '지금 몇 교시야', '일과표' 등 시간표/일과 질의 시",
   },
+
+  // 학업 연동
   {
     id: "google_classroom",
-    name: "구글 클래스룸",
     category: "academic",
-    categoryLabel: "학사 · 일과",
+    categoryLabel: "학업 연동",
+    badgeName: "클래스룸 과제",
+    name: "클래스룸 과제",
+    description: "연동된 구글 클래스룸 미제출 과제 및 마감 기한 조회",
     summary: "미제출 과제 및 수행평가 실시간 마감 기한 조회",
-    description:
-      "학교 구글 계정 OAuth 연동을 통해 학생이 수강 중인 모든 활성 수업의 미제출 과제와 수행평가 목록, 마감 기한(임박/초과 알림)을 정밀 조회하여 정리해 줍니다.",
     trigger: "'남은 과제', '미제출 수행평가', '내일까지 과제 뭐 있어' 등 과제 질의 시",
   },
   {
-    id: "current_time",
-    name: "현재 시간 (기준점)",
+    id: "google_calendar_reminder",
     category: "academic",
-    categoryLabel: "학사 · 일과",
-    summary: "한국 표준시(KST) 연·월·일·시·분·초 기준점 제공",
-    description:
-      "모델이 과거 학습 시점에 갇히지 않도록 KST 기준 정확한 현재 시점을 제공합니다. 급식, 시간표, 구글 클래스룸 도구 실행 시 상호 의존 규칙에 따라 무조건 함께 활성화되어 날짜 계산 착오를 방지합니다.",
-    trigger: "날짜/시간 질의 및 급식/시간표/과제 도구 실행 시 무조건 강제 동반 실행",
+    categoryLabel: "학업 연동",
+    badgeName: "캘린더 일정",
+    name: "캘린더 일정",
+    description: "구글 캘린더 일정 조회, 원클릭 승인 등록 및 알림",
+    summary: "구글 캘린더 일정 조회 및 원클릭 일정 추가",
+    trigger: "'캘린더에 일정 등록해줘', '내일 3시 회의 일정 추가' 등 일정 관련 요청 시",
   },
 
-  // 커뮤니티 · 아카이브
-  {
-    id: "archive_search",
-    name: "선배 아카이브 검색",
-    category: "community",
-    categoryLabel: "커뮤니티 · 아카이브",
-    summary: "졸업 선배 기수 가중치 기반 공부법·과목 족보 발굴",
-    description:
-      "선배들의 실제 합격 수기, 교내 과목(AP선형대수, 고급물리·화학·생물, R&E 등) 팁을 발굴합니다. 상급생 및 졸업 선배 기수 가중치를 점수화하여 신뢰도 높은 조언을 우선 전달합니다.",
-    trigger: "'선배들 팁', 'AP선대 공부법', 'R&E 주제 조언', '기출 족보' 등 질문 시",
-  },
+  // 커뮤니티
   {
     id: "community_all_posts",
-    name: "전체 게시글 열람",
     category: "community",
-    categoryLabel: "커뮤니티 · 아카이브",
+    categoryLabel: "커뮤니티",
+    badgeName: "커뮤니티 요약",
+    name: "커뮤니티 요약",
+    description: "최신 인기글 및 공지사항 실시간 열람/요약",
     summary: "공지 가중치 및 키워드 기반 커뮤니티 글·댓글 검색",
-    description:
-      "삭제되지 않은 게시글을 대상으로 제목/본문 키워드 매칭과 공지 가중치를 적용해 상위 글 본문과 주요 댓글을 발췌하여 답변에 활용합니다.",
     trigger: "'인기글 요약해줘', '최신 공지사항 정리', '게시판에 올라온 글' 등 요청 시",
   },
   {
-    id: "community_post_detail",
-    name: "특정 게시글·댓글 전문",
-    category: "community",
-    categoryLabel: "커뮤니티 · 아카이브",
-    summary: "지정된 글의 본문 전문과 전체 댓글 스레드 정밀 로드",
-    description:
-      "댓글이 달린 대상 게시글이나 1:1 대화에서 핀(Pin)으로 지정된 글, 또는 #코드로 지정된 글의 본문 전문과 전체 댓글 목록을 온전히 로드합니다.",
-    trigger: "댓글 멘션 호출 시 자동 로드 또는 특정 게시글 대상 질문 시",
-  },
-  {
     id: "user_history",
-    name: "사용자 작성 기록",
     category: "community",
-    categoryLabel: "커뮤니티 · 아카이브",
+    categoryLabel: "커뮤니티",
+    badgeName: "내 활동 요약",
+    name: "내 활동 요약",
+    description: "내가 작성한 게시글 및 댓글 목록, 추천 통계 요약",
     summary: "질문자 본인이 작성한 최근 글과 댓글 이력 요약",
-    description:
-      "질문자 본인의 식별자(authorId)로 작성된 최근 글과 댓글을 필터링하여, 내가 쓴 글 목록과 활동 내용을 요약해 줍니다.",
     trigger: "'내가 쓴 글 목록', '내 활동 요약', '내가 작성한 글 뭐 있어' 등 요청 시",
   },
+
+  // 지식/아카이브
   {
-    id: "post_metadata",
-    name: "게시글 통계 정보",
-    category: "community",
-    categoryLabel: "커뮤니티 · 아카이브",
-    summary: "작성 경과일(diffDays), 추천수, 조회수, 댓글수 추출",
-    description:
-      "본문 전체를 읽을 필요 없이 게시글이 며칠 전 작성되었는지, 추천수와 조회수, 활성 댓글 수가 몇 개인지 통계 수치만 가볍게 추출합니다.",
-    trigger: "'이 글 며칠 전에 올라왔어?', '추천수 몇 개야?' 등 통계 질의 시",
+    id: "archive_search",
+    category: "archive",
+    categoryLabel: "지식/아카이브",
+    badgeName: "선배 노하우",
+    name: "선배 노하우",
+    description: "충남과학고 선배들의 과목 팁, 기출/수행평가 수기 검색",
+    summary: "졸업 선배 기수 가중치 기반 공부법·과목 족보 발굴",
+    trigger: "'선배들 팁', 'AP선대 공부법', 'R&E 주제 조언', '기출 족보' 등 질문 시",
   },
 
-  // 시각 · 외부
+  // 멀티모달
   {
     id: "image_analysis",
-    name: "첨부 이미지 분석 (Vision)",
     category: "multimodal",
-    categoryLabel: "시각 분석",
+    categoryLabel: "멀티모달",
+    badgeName: "이미지 분석",
+    name: "이미지 분석",
+    description: "클립 버튼 또는 Ctrl+V로 이미지 첨부 후 OCR 및 시각 분석",
     summary: "게시글 및 채팅 첨부 사진·도표·문서 OCR 판독",
-    description:
-      "게시글 첨부 사진(최대 5장)이나 채팅창에 직접 붙여넣은(Ctrl+V) 이미지(최대 3장)를 인메모리 Base64 시각 입력(Vision)으로 전달하여 글자(OCR), 도표, UI 화면을 직접 판독합니다.",
     trigger: "게시글에 이미지가 포함되어 있거나 이미지 관련 질의('사진', 'OCR', '글자') 시",
+  },
+
+  // 실시간 정보
+  {
+    id: "web_search",
+    category: "realtime",
+    categoryLabel: "실시간 정보",
+    badgeName: "실시간 검색",
+    name: "실시간 검색",
+    description: "실시간 외부 웹 검색, 최신 뉴스, 날씨 정보 탐색",
+    summary: "외부 검색 엔진 연동 실시간 정보 검색",
+    trigger: "외부 최신 뉴스, 실시간 날씨, 최신 과학 기술 정보 질의 시",
+  },
+
+  // 유틸리티
+  {
+    id: "current_time",
+    category: "utility",
+    categoryLabel: "유틸리티",
+    badgeName: "시각 · D-Day",
+    name: "시각 · D-Day",
+    description: "KST 기준 실시간 시각, 오늘 요일, 경과일 및 D-Day 계산",
+    summary: "한국 표준시(KST) 연·월·일·시·분·초 기준점 제공",
+    trigger: "날짜/시간 질의 및 급식/시간표/과제 도구 실행 시 무조건 강제 동반 실행",
   },
 ];

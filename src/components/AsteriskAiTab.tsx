@@ -12,14 +12,23 @@ interface AsteriskAiTabProps {
 export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
   renderWithCenteredStar,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useState<
-    "all" | "academic" | "community" | "multimodal"
-  >("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  const toolCategories = [
+    { id: "all", label: "전체" },
+    { id: "학교 생활", label: "학교 생활" },
+    { id: "학업 연동", label: "학업 연동" },
+    { id: "커뮤니티", label: "커뮤니티" },
+    { id: "지식/아카이브", label: "지식/아카이브" },
+    { id: "멀티모달", label: "멀티모달" },
+    { id: "실시간 정보", label: "실시간 정보" },
+    { id: "유틸리티", label: "유틸리티" },
+  ];
 
   const filteredTools =
     selectedCategory === "all"
       ? aiInternalTools
-      : aiInternalTools.filter((t) => t.category === selectedCategory);
+      : aiInternalTools.filter((t) => t.categoryLabel === selectedCategory);
 
   return (
     <div className="page-transition-wrap" style={{ paddingTop: "36px" }}>
@@ -127,23 +136,36 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
         </div>
 
         <div className="brand-chapters-container">
-          <article className="brand-chapter-block with-subtle-sep">
+          <article className="brand-chapter-block with-subtle-sep timeline-chapter-block">
             <div className="brand-chapter-meta">
               <span>처리 파이프라인</span>
               <span className="brand-chapter-submeta">6 Stages</span>
             </div>
 
-            <div className="brand-chapter-content">
+            <div className="brand-chapter-content timeline-chapter-content">
               <h3>질문 분석부터 답변 생성까지의 처리 흐름</h3>
-              <div className="service-features-clean">
-                {aiPipelineSteps.map((step) => (
-                  <div key={step.step} className="service-feature-item">
-                    <div className="service-feature-name">
-                      {step.step} · {step.title}
+              
+              <div className="ai-timeline-container">
+                <div className="ai-timeline-track" aria-hidden="true" />
+                <div className="ai-timeline-steps">
+                  {aiPipelineSteps.map((step, idx) => (
+                    <div key={step.step} className="ai-timeline-step">
+                      <div className="ai-timeline-node">
+                        <div className="ai-timeline-dot">
+                          <span className="ai-timeline-dot-inner" />
+                        </div>
+                        {idx < aiPipelineSteps.length - 1 && (
+                          <div className="ai-timeline-line-segment" aria-hidden="true" />
+                        )}
+                      </div>
+                      <div className="ai-timeline-content">
+                        <span className="ai-timeline-step-num">STAGE {step.step}</span>
+                        <h4 className="ai-timeline-step-title">{step.title}</h4>
+                        <p className="ai-timeline-step-desc">{step.desc}</p>
+                      </div>
                     </div>
-                    <p className="service-feature-desc">{step.desc}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </article>
@@ -155,42 +177,18 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
         <div className="brand-section-head">
           <h2>자체 도구 생태계</h2>
           <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-            <button
-              type="button"
-              className={`board-filter-btn ${
-                selectedCategory === "all" ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory("all")}
-            >
-              전체
-            </button>
-            <button
-              type="button"
-              className={`board-filter-btn ${
-                selectedCategory === "academic" ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory("academic")}
-            >
-              학사 · 일과
-            </button>
-            <button
-              type="button"
-              className={`board-filter-btn ${
-                selectedCategory === "community" ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory("community")}
-            >
-              커뮤니티
-            </button>
-            <button
-              type="button"
-              className={`board-filter-btn ${
-                selectedCategory === "multimodal" ? "active" : ""
-              }`}
-              onClick={() => setSelectedCategory("multimodal")}
-            >
-              시각 분석
-            </button>
+            {toolCategories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                className={`board-filter-btn ${
+                  selectedCategory === cat.id ? "active" : ""
+                }`}
+                onClick={() => setSelectedCategory(cat.id)}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -198,53 +196,30 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
           <table className="matrix-table">
             <thead>
               <tr>
-                <th>도구명</th>
-                <th>분류</th>
-                <th>기능 설명</th>
-                <th>트리거 조건</th>
+                <th style={{ width: "22%" }}>도구 식별자</th>
+                <th style={{ width: "16%" }}>도구 분류</th>
+                <th style={{ width: "18%" }}>도구 배지명</th>
+                <th style={{ width: "44%" }}>기능 설명</th>
               </tr>
             </thead>
             <tbody>
               {filteredTools.map((tool) => (
                 <tr key={tool.id}>
                   <td>
-                    <strong>{tool.name}</strong>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "11px",
-                        color: "var(--color-telemetry)",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {tool.id}
-                    </div>
-                  </td>
-                  <td style={{ fontFamily: "var(--font-mono)" }}>
-                    {tool.categoryLabel}
+                    <div className="matrix-col-label">도구 식별자</div>
+                    <span className="tool-id-code">{tool.id}</span>
                   </td>
                   <td>
-                    <div style={{ fontWeight: 600, marginBottom: "2px" }}>
-                      {tool.summary}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "12.5px",
-                        color: "var(--color-graphite)",
-                        lineHeight: 1.55,
-                      }}
-                    >
-                      {tool.description}
-                    </div>
+                    <div className="matrix-col-label">도구 분류</div>
+                    <span className="tool-category-text">{tool.categoryLabel}</span>
                   </td>
-                  <td
-                    style={{
-                      fontSize: "12px",
-                      color: "var(--color-graphite)",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    {tool.trigger}
+                  <td>
+                    <div className="matrix-col-label">도구 배지명</div>
+                    <span className="tool-badge-pill">{tool.badgeName}</span>
+                  </td>
+                  <td>
+                    <div className="matrix-col-label">기능 설명</div>
+                    <div className="tool-desc-text">{tool.description}</div>
                   </td>
                 </tr>
               ))}
