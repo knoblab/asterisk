@@ -8,9 +8,11 @@
 
 * **인터랙티브 쉘 (`index.html`)**: ChatGPT / Gemini 스타일의 좌측 사이드바, 직각 모서리 모노크롬 디자인, `jsdiff` 기반의 **실시간 버전 간 차이점(Diff) 비교 기능** 내장.
 * **최초 제정일**: 공고일자 2026년 11월 1일 / 시행일자 2026년 11월 1일
-* **적용 범위**:
+* **최근 개정일**: 공고일자 2026년 11월 3일 / 시행일자 2026년 11월 10일 (Google 사용자 데이터 정책 보강: 데이터 접근, 사용, 전송, 보호, 보존 및 삭제 명시)
+* **적용 범위 및 규정 준수**:
   * **Life Track (`cnsh.life`)**: 0초 무인증 학교생활 정보 포털 (서버 저장 없는 무인증 포털, 브라우저 LocalStorage에만 설정 보관)
   * **Space Track (`cnsh.space`)**: Knoblab SSO 재학생 기수 인증 커뮤니티, 8대 게시판, KaTeX 수식, 최대 45MB 미디어 스트리밍(HTTP 206), asterisk* AI (Jev 라우터)
+  * **Google Cloud & Workspace API 준수**: [Google API Services User Data Policy](https://developers.google.com/terms/api-services-user-data-policy) 및 Limited Use(제한적 사용) 요건 준수 (Classroom/Calendar 연동 학업 일정 동기화, 원본/집계 데이터 구분 명시, AES-256-GCM 암호화 토큰 보관, AI/ML 학습 금지, 광고/판매 금지, 즉각 연동 해제 및 권한 철회 지원)
 
 ---
 
@@ -18,10 +20,11 @@
 
 ```text
 privacy/
-├── index.html            # 개인정보 처리방침 메인 인터랙티브 쉘 (모노크롬 에디토리얼 테마)
+├── index.html            # 개인정보 처리방침 메인 페이지 (에디토리얼 테마)
 ├── README.md             # 방침 관리 가이드
 └── docs/
-    └── 20261101.html     # 2026년 11월 1일 최초 제정 방침 원문 (HTML)
+    ├── 20261101.html     # 2026년 11월 1일 최초 제정본 원문 (HTML)
+    └── 20261110.html     # 2026년 11월 10일 시행 개정본 원문 (HTML)
 ```
 
 ---

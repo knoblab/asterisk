@@ -280,7 +280,8 @@
         충남과학고등학교 학생 생활을 위한 통합 디지털 생태계 (cnsh.life & cnsh.space)
       </p>
       <div class="meta-bar">
-        <span><strong>공고 및 시행일:</strong> 2026년 11월 1일</span>
+        <span><strong>공고일자:</strong> 2026년 11월 3일</span>
+        <span><strong>시행일자:</strong> 2026년 11월 10일</span>
         <span><strong>준용 법령:</strong> 개인정보 보호법 제30조 & Google API Services User Data Policy</span>
         <span><strong>운영 주체:</strong> asterisk Contributors / Knoblab</span>
       </div>
@@ -369,11 +370,16 @@
           <tr>
             <td>Google Workspace API 연동<br>(Classroom / Calendar 연동 동의 시)</td>
             <td>
-              <ul>
-                <li><strong>계정 식별 정보:</strong> Google 사용자 고유 식별자(Google Account ID), Google 계정 이메일 주소</li>
+              <p style="margin-bottom: 6px;"><strong>[구글 사용자 원본 데이터 (Raw Data)]</strong></p>
+              <ul style="margin-bottom: 12px;">
+                <li><strong>계정 식별 정보:</strong> Google 사용자 고유 식별자(Google Account ID), Google 계정 이메일 주소, 프로필 기본 정보(이름, 프로필 사진 URL)</li>
                 <li><strong>인증 토큰:</strong> Google OAuth 2.0 액세스 토큰(Access Token) 및 리프레시 토큰(Refresh Token, AES-256-GCM 암호화 저장)</li>
-                <li><strong>Classroom 데이터:</strong> 수강 강좌 식별자(Course ID), 강좌명, 과제 식별자(Coursework ID), 과제명, 과제 설명, 마감 일시(Due Date/Time), 제출 상태</li>
-                <li><strong>Calendar 데이터:</strong> 연동된 캘린더 이벤트 식별자(Event ID), 등록된 일정 제목, 시작/종료 일시</li>
+                <li><strong>Classroom 원본 데이터:</strong> 학생이 수강 중인 강좌 식별자(Course ID), 강좌명, 과제 식별자(Coursework ID), 과제명, 과제 설명 및 링크, 마감 일시(Due Date/Time), 학생 본인의 제출 상태(제출완료/미제출 등)</li>
+                <li><strong>Calendar 원본 데이터:</strong> 연동된 캘린더 이벤트 식별자(Event ID), 등록된 학사/과제 일정 제목, 시작/종료 일시</li>
+              </ul>
+              <p style="margin-bottom: 6px;"><strong>[집계 및 익명화 데이터 (Aggregated & Anonymized Data)]</strong></p>
+              <ul>
+                <li>개인 식별자(이름, 이메일, 계정 ID)가 완전히 배제된 학년·학급별 과제 수 통계, 주간 마감 일정 빈도 분포, API 호출 성공/실패율 및 시스템 부하 모니터링 통계 (개인 식별 또는 개별 추적 불가)</li>
               </ul>
             </td>
           </tr>
@@ -523,59 +529,135 @@
         </p>
       </div>
 
-      <h3>1. 요청하는 Google OAuth 2.0 권한(Scope) 및 사용 목적</h3>
+      <!-- 1. 데이터 접근 (Data Access) -->
+      <h3>1. 데이터 접근 (Data Access): 접근하는 Google 사용자 데이터 항목</h3>
+      <p>
+        앱(asterisk*)은 이용자가 명시적으로 동의한 Google OAuth 2.0 권한(Scope) 범위 내에서 학업 지원 및 서비스 운영에 필수적인 최소한의 데이터에만 접근하며, 접근하는 원본 데이터 및 집계/익명화된 데이터의 항목은 다음과 같습니다.
+      </p>
       <table>
         <thead>
           <tr>
-            <th style="width: 38%;">OAuth Scope</th>
-            <th style="width: 25%;">접근 데이터</th>
-            <th>상세 사용 목적</th>
+            <th style="width: 25%;">데이터 구분</th>
+            <th style="width: 32%;">요청 OAuth Scope</th>
+            <th>접근 데이터 상세 항목</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><code>https://www.googleapis.com/auth/classroom.courses.readonly</code></td>
-            <td>학생이 등록된 강좌 목록 및 강좌 기본 정보</td>
-            <td>충남과학고 수강 과목 목록을 조회하여 시간표 및 과제 현황에 분류·연동하기 위한 목적</td>
+            <td><strong>구글 사용자 원본 데이터<br>(Raw Data)</strong></td>
+            <td>
+              <code>classroom.courses.readonly</code><br>
+              <code>classroom.coursework.me.readonly</code><br>
+              <code>calendar.events</code><br>
+              <code>openid, email, profile</code>
+            </td>
+            <td>
+              <ul>
+                <li><strong>계정 식별 정보:</strong> Google 사용자 고유 식별자(ID), 계정 이메일, 기본 프로필(이름, 프로필 사진 URL)</li>
+                <li><strong>인증 토큰:</strong> OAuth 2.0 Access Token 및 Refresh Token</li>
+                <li><strong>Classroom 데이터:</strong> 수강 강좌 식별자(Course ID), 강좌명, 과제 식별자(Coursework ID), 과제명, 과제 설명/링크, 마감 일시(Due Date/Time), 제출 상태(제출완료/미제출 등)</li>
+                <li><strong>Calendar 데이터:</strong> 연동된 캘린더 이벤트 식별자(Event ID), 등록된 일정 제목, 시작 및 종료 일시</li>
+              </ul>
+            </td>
           </tr>
           <tr>
-            <td><code>https://www.googleapis.com/auth/classroom.coursework.me.readonly</code></td>
-            <td>학생 본인의 과제 제목, 마감 기한, 과제 설명, 제출 상태</td>
-            <td>수행평가, 탐구보고서 등 과제 마감일을 조회하여 시간표/대시보드에 표시하고 마감 알림을 계산하기 위한 목적</td>
-          </tr>
-          <tr>
-            <td><code>https://www.googleapis.com/auth/calendar.events</code></td>
-            <td>개인 Google 캘린더 이벤트 생성, 조회, 수정, 삭제</td>
-            <td>Classroom 과제 마감 리마인더 및 교내 학사 일정을 학생 본인의 Google 캘린더에 원클릭 자동 등록하고 동기화하기 위한 목적</td>
-          </tr>
-          <tr>
-            <td><code>openid</code>, <code>email</code>, <code>profile</code></td>
-            <td>기본 프로필(이름, 이메일 주소, 식별자)</td>
-            <td>학생 본인 인증 및 충남과학고 학교 계정(예: <code>@g.cnees.kr</code>) 일치 여부 검증</td>
+            <td><strong>집계 및 익명화 데이터<br>(Aggregated & Anonymized)</strong></td>
+            <td>- (시스템 연동 과정 생성)</td>
+            <td>
+              <ul>
+                <li><strong>익명화 학업 통계:</strong> 개인 식별자(이름, 이메일, 계정 ID)가 영구 제거된 학년·학급별 과제 수 통계, 주간 마감 일정 빈도 분포</li>
+                <li><strong>시스템 운영 통계:</strong> Google API 호출 성공/실패율, 엔드포인트 응답 지연 시간, 서버 부하 상태 지표 (개별 사용자 특정 불가)</li>
+              </ul>
+            </td>
           </tr>
         </tbody>
       </table>
 
-      <h3>2. Google 사용자 데이터 사용 제한 및 금지 사항</h3>
-      <ol>
-        <li><strong>사용자 대면 기능에 한정된 사용 (User-Facing Features Only):</strong> Google Workspace API를 통해 취득한 모든 사용자 데이터는 학생이 애플리케이션 화면에서 직접 요청한 학업 관리 기능(과제 조회, 마감 리마인더 캘린더 등록, 일정 정렬 등)을 제공하고 개선하는 용도로만 엄격하게 사용됩니다.</li>
-        <li><strong>광고 목적 사용 금지 (No Advertising):</strong> 운영자는 Google Workspace API로부터 획득한 사용자 데이터를 타겟팅 광고, 개인 맞춤형 광고, 리마케팅 또는 기타 상업적 광고 목적으로 일체 사용하지 않으며 제3자 광고 플랫폼에 제공하지 않습니다.</li>
-        <li><strong>데이터 판매 및 브로커 전송 금지 (No Data Selling):</strong> Google 사용자 데이터를 데이터 브로커, 정보 재판매업체 또는 기타 상업적 제3자에게 판매, 임대, 라이선스 부여 또는 양도하지 않습니다.</li>
-        <li><strong>인공지능(AI) 및 머신러닝(ML) 모델 학습 절대 금지 (No AI/ML Model Training):</strong> 운영자는 Google Workspace API(Classroom, Calendar 등)를 통해 획득한 어떠한 원시 데이터(Raw data) 또는 가공·파생 데이터(Derived data)도 비개인화된 범용 인공지능(AI), 거대언어모델(LLM), 또는 머신러닝(ML) 모델의 개발, 개선, 훈련(Training)에 일체 사용하지 않습니다.</li>
-        <li><strong>인적 열람(Human Access) 엄격 제한:</strong> 운영진 및 직원을 포함한 인간은 이용자의 Google 사용자 데이터를 열람하지 않습니다. 다만 이용자의 명시적 사전 동의가 있는 경우, 시스템 보안 사고 조사 및 방어를 위해 불가피한 경우, 또는 법령에 따른 적법한 영장에 응하기 위한 경우에 한해 엄격한 보안 통제 하에서만 예외적으로 열람이 허용됩니다.</li>
-      </ol>
-
-      <h3>3. 저장 보안 및 데이터 보관 기간</h3>
+      <!-- 2. 데이터 사용 (Data Use) -->
+      <h3>2. 데이터 사용 (Data Use): 구글 사용자 데이터의 사용 방식 및 목적</h3>
+      <p>
+        운영자는 취득한 구글 사용자 데이터를 이용자가 요청한 학업 관리 편의 기능 제공 및 서비스 품질 향상 목적으로만 사용하며, 원본 데이터와 집계/익명화된 데이터의 사용 방식은 다음과 같습니다.
+      </p>
       <ul>
-        <li><strong>AES-256-GCM 암호화 보관:</strong> Google OAuth 2.0 리프레시 토큰(Refresh Token)은 서버 데이터베이스 저장 시 군사 등급의 대칭키 암호화 알고리즘인 <strong>AES-256-GCM</strong> 방식으로 안전하게 암호화되어 보관되며, 암호화 키는 서버 코드 및 데이터베이스와 물리적으로 분리되어 안전하게 관리됩니다.</li>
-        <li><strong>보관 기간:</strong> Google Workspace API 연동 데이터는 이용자가 서비스 연동 상태를 유지하는 기간 동안에만 보관되며, 연동 해제 또는 계정 탈퇴 시 즉시 영구 삭제됩니다.</li>
+        <li><strong>원본 데이터(Raw Data)의 사용 방식:</strong>
+          <ul>
+            <li><strong>학생 본인 맞춤형 학업 대시보드 제공:</strong> 학생이 수강 중인 구글 클래스룸 과제 마감 일정을 실시간으로 파악하여 시간표 및 개인 대시보드에 시각화하고 마감 임박 알림 계산</li>
+            <li><strong>Google 캘린더 자동 동기화:</strong> 클래스룸 과제 및 충남과학고 학사 일정을 학생 본인의 Google 캘린더에 원클릭으로 직접 등록, 수정, 삭제하여 개인 일정 관리 편의 제공</li>
+            <li><strong>충남과학고 소속 확인:</strong> 충남과학고 공식 학교 계정(예: <code>@g.cnees.kr</code>) 일치 여부를 검증하여 비인가 외부인의 접근 제한</li>
+          </ul>
+        </li>
+        <li><strong>집계 및 익명화 데이터(Aggregated & Anonymized Data)의 사용 방식:</strong>
+          <ul>
+            <li>개인 식별이 불가능한 집계 데이터는 학교 전체 또는 학년별 과제 집중 기간 파악 등 학사 지원 기능 최적화, 캘린더 동기화 주기 스케줄링 개선, 서버 트래픽 분산 및 시스템 안정성 유지 목적으로만 활용됩니다.</li>
+          </ul>
+        </li>
+        <li><strong>엄격한 사용 제한 및 금지 원칙:</strong>
+          <ol>
+            <li><strong>사용자 대면 기능 한정 (User-Facing Only):</strong> 이용자가 직접 체감할 수 있는 학업 관리 핵심 기능에만 한정하여 사용합니다.</li>
+            <li><strong>광고 목적 사용 금지 (No Advertising):</strong> 타겟팅 광고, 개인 맞춤형 프로파일링, 리마케팅 등 상업 광고에 일체 사용하지 않습니다.</li>
+            <li><strong>AI/ML 모델 학습 절대 금지 (No AI/ML Training):</strong> 구글 사용자 원본 데이터 및 가공 데이터는 어떠한 경우에도 비개인화된 거대언어모델(LLM), 인공지능(AI), 또는 머신러닝(ML) 알고리즘의 개발이나 학습(Training)에 사용되지 않습니다.</li>
+          </ol>
+        </li>
       </ul>
 
-      <h3>4. 이용자의 연동 해제 및 데이터 삭제(권한 철회) 방법</h3>
-      <p>이용자는 언제든지 다음과 같은 방법으로 Google Workspace API 연동을 해제하고 서버에 저장된 관련 데이터의 즉각적인 영구 삭제를 진행할 수 있습니다.</p>
+      <!-- 3. 데이터 전송 및 공유 (Data Transfer & Sharing) -->
+      <h3>3. 데이터 전송 및 공유 (Data Transfer & Sharing): 당사자 및 공유 범위</h3>
+      <p>
+        운영자는 구글 사용자 데이터를 외부에 무단 공유하거나 판매하지 않습니다. 서비스 제공을 위해 기술적으로 필수적인 인프라 통신 파트너 외에는 어떠한 제3자와도 데이터를 공유하지 않습니다.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 25%;">공유/전송 대상 당사자</th>
+            <th style="width: 32%;">전송되는 Google 사용자 데이터</th>
+            <th>전송 목적 및 처리 방식</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google LLC</strong><br><small>(Google Cloud & APIs)</small></td>
+            <td>Google 계정 토큰, Classroom 강좌/과제 쿼리, Calendar 이벤트 생성/수정 데이터 (원본 데이터)</td>
+            <td>Google Workspace API 호출 및 학생 일정 실시간 동기화 (HTTPS TLS 1.3 암호화 전송)</td>
+          </tr>
+          <tr>
+            <td><strong>Cloudflare, Inc.</strong><br><small>(글로벌 에지 프록시/CDN)</small></td>
+            <td>API 요청 헤더, 암호화된 전송 패킷 (원본/집계 데이터)</td>
+            <td>DDoS 방어, SSL/TLS 종단, 봇 차단 및 전송 암호화 통신 중계</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="box-notice">
+        <strong>데이터 제3자 판매 및 공유 일체 금지 (No Data Selling):</strong> 운영자는 Google 사용자 데이터(원본 데이터 및 집계/익명화된 데이터 포함)를 데이터 브로커, 정보 재판매업체, 광고 네트워크 또는 상업적 제3자에게 판매, 임대, 양도하거나 마케팅 목적으로 절대 공유하지 않습니다.
+      </div>
+
+      <!-- 4. 데이터 보호 (Data Protection) -->
+      <h3>4. 데이터 보호 (Data Protection): 안전한 기술적·관리적 보호 조치</h3>
+      <p>운영자는 구글 사용자 데이터가 도난, 유출, 변조, 훼손되지 않도록 다음과 같은 다계층 보안 통제를 적용하고 있습니다.</p>
       <ul>
-        <li><strong>방법 1. Asterisk 서비스 내 직접 해제:</strong> 커뮤니티(cnsh.space) 또는 포털(cnsh.life)의 [환경설정 / 프로필] → [Google Workspace 연동] 메뉴에서 <code>연동 해제</code> 버튼을 클릭하면 서버에 저장된 암호화 토큰 및 동기화 캐시 데이터가 즉시 영구 파기됩니다.</li>
-        <li><strong>방법 2. Google 계정 보안 설정에서 권한 철회:</strong> 이용자는 Google 계정의 <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener">Google 계정과 연결된 타사 앱 및 서비스 관리</a>(<code>https://myaccount.google.com/connections</code> 또는 <code>https://myaccount.google.com/permissions</code>) 페이지에서 <strong>Asterisk</strong>의 접근 권한을 언제든지 즉시 삭제(철회)할 수 있습니다. 권한 철회 즉시 Google API를 통한 추가적인 데이터 수집 및 동기화가 차단됩니다.</li>
+        <li><strong>저장 시 최고 등급 암호화 (AES-256-GCM):</strong> Google OAuth 2.0 리프레시 토큰(Refresh Token)은 서버 데이터베이스 저장 시 군사 등급의 대칭키 암호화 알고리즘인 <strong>AES-256-GCM</strong> 방식으로 안전하게 암호화되어 보관되며, 암호화 키는 서버 소스코드 및 데이터베이스와 물리적으로 엄격히 분리 보관됩니다.</li>
+        <li><strong>전송 구간 전체 암호화 (TLS 1.3 / HTTPS):</strong> 클라이언트-서버 간 및 서버-Google API 간의 모든 데이터 전송 구간은 <strong>TLS 1.3 / HTTPS</strong> 최신 프로토콜로 강력하게 암호화되어 도청 및 중간자 공격을 차단합니다.</li>
+        <li><strong>인적 열람 엄격 통제 (Human Access Prohibition):</strong> 운영진 및 직원을 포함한 인간은 이용자의 구글 사용자 원본 데이터를 열람할 수 없습니다. (단, 이용자의 명시적인 사전 요청이 있거나 법원 영장 등 법적 의무가 발생하는 극히 예외적인 경우에 한해 엄격한 관리자 다중인증(MFA) 및 보안 감사 로그 기록 하에서만 제한적으로 접근 허용)</li>
+        <li><strong>시스템 접근 제어 및 MFA:</strong> 클라우드 백엔드 및 인프라 관리자 계정에는 FIDO2 / TOTP 기반 <strong>다중 요소 인증(MFA)</strong>이 의무화되어 있으며 최소 권한 원칙(Principle of Least Privilege)을 준수합니다.</li>
+      </ul>
+
+      <!-- 5. 데이터 보존 및 삭제 (Retention & Deletion) -->
+      <h3>5. 데이터 보존 및 삭제 (Retention & Deletion): 정책 및 구체적 삭제 절차</h3>
+      <p>운영자는 구글 사용자 데이터를 처리 목적 달성에 필요한 최소한의 기간 동안만 보유하며, 이용자가 삭제를 요청하는 경우 지체 없이 영구 파기합니다.</p>
+      <ul>
+        <li><strong>보존 기간:</strong> 이용자가 서비스 내에서 Google Workspace 연동을 유지하는 기간 동안에만 보관됩니다. 연동 해제, 계정 탈퇴, 또는 권한 철회 시 보관 중인 모든 토큰 및 동기화 캐시 데이터는 즉시 영구 파기됩니다.</li>
+        <li><strong>보존 및 삭제 정책:</strong>
+          <ul>
+            <li><strong>정기 검증 및 비활성 토큰 파기:</strong> 연동 후 6개월 이상 동기화 요청이 발생하지 않는 유휴 계정의 캐시 데이터는 자동 만료 처리됩니다.</li>
+            <li><strong>영구 삭제 방식:</strong> 전자적 데이터베이스 레코드는 복구가 불가능하도록 암호화 키 파기 및 덮어쓰기 방식으로 완전 삭제 처리됩니다.</li>
+          </ul>
+        </li>
+        <li><strong>이용자의 직접 삭제 및 권한 철회 절차:</strong>
+          <ol>
+            <li><strong>서비스 내 즉시 연동 해제 (Self-Service Deletion):</strong> 커뮤니티(cnsh.space) 또는 포털(cnsh.life)의 [환경설정 / 프로필] → [Google Workspace 연동]에서 <code>연동 해제</code> 버튼 클릭 시 즉시 데이터베이스의 암호화 토큰과 관련 동기화 캐시 데이터가 영구 삭제됩니다.</li>
+            <li><strong>Google 계정 보안 센터에서 권한 철회:</strong> 이용자는 언제든지 Google 계정의 <a href="https://myaccount.google.com/connections" target="_blank" rel="noopener">연결된 타사 앱 및 서비스 관리</a>(<code>https://myaccount.google.com/connections</code>) 페이지에 접속하여 <strong>Asterisk</strong>의 접근 권한을 즉시 취소(철회)할 수 있습니다. 권한 철회 시 Google API를 통한 접근이 즉각 원천 차단됩니다.</li>
+            <li><strong>보호책임자 삭제 요청:</strong> 개인정보 보호책임자 이메일(<code>contact@knoblab.xyz</code>)로 Google 계정 데이터 삭제를 서면 요청하시면 본인 확인 즉시 관련 데이터를 수동 영구 파기하고 결과를 통보해 드립니다.</li>
+          </ol>
+        </li>
       </ul>
     </section>
 
@@ -663,7 +745,7 @@
     <section id="art14">
       <h2>제14조 (개인정보 처리방침의 변경)</h2>
       <p>이 개인정보 처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용의 추가, 삭제 및 정정이 있는 경우에는 변경사항의 시행 7일 전부터 공지사항을 통하여 고지할 것입니다. 다만, 개인정보의 수집 및 활용, 제3자 제공 등과 같이 이용자 권리의 중요한 변경이 있을 경우에는 최소 30일 전에 고지합니다.</p>
-      <p><strong>공고일자:</strong> 2026년 11월 1일<br><strong>시행일자:</strong> 2026년 11월 1일</p>
+      <p><strong>공고일자:</strong> 2026년 11월 3일<br><strong>시행일자:</strong> 2026년 11월 10일</p>
     </section>
 
     <footer>
