@@ -50,7 +50,7 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
             <div className="brand-chapter-content">
               <h3>
                 {renderWithCenteredStar(
-                  "커뮤니티와 학교 생활 데이터를 연동하는 맞춤형 인공지능, asterisk* AI"
+                  "학교 데이터와 커뮤니티를 연결해 답하는 어시스턴트, asterisk* AI"
                 )}
               </h3>
               <div className="brand-prose-wrap">
@@ -58,10 +58,10 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                   <strong>
                     asterisk<span className="ast-star">*</span> AI
                   </strong>
-                  는 재학생 커뮤니티(cnsh.space)에서 동작하는 어시스턴트입니다.
-                  질문이 들어오면 경량 의사결정 엔진 <strong>Jev</strong>가
-                  질문 맥락에 맞는 언어 모델을 분기하고, 급식·시간표·과제 등
-                  학내 자체 도구를 실시간 호출하여 답변합니다.
+                  는 재학생 커뮤니티(cnsh.space) 안에서 동작하는 어시스턴트입니다.
+                  질문이 들어오면 경량 라우터 <strong>Jev</strong>가
+                  질문 내용에 맞는 모델을 고르고, 급식·시간표·과제 등
+                  필요한 내부 도구를 호출해 답합니다.
                 </p>
               </div>
 
@@ -71,8 +71,8 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                     댓글 @asterisk 멘션
                   </div>
                   <p className="service-feature-desc">
-                    게시글 본문이나 대댓글에서 @asterisk를 호출하면 해당 글의 본문,
-                    댓글 흐름, 첨부 이미지를 참조해 인라인 대댓글로 답변합니다.
+                    게시글 본문이나 대댓글에서 @asterisk를 호출하면 해당 글 본문,
+                    댓글 맥락, 첨부 이미지를 읽고 대댓글로 답합니다.
                   </p>
                 </div>
                 <div className="service-feature-item">
@@ -172,10 +172,10 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
         </div>
       </section>
 
-      {/* 3. 자체 도구 생태계 */}
+      {/* 3. 연동 도구 목록 */}
       <section className="section-end-double" style={{ marginBottom: 0 }}>
         <div className="brand-section-head">
-          <h2>자체 도구 생태계</h2>
+          <h2>연동 도구 목록</h2>
           <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
             {toolCategories.map((cat) => (
               <button

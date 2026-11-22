@@ -247,7 +247,7 @@ export const App: React.FC = () => {
       overview: "asterisk* — The Answer to Campus Life, and Everything.",
       ai: "asterisk* AI — The Answer to Campus Life, and Everything.",
       design: "디자인 시스템 — asterisk*",
-      license: "라이선스 & 거버넌스 — asterisk*",
+      license: "라이선스 — asterisk*",
       credits: "크레딧 — asterisk*",
       terms: "서비스 이용약관 — asterisk*",
       privacy: "개인정보 처리방침 — asterisk*",
@@ -575,7 +575,7 @@ export const App: React.FC = () => {
                 <div className="brand-chapters-container">
                   <article className="brand-chapter-block">
                     <div className="brand-chapter-meta">
-                      <span>충남과학고 디지털 생태계</span>
+                      <span>충남과학고 웹 서비스</span>
                       <span className="brand-chapter-submeta">
                         cnsh.life · cnsh.space
                       </span>
@@ -584,7 +584,7 @@ export const App: React.FC = () => {
                     <div className="brand-chapter-content">
                       <h3>
                         {renderWithCenteredStar(
-                          "학교생활 포털과 재학생 커뮤니티를 아우르는 투트랙 프로젝트, asterisk*"
+                          "학교생활 포털과 재학생 커뮤니티를 함께 운영하는 프로젝트, asterisk*"
                         )}
                       </h3>
                       <div className="brand-prose-wrap">
@@ -592,15 +592,14 @@ export const App: React.FC = () => {
                           <strong>
                             asterisk<span className="ast-star">*</span>
                           </strong>
-                          는 충남과학고등학교(CNSH) 학생들의 24시간 학교생활을 지원하기 위해
-                          설계된 디지털 생태계 브랜드입니다.
+                          는 충남과학고등학교(CNSH) 학생들을 위해 만든 웹 서비스 묶음입니다.
                         </p>
                         <p>
-                          수업 직전 10초 만에 시간표·급식·시정표를 확인하는 초경량 일상 포털{" "}
-                          <strong>cnsh.life (Life Track)</strong>와, 재학생 기수 인증을 거쳐 깊이 있는 학술
-                          토론과 지능형 AI 상담을 나누는 고신뢰 커뮤니티{" "}
-                          <strong>cnsh.space (Space Track)</strong>의 <strong>투트랙(Two-Track)</strong> 구조로
-                          운영되며, 단일한 미니멀 모노크롬 디자인 시스템을 공유합니다.
+                          로그인 없이 시간표·급식·시정표를 바로 확인하는 학교생활 포털{" "}
+                          <strong>cnsh.life (Life Track)</strong>와, 재학생 인증을 거쳐 질문과 자료를
+                          나누고 AI 기능을 쓰는 커뮤니티{" "}
+                          <strong>cnsh.space (Space Track)</strong>로 나뉘어 운영됩니다. 두 서비스는
+                          같은 무채색 디자인 시스템을 공유합니다.
                         </p>
                       </div>
                     </div>
@@ -617,16 +616,16 @@ export const App: React.FC = () => {
                 <div className="brand-chapters-container">
                   <article className="brand-chapter-block">
                     <div className="brand-chapter-meta">
-                      <span>투트랙 전략 및 설계 철학</span>
+                      <span>서비스 분리 구조</span>
                       <span className="brand-chapter-submeta">
-                        Zero-Barrier vs High-Trust
+                        Life Track · Space Track
                       </span>
                     </div>
 
                     <div className="brand-chapter-content">
                       <h3>
                         {renderWithCenteredStar(
-                          "0초 진입의 일상 나침반(Life)과 신뢰 기반의 지능형 광장(Space)"
+                          "바로 여는 학교생활 포털(Life)과 재학생 전용 커뮤니티(Space)"
                         )}
                       </h3>
                       <div className="brand-prose-wrap">
@@ -648,13 +647,13 @@ export const App: React.FC = () => {
                             letterSpacing: "0.02em",
                           }}
                         >
-                          // LIFE TRACK vs SPACE TRACK SPECIFICATION MATRIX
+                          서비스 비교
                         </div>
                         <div className="matrix-table-wrap">
                           <table className="matrix-table">
                             <thead>
                               <tr>
-                                <th style={{ width: "22%" }}>구분 (Dimension)</th>
+                                <th style={{ width: "22%" }}>구분</th>
                                 <th style={{ width: "39%" }}>
                                   cnsh.life (Life Track)
                                 </th>
@@ -692,7 +691,7 @@ export const App: React.FC = () => {
                             letterSpacing: "0.02em",
                           }}
                         >
-                          // ECOSYSTEM SYNERGY
+                          공통 기반 및 연계
                         </div>
                         <div className="service-features-clean">
                           {twoTrackStrategyData.synergies.map((syn, sIdx) => (

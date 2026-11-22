@@ -121,32 +121,32 @@ export const servicesData: ServiceDetail[] = [
     license: "GNU AGPL-3.0",
     tagline: "학교생활 유틸리티 · 실시간 시정 · NEIS 연동",
     description:
-      "충남과학고 특유의 일과(수·금·일 특수 시정표)에 최적화된 초경량 포털입니다. 별도 로그인 없이 접속 0초 만에 현재 교시 잔여 시간, 나이스 시간표, 조·중·석식 식단 및 알레르기, 방과후 수업, 학교 공지를 한눈에 파악할 수 있는 일상 유틸리티 나침반입니다.",
+      "충남과학고 일과(수·금·일 특수 시정 포함)에 맞춘 학교생활 포털입니다. 로그인 없이 접속하자마자 현재 교시 남은 시간, NEIS 시간표, 조·중·석식 식단과 알레르기 정보, 방과후 편성, 학교 공지를 확인할 수 있습니다.",
     modules: [
       {
-        name: "실시간 시정 & 천체 렌더링",
+        name: "실시간 시정 & 천체 배경",
         description:
-          "수·금·일 특수 시정표 실시간 카운트다운(NOW) 및 충남과학고 좌표 기반 일출·일몰·달 위상·별자리 시각화",
+          "수·금·일 특수 시정표 카운트다운(NOW)과 충남과학고 좌표 기준 일출·일몰·달 위상·별자리 배경 표시",
       },
       {
         name: "NEIS 시간표 & 수업 교체",
         description:
-          "학년/반별 나이스 연동 시간표 조회 및 주간 시간표 변경 자동 동기화",
+          "학년·반별 NEIS 시간표 조회 및 주간 변경 사항 반영",
       },
       {
-        name: "급식 식단 & 알레르기 분석",
+        name: "급식 식단 & 알레르기",
         description:
-          "시간대 기반 조·중·석식 자동 포커스 및 1~18번 알레르기 유발 항원 식별",
+          "시간대에 맞춘 조·중·석식 자동 표시 및 1~18번 알레르기 유발 식품 안내",
       },
       {
         name: "방과후 편성 & 학교 공지",
         description:
-          "요일별/반별 방과후 수업 편성표 및 공식 홈페이지 공지·가정통신문 크롤링 프록시",
+          "요일·반별 방과후 수업 편성표와 학교 홈페이지 공지·가정통신문 연동",
       },
       {
         name: "면학실 자습 타이머 & PWA",
         description:
-          "백색소음/빗소리 재생 뽀모도로 자습 타이머 및 모바일/태블릿 홈 화면 설치 지원",
+          "백색소음·빗소리 뽀모도로 타이머 및 모바일·태블릿 홈 화면 설치 지원",
       },
     ],
   },
@@ -160,29 +160,29 @@ export const servicesData: ServiceDetail[] = [
     tier: "재학생 커뮤니티",
     trackType: "Space Track",
     license: "MIT / Proprietary",
-    tagline: "재학생 인증 커뮤니티 · 고성능 미디어 · asterisk* AI",
+    tagline: "재학생 인증 커뮤니티 · 수식·미디어 · asterisk* AI",
     description:
-      "Knoblab SSO 통합 계정 기반으로 외부인을 차단하고 기수 배지를 부여받는 충남과학고 전용 고신뢰 광장입니다. KaTeX 수식과 45MB 무인코딩 비디오 스트리밍을 지원하며, 7종의 학내 도구를 자유자재로 구동하는 asterisk* AI(Jev Router)가 탑재되어 있습니다.",
+      "Knoblab SSO로 재학생 인증을 거쳐 기수 배지를 받고 활동하는 충남과학고 전용 커뮤니티입니다. KaTeX 수식과 최대 45MB 동영상 스트리밍을 지원하며, 급식·시간표·과제 등 10종의 내부 도구를 연동한 asterisk* AI를 사용할 수 있습니다.",
     modules: [
       {
-        name: "재학생 기수 인증 & 8대 게시판",
+        name: "재학생 인증 & 게시판",
         description:
-          "Knoblab SSO 연동(31·32·33기 등 배지 부여), 공지·자유·질문·정보·자료 등 목적별 게시판 및 인기글 랭킹",
+          "Knoblab SSO 연동(기수 배지 부여), 공지·자유·질문·정보·자료 등 목적별 게시판과 인기글",
       },
       {
-        name: "과학고 특화 KaTeX 수식 & 마크다운",
+        name: "KaTeX 수식 & 마크다운",
         description:
-          "물리·수학 LaTeX 인라인/디스플레이 수식, GFM 표, 코드 블록 완전 렌더링",
+          "LaTeX 인라인·디스플레이 수식, GFM 표, 코드 블록 렌더링 지원",
       },
       {
         name: "45MB 비디오 스트리밍 & 보안",
         description:
-          "클라이언트 썸네일 자동 추출, 무인코딩 Nginx Range Requests(HTTP 206) 스트리밍 및 파일 매직 넘버 검증",
+          "클라이언트 썸네일 추출, Nginx Range Requests(HTTP 206) 기반 무인코딩 스트리밍 및 파일 매직 넘버 검증",
       },
       {
-        name: "asterisk* AI & 7종 도구 연계",
+        name: "asterisk* AI & 내부 도구 연동",
         description:
-          "Jev 엔진 기반 초고속 LLM 라우팅(Flash/Claude/GPT) 및 급식·시간표·게시글·Vision OCR 7종 도구 온디맨드 주입",
+          "Jev 라우터 기반 모델 선택(Claude·Gemini·GPT·Gemma) 및 급식·시간표·게시글·이미지 분석 등 10종 도구 연동",
       },
     ],
   },
@@ -208,66 +208,66 @@ export interface TwoTrackStrategy {
 }
 
 export const twoTrackStrategyData: TwoTrackStrategy = {
-  headline: "Life & Space: 왜 투트랙(Two-Track) 전략인가",
+  headline: "cnsh.life와 cnsh.space를 나눈 이유",
   summary:
-    "학교 생활의 즉각적인 유틸리티 요구와 안전하고 깊이 있는 학내 커뮤니티는 요구되는 사용자 맥락과 기술 아키텍처가 근본적으로 다릅니다. asterisk*는 이를 억지로 하나의 앱에 우겨넣는 대신, 성격에 맞는 두 개의 전문 트랙으로 나누어 각각의 완성도를 극대화했습니다.",
+    "시간표나 급식을 잠깐 확인하는 용도와 재학생끼리 글을 쓰고 자료를 나누는 커뮤니티는 필요한 로그인 방식과 구조가 다릅니다. asterisk*는 두 기능을 한 앱에 합치지 않고 목적에 맞게 두 서비스로 나눴습니다.",
   philosophy: [
-    "쉬는 시간 10초, 이동 중, 혹은 수업 종이 치기 직전 학생이 확인해야 하는 일과 정보는 단 0.1초의 지체나 로그인 장벽 없이 즉시 열려야 합니다 (Life Track).",
-    "반면 질문 답변, 과제 자료 공유, 기수 간 교류는 외부인이 침입할 수 없는 폐쇄적 신뢰와 철저한 학생 인증, 그리고 풍부한 수식·미디어 엔진을 필요로 합니다 (Space Track).",
-    "두 트랙은 분리되어 있지만, 공통의 모노크롬 디자인 시스템과 asterisk* AI의 데이터 연계 엔진을 통해 하나의 통합된 학내 생태계로 완성됩니다.",
+    "쉬는 시간이나 이동 중에 급식·시간표를 확인할 때는 로그인 절차 없이 바로 열려야 합니다 (Life Track).",
+    "질문 답변, 자료 공유, 기수 간 소통은 외부인 접근을 막는 재학생 인증과 수식·미디어 기능이 필요합니다 (Space Track).",
+    "서비스는 나뉘어 있지만 같은 무채색 UI를 쓰고, asterisk* AI가 포털 데이터를 불러오는 방식으로 이어져 있습니다.",
   ],
   matrixRows: [
     {
-      dimension: "서비스 명칭 & 도메인",
+      dimension: "서비스 및 도메인",
       lifeTrack: "cnsh.life (학교생활 포털)",
       spaceTrack: "cnsh.space (재학생 커뮤니티)",
     },
     {
-      dimension: "핵심 미션 (Core Mission)",
-      lifeTrack: "0초 진입의 일상 시정표 및 학사 정보 안내 나침반",
-      spaceTrack: "고신뢰 학내 토론, 학술·수식 교류 및 지능형 AI 광장",
+      dimension: "주요 역할",
+      lifeTrack: "로그인 없이 확인하는 시정표·시간표·급식·공지",
+      spaceTrack: "재학생 게시판, 수식·자료 공유, AI 질의응답",
     },
     {
-      dimension: "접근성 및 인증 (Access)",
-      lifeTrack: "무인증 0초 즉시 접속 (Zero-Barrier, PWA 오프라인 지원)",
-      spaceTrack: "Knoblab SSO 재학생 기수 인증 (Verified Members Only)",
+      dimension: "접근 및 인증",
+      lifeTrack: "별도 로그인 없음 (PWA 오프라인 지원)",
+      spaceTrack: "Knoblab SSO 재학생 기수 인증",
     },
     {
-      dimension: "기술 아키텍처 (Architecture)",
-      lifeTrack: "Serverless Client-Side SPA (NEIS/공공 API 직접 통신)",
-      spaceTrack: "Fullstack + Nginx 45MB 비디오 스트리밍 + Jev AI Gateway",
+      dimension: "기술 구성",
+      lifeTrack: "클라이언트 중심 SPA (NEIS·공공 API 연동)",
+      spaceTrack: "풀스택 웹 + Nginx 동영상 스트리밍 + Jev AI 라우터",
     },
     {
-      dimension: "특화 기능군 (Key Features)",
-      lifeTrack: "수·금·일 특수 시정표 카운트다운, 급식, 천체 배경, 자습 타이머",
-      spaceTrack: "KaTeX 수식, 동영상/이미지 업로드, 8대 게시판, @asterisk AI",
+      dimension: "주요 기능",
+      lifeTrack: "수·금·일 특수 시정 카운트다운, 급식, 하늘 배경, 자습 타이머",
+      spaceTrack: "KaTeX 수식, 동영상·이미지 업로드, 목적별 게시판, @asterisk AI",
     },
     {
-      dimension: "인공지능 연계 (AI Integration)",
-      lifeTrack: "정규화된 학사·급식·시정 데이터의 원천 소스 제공",
-      spaceTrack: "Jev 엔진이 7종 내부 도구로 포털 데이터를 호출해 인라인 답변",
+      dimension: "AI 연동",
+      lifeTrack: "급식·시간표·시정표 데이터 제공",
+      spaceTrack: "Jev 라우터가 10종 내부 도구로 포털·커뮤니티 데이터를 불러와 답변",
     },
     {
-      dimension: "라이선스 정책 (License)",
-      lifeTrack: "GNU AGPL-3.0 (투명한 공공성 지향 오픈소스)",
-      spaceTrack: "MIT (Frontend) / Proprietary (개인정보·보안 백엔드)",
+      dimension: "라이선스",
+      lifeTrack: "GNU AGPL-3.0",
+      spaceTrack: "MIT (프론트엔드) / Proprietary (백엔드)",
     },
   ],
   synergies: [
     {
-      title: "일관된 모노크롬 디자인 시스템",
+      title: "공통 모노크롬 디자인",
       description:
-        "Paper(#F7F6F2)와 Carbon(#1C1C1E), 1px 실선 테두리, Asta Sans와 Pretendard 서체를 양쪽 서비스에 공통 적용하여 도메인을 넘나들어도 동일한 브랜드 경험을 누립니다.",
+        "Paper(#F7F6F2)와 검정(#000000), 1px 실선 테두리, Asta Sans·Pretendard 서체를 양쪽에 공통 적용해 두 사이트를 오가도 화면 구성이 어색하지 않습니다.",
     },
     {
-      title: "asterisk* AI를 통한 실시간 데이터 융합",
+      title: "asterisk* AI 데이터 연동",
       description:
-        "cnsh.space의 @asterisk AI는 cnsh.life의 핵심 데이터인 급식과 시간표를 내부 도구(school_meal, school_timetable)로 품고 있어, 게시판 대화 중에도 포털의 데이터를 즉시 불러와 답변합니다.",
+        "cnsh.space의 @asterisk AI는 cnsh.life의 급식·시간표 데이터를 내부 도구(school_meal, school_timetable)로 불러와 게시판 댓글이나 채팅에서 바로 답합니다.",
     },
     {
-      title: "충곽인의 하루 24시간 생활 사이클 완성",
+      title: "일과 확인과 커뮤니티의 역할 분담",
       description:
-        "아침 기상부터 등교, 수업, 급식, 방과후, 야간 자습까지는 cnsh.life가 일과를 안내하고, 방과 후 토론, 질문, 동아리 프로젝트, 정보 나눔은 cnsh.space가 담아냅니다.",
+        "등교부터 수업·급식·방과후·자습 시간 확인은 cnsh.life가 맡고, 질문·자료 공유·동아리 소통은 cnsh.space에서 이뤄집니다.",
     },
   ],
 };
@@ -463,11 +463,11 @@ export const creditsList: CreditProfile[] = [
     githubHandle: "gitkimcl",
     githubUrl: "https://github.com/gitkimcl",
     summary:
-      "기존 코드베이스 검증과 버그 수정, 예외 상황 처리를 전담해 서비스 안정성을 높였습니다.",
+      "기존 코드 검토와 버그 수정, 예외 처리를 맡아 서비스 안정성을 높였습니다.",
     roles: [
       {
         title: "기존 코드 검증 및 리뷰",
-        description: "작성된 핵심 로직을 검토하고 잠재적 오류 지점을 사전에 파악",
+        description: "핵심 로직을 검토하고 오류가 날 만한 부분을 사전에 점검",
       },
       {
         title: "버그 추적 및 수정",
@@ -483,7 +483,7 @@ export const creditsList: CreditProfile[] = [
       },
       {
         title: "서비스 안정성 테스트 및 QA",
-        description: "배포 전후 기능 동작 검증 및 런타임 안정성 확보",
+        description: "배포 전후 기능 동작 확인 및 안정성 점검",
       },
     ],
   },
