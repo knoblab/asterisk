@@ -182,7 +182,7 @@ export const servicesData: ServiceDetail[] = [
       {
         name: "asterisk* AI & 내부 도구 연동",
         description:
-          "Jev 라우터 기반 모델 선택(Claude·Gemini·GPT·Gemma) 및 급식·시간표·게시글·이미지 분석 등 10종 도구 연동",
+          "Gemini Decision 1 라우터 기반 모델 선택(Claude·Gemini·GPT·Gemma) 및 급식·시간표·게시글·이미지 분석 등 10종 도구 연동",
       },
     ],
   },
@@ -235,7 +235,7 @@ export const twoTrackStrategyData: TwoTrackStrategy = {
     {
       dimension: "기술 구성",
       lifeTrack: "클라이언트 중심 SPA (NEIS·공공 API 연동)",
-      spaceTrack: "풀스택 웹 + Nginx 동영상 스트리밍 + Jev AI 라우터",
+      spaceTrack: "풀스택 웹 + Nginx 동영상 스트리밍 + Gemini Decision 1 라우터",
     },
     {
       dimension: "주요 기능",
@@ -245,7 +245,7 @@ export const twoTrackStrategyData: TwoTrackStrategy = {
     {
       dimension: "AI 연동",
       lifeTrack: "급식·시간표·시정표 데이터 제공",
-      spaceTrack: "Jev 라우터가 10종 내부 도구로 포털·커뮤니티 데이터를 불러와 답변",
+      spaceTrack: "Gemini Decision 1 라우터가 10종 내부 도구로 포털·커뮤니티 데이터를 불러와 답변",
     },
     {
       dimension: "라이선스",

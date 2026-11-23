@@ -59,7 +59,7 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                     asterisk<span className="ast-star">*</span> AI
                   </strong>
                   는 재학생 커뮤니티(cnsh.space) 안에서 동작하는 어시스턴트입니다.
-                  질문이 들어오면 경량 라우터 <strong>Jev</strong>가
+                  질문이 들어오면 경량 라우터 <strong>Gemini Decision 1</strong>이
                   질문 내용에 맞는 모델을 고르고, 급식·시간표·과제 등
                   필요한 내부 도구를 호출해 답합니다.
                 </p>
@@ -90,10 +90,10 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
         </div>
       </section>
 
-      {/* 2. Jev 모델 선택 */}
+      {/* 2. Gemini Decision 1 모델 선택 */}
       <section className="section-end-double">
         <div className="brand-section-head">
-          <h2>Jev 모델 선택</h2>
+          <h2>Gemini Decision 1 모델 선택</h2>
         </div>
 
         <div className="matrix-table-wrap" style={{ marginBottom: "28px" }}>
