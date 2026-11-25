@@ -232,6 +232,7 @@ export const App: React.FC = () => {
   );
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
+  const [isTokensOpen, setIsTokensOpen] = useState<boolean>(false);
   const [tokenCategory, setTokenCategory] = useState<DesignTokenCategoryId>("all");
 
   const [demoCategory, setDemoCategory] = useState<string>("전체");
@@ -1380,93 +1381,130 @@ export const App: React.FC = () => {
               <section className="section-end-double">
                 <div className="brand-section-head">
                   <h2>Design Tokens Reference</h2>
-                  <p>
-                    {filteredDesignTokens.length} tokens · 행 또는 버튼을 클릭해
-                    var(--...) 복사
-                  </p>
-                </div>
-
-                <div className="ds-token-filters">
-                  {designTokenCategories.map((cat) => (
+                  <div className="ds-tokens-head-controls">
+                    <p>
+                      {isTokensOpen
+                        ? `${filteredDesignTokens.length} tokens · 클릭 시 var(--...) 복사`
+                        : `${designTokensCatalog.length} tokens · ${designTokenCategories.length - 1} categories`}
+                    </p>
                     <button
-                      key={cat.id}
                       type="button"
-                      className={`board-filter-btn ${tokenCategory === cat.id ? "active" : ""
-                        }`}
-                      onClick={() => setTokenCategory(cat.id)}
+                      className={`board-filter-btn ${isTokensOpen ? "active" : ""}`}
+                      aria-expanded={isTokensOpen}
+                      aria-controls="design-tokens-panel"
+                      onClick={() => setIsTokensOpen((prev) => !prev)}
                     >
-                      {cat.label}
+                      {isTokensOpen
+                        ? "접기 −"
+                        : `펼쳐보기 (${designTokensCatalog.length}) +`}
                     </button>
-                  ))}
+                  </div>
                 </div>
 
-                <div className="matrix-table-wrap">
-                  <table className="matrix-table">
-                    <thead>
-                      <tr>
-                        <th style={{ width: "26%" }}>토큰 (CSS VARIABLE)</th>
-                        <th style={{ width: "22%" }}>LIGHT (:root)</th>
-                        <th style={{ width: "20%" }}>DARK OVERRIDE</th>
-                        <th style={{ width: "24%" }}>용도</th>
-                        <th style={{ width: "8%" }}>복사</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredDesignTokens.map((token) => {
-                        const varExpr = `var(${token.cssVar})`;
-                        return (
-                          <tr key={token.cssVar}>
-                            <td>
-                              <div className="matrix-col-label">토큰</div>
-                              <div className="ds-token-name-cell">
-                                {renderTokenSwatch(token, isDarkTheme)}
-                                <span className="ds-token-code">
-                                  {token.cssVar}
-                                </span>
-                              </div>
-                            </td>
-                            <td>
-                              <div className="matrix-col-label">LIGHT (:root)</div>
-                              <span className="ds-token-val">
-                                {token.lightValue}
-                              </span>
-                            </td>
-                            <td>
-                              <div className="matrix-col-label">DARK OVERRIDE</div>
-                              <span
-                                className={`ds-token-val ${token.darkValue ? "" : "ds-token-muted"
-                                  }`}
-                              >
-                                {token.darkValue || "—"}
-                              </span>
-                            </td>
-                            <td>
-                              <div className="matrix-col-label">용도</div>
-                              <span className="tool-desc-text">
-                                {token.role}
-                              </span>
-                            </td>
-                            <td>
-                              <button
-                                type="button"
-                                className="ds-token-copy-btn"
-                                onClick={(e) => handleCopyText(varExpr, e)}
-                                title={`${varExpr} 복사`}
-                              >
-                                {copiedValue === varExpr ? (
-                                  <CheckIcon size={12} />
-                                ) : (
-                                  <CopyIcon size={12} />
-                                )}
-                                <span>VAR</span>
-                              </button>
-                            </td>
+                {!isTokensOpen ? (
+                  <button
+                    type="button"
+                    className="ds-tokens-collapsed-bar"
+                    aria-expanded={false}
+                    aria-controls="design-tokens-panel"
+                    onClick={() => setIsTokensOpen(true)}
+                  >
+                    <span className="ds-tokens-collapsed-meta">
+                      {designTokensCatalog.length}개 토큰 ·{" "}
+                      {designTokenCategories.length - 1}개 카테고리 (시맨틱 컬러 ·
+                      서피스 · 타이포 · 여백 · 그림자 · 모션 · 컴포넌트)
+                    </span>
+                    <span className="ds-tokens-collapsed-cta">
+                      클릭하여 열기 +
+                    </span>
+                  </button>
+                ) : (
+                  <div id="design-tokens-panel" className="ds-tokens-panel">
+                    <div className="ds-token-filters">
+                      {designTokenCategories.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          className={`board-filter-btn ${
+                            tokenCategory === cat.id ? "active" : ""
+                          }`}
+                          onClick={() => setTokenCategory(cat.id)}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="matrix-table-wrap">
+                      <table className="matrix-table">
+                        <thead>
+                          <tr>
+                            <th style={{ width: "26%" }}>토큰 (CSS VARIABLE)</th>
+                            <th style={{ width: "22%" }}>LIGHT (:root)</th>
+                            <th style={{ width: "20%" }}>DARK OVERRIDE</th>
+                            <th style={{ width: "24%" }}>용도</th>
+                            <th style={{ width: "8%" }}>복사</th>
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                        </thead>
+                        <tbody>
+                          {filteredDesignTokens.map((token) => {
+                            const varExpr = `var(${token.cssVar})`;
+                            return (
+                              <tr key={token.cssVar}>
+                                <td>
+                                  <div className="matrix-col-label">토큰</div>
+                                  <div className="ds-token-name-cell">
+                                    {renderTokenSwatch(token, isDarkTheme)}
+                                    <span className="ds-token-code">
+                                      {token.cssVar}
+                                    </span>
+                                  </div>
+                                </td>
+                                <td>
+                                  <div className="matrix-col-label">LIGHT (:root)</div>
+                                  <span className="ds-token-val">
+                                    {token.lightValue}
+                                  </span>
+                                </td>
+                                <td>
+                                  <div className="matrix-col-label">DARK OVERRIDE</div>
+                                  <span
+                                    className={`ds-token-val ${
+                                      token.darkValue ? "" : "ds-token-muted"
+                                    }`}
+                                  >
+                                    {token.darkValue || "—"}
+                                  </span>
+                                </td>
+                                <td>
+                                  <div className="matrix-col-label">용도</div>
+                                  <span className="tool-desc-text">
+                                    {token.role}
+                                  </span>
+                                </td>
+                                <td>
+                                  <button
+                                    type="button"
+                                    className="ds-token-copy-btn"
+                                    onClick={(e) => handleCopyText(varExpr, e)}
+                                    title={`${varExpr} 복사`}
+                                  >
+                                    {copiedValue === varExpr ? (
+                                      <CheckIcon size={12} />
+                                    ) : (
+                                      <CopyIcon size={12} />
+                                    )}
+                                    <span>VAR</span>
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
               </section>
 
               {/* External Web Integration */}
