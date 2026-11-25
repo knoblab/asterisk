@@ -29,32 +29,32 @@ export const aiPipelineSteps: AiPipelineStep[] = [
   {
     step: "01",
     title: "맥락 정리",
-    desc: "질문 내용과 게시글 본문, 이전 대화, 질문자 정보를 최대 4,000자 분량의 컨텍스트로 묶습니다.",
+    desc: "질문 내용과 게시글 본문, 이전 대화, 질문자 정보를 컨텍스트로 묶습니다.",
   },
   {
     step: "02",
     title: "라우팅 판단",
-    desc: "경량 라우터 모델 Gemini Decision 1이 한 번의 호출로 사용할 모델과 필요한 내부 도구를 100~200ms 안에 결정합니다.",
+    desc: "라우터 Decisions 모델이 사용할 모델과 필요한 내부 도구를 결정합니다.",
   },
   {
     step: "03",
     title: "내부 도구 병렬 호출",
-    desc: "선택된 도구(급식·시간표·클래스룸·아카이브 등)를 동시에 실행하고, 현재 시각(KST) 정보를 함께 붙입니다.",
+    desc: "선택된 도구를 동시에 실행하고, 현재 시각 정보를 함께 붙입니다.",
   },
   {
     step: "04",
     title: "데이터 기반 답변 생성",
-    desc: "조회한 학교 데이터와 외부 검색 결과를 프롬프트에 함께 넣어 사실과 다른 답변(환각)을 줄입니다.",
+    desc: "조회한 학교 데이터와 외부 검색 결과를 프롬프트에 함께 넣어 답변시 사용할 정보를 제공하고 사실과 다른 답변을 줄입니다.",
   },
   {
     step: "05",
     title: "게시글 각주 연결",
-    desc: "답변에서 언급된 커뮤니티 게시글 제목을 찾아 /post/7자리코드 링크와 각주([^1])를 자동으로 붙입니다.",
+    desc: "답변에서 언급된 커뮤니티 게시글 제목을 찾아 링크와 각주를 붙입니다.",
   },
   {
     step: "06",
     title: "진행 상태 및 모델 표시",
-    desc: "모델 선택·생각 중·답변 작성 단계를 화면에 표시하고, 답변 하단 정보(ⓘ) 버튼에서 사용된 모델과 도구를 확인할 수 있습니다.",
+    desc: "모델 선택·생각 중·답변 작성 단계를 화면에 표시하고, 답변 하단 정보 버튼에서 사용된 모델과 도구를 확인할 수 있습니다.",
   },
 ];
 
@@ -63,10 +63,10 @@ export const aiCandidateModels: AiModelSpec[] = [
     id: "claude-haiku-5-5",
     name: "Claude Haiku 5.5",
     provider: "Anthropic",
-    badge: "기본 모델 (트래픽 90%+)",
+    badge: "기본 모델",
     role: "일상 대화 · 웹 검색 · 내부 도구 종합 질의",
     description:
-      "자연스러운 한국어 대화에 강한 기본 모델입니다. 웹 검색과 학교 내부 도구 결과를 묶어 대부분의 질문에 빠르게 답합니다.",
+      "asterisk AI의 기본 모델입니다. 웹 검색과 학교 내부 도구 결과를 묶어 대부분의 질문에 빠르게 답합니다.",
     features: [
       "급식·시간표·과제 등 내부 도구 결합 질의",
       "실시간 웹 검색(web_search) 연동",
@@ -80,7 +80,7 @@ export const aiCandidateModels: AiModelSpec[] = [
     badge: "심층 추론 · 디버깅",
     role: "코드 디버깅 · 수식 검증 · 논리 검토",
     description:
-      "Thinking Level: HIGH 설정을 사용해 복잡한 코드 오류 분석, 수식 풀이 검증, 긴 논리 검토가 필요한 질문에 배정됩니다.",
+      "높은 추론 설정을 사용해 복잡한 코드 오류 분석, 수식 풀이 검증, 긴 논리 검토가 필요한 질문에 배정됩니다.",
     features: [
       "에러 로그 분석 및 코드 디버깅",
       "수식 풀이 및 논리 오류 검토",
@@ -92,7 +92,7 @@ export const aiCandidateModels: AiModelSpec[] = [
     name: "GPT-6 Luna",
     provider: "OpenAI",
     badge: "요약 · 표 정리",
-    role: "장문 게시글 3줄 요약 · 표(Table) 정리",
+    role: "장문 게시글 3줄 요약 · 표 정리",
     description:
       "긴 게시글의 핵심을 3줄로 요약하거나, 여러 댓글 의견을 마크다운 표로 정리해야 할 때 사용합니다.",
     features: [
@@ -104,11 +104,11 @@ export const aiCandidateModels: AiModelSpec[] = [
   {
     id: "gemma-4",
     name: "Gemma 4",
-    provider: "Google (Open Weights)",
-    badge: "장애 대체(Fallback)",
-    role: "상위 API 장애 시 대체 응답",
+    provider: "Google",
+    badge: "폴백 모델",
+    role: "상위 API 오류 발생 시 대체 응답",
     description:
-      "상위 API 지연이나 라우팅 오류가 발생했을 때 대신 호출되는 예비 모델입니다. 수집된 내부 도구 데이터에서 필요한 내용을 골라 응답을 이어갑니다.",
+      "상위 API 지연이나 라우팅 오류가 발생했을 때 대신 호출되는 예비 모델입니다.",
     features: [
       "Gemini Decision 1 타임아웃·오류 발생 시 자동 대체 호출",
       "내부 도구 데이터 중 필요한 항목 선별",

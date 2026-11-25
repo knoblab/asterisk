@@ -58,10 +58,8 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                   <strong>
                     asterisk<span className="ast-star">*</span> AI
                   </strong>
-                  는 재학생 커뮤니티(cnsh.space) 안에서 동작하는 어시스턴트입니다.
-                  질문이 들어오면 경량 라우터 <strong>Gemini Decision 1</strong>이
-                  질문 내용에 맞는 모델을 고르고, 급식·시간표·과제 등
-                  필요한 내부 도구를 호출해 답합니다.
+                  는 cnsh.space 안에서 동작하는 어시스턴트입니다.
+                  질문이 들어오면 적합한 AI 모델을 고르고, 필요한 내부 도구를 호출해 답합니다.
                 </p>
               </div>
 
@@ -71,17 +69,15 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                     댓글 @asterisk 멘션
                   </div>
                   <p className="service-feature-desc">
-                    게시글 본문이나 대댓글에서 @asterisk를 호출하면 해당 글 본문,
-                    댓글 맥락, 첨부 이미지를 읽고 대댓글로 답합니다.
+                    게시글 본문이나 대댓글에서 @asterisk를 호출하면 글에 대해 읽고 대댓글로 답합니다.
                   </p>
                 </div>
                 <div className="service-feature-item">
                   <div className="service-feature-name">
-                    1:1 대화 및 게시글 지정
+                    1:1 대화
                   </div>
                   <p className="service-feature-desc">
-                    전용 채팅창에서 특정 게시글을 지정해 분석을 요청하거나,
-                    클립보드(Ctrl+V)로 이미지를 직접 첨부해 질문할 수 있습니다.
+                    특정 게시글을 지정해 분석하거나 학교 생활 정보를 질문할 수 있습니다.
                   </p>
                 </div>
               </div>
@@ -123,10 +119,6 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
 
         <div className="brand-chapters-container">
           <article className="brand-chapter-block with-subtle-sep timeline-chapter-block">
-            <div className="brand-chapter-meta">
-              <span>처리 파이프라인</span>
-              <span className="brand-chapter-submeta">6 Stages</span>
-            </div>
 
             <div className="brand-chapter-content timeline-chapter-content">
               <h3>질문 분석부터 답변 생성까지의 처리 흐름</h3>

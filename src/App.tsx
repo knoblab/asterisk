@@ -304,7 +304,7 @@ export const App: React.FC = () => {
   const handleCopyText = (val: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
     if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(val).catch(() => {});
+      navigator.clipboard.writeText(val).catch(() => { });
     } else {
       const textArea = document.createElement("textarea");
       textArea.value = val;
@@ -338,7 +338,7 @@ export const App: React.FC = () => {
 
   const externalBaseUrl =
     typeof window !== "undefined" &&
-    !["localhost", "127.0.0.1"].includes(window.location.hostname)
+      !["localhost", "127.0.0.1"].includes(window.location.hostname)
       ? window.location.origin
       : "https://asterisk.knoblab.xyz";
 
@@ -382,9 +382,9 @@ export const App: React.FC = () => {
 
   const toastSwatchBg =
     copiedValue &&
-    (copiedValue.startsWith("#") ||
-      copiedValue.startsWith("rgb") ||
-      copiedValue.startsWith("linear-gradient"))
+      (copiedValue.startsWith("#") ||
+        copiedValue.startsWith("rgb") ||
+        copiedValue.startsWith("linear-gradient"))
       ? copiedValue
       : "var(--color-black)";
 
@@ -554,9 +554,8 @@ export const App: React.FC = () => {
             <nav className="drawer-nav">
               <a
                 href="/"
-                className={`drawer-nav-item ${
-                  activeTab === "overview" ? "active" : ""
-                }`}
+                className={`drawer-nav-item ${activeTab === "overview" ? "active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   switchView("overview");
@@ -566,9 +565,8 @@ export const App: React.FC = () => {
               </a>
               <a
                 href="/ai"
-                className={`drawer-nav-item ${
-                  activeTab === "ai" ? "active" : ""
-                }`}
+                className={`drawer-nav-item ${activeTab === "ai" ? "active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   switchView("ai");
@@ -578,9 +576,8 @@ export const App: React.FC = () => {
               </a>
               <a
                 href="/design"
-                className={`drawer-nav-item ${
-                  activeTab === "design" ? "active" : ""
-                }`}
+                className={`drawer-nav-item ${activeTab === "design" ? "active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   switchView("design");
@@ -590,9 +587,8 @@ export const App: React.FC = () => {
               </a>
               <a
                 href="/license"
-                className={`drawer-nav-item ${
-                  activeTab === "license" ? "active" : ""
-                }`}
+                className={`drawer-nav-item ${activeTab === "license" ? "active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   switchView("license");
@@ -602,9 +598,8 @@ export const App: React.FC = () => {
               </a>
               <a
                 href="/credits"
-                className={`drawer-nav-item ${
-                  activeTab === "credits" ? "active" : ""
-                }`}
+                className={`drawer-nav-item ${activeTab === "credits" ? "active" : ""
+                  }`}
                 onClick={(e) => {
                   e.preventDefault();
                   switchView("credits");
@@ -635,12 +630,8 @@ export const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <main>
         <div className="brand-view-wrap">
-          {/* ==============================================================
-              VIEW 1: 소개 (WHAT IS ASTERISK* -> STORY -> CORE SERVICES)
-              ============================================================== */}
           {activeTab === "overview" && (
             <div className="page-transition-wrap">
               <BrandHeroFullscreen />
@@ -673,14 +664,13 @@ export const App: React.FC = () => {
                           <strong>
                             asterisk<span className="ast-star">*</span>
                           </strong>
-                          는 충남과학고등학교(CNSH) 학생들을 위해 만든 웹 서비스 묶음입니다.
+                          는 충남과학고등학교 학생들을 위한 학교생활 정보 통합 플랫폼입니다.
                         </p>
                         <p>
                           로그인 없이 시간표·급식·시정표를 바로 확인하는 학교생활 포털{" "}
-                          <strong>cnsh.life (Life Track)</strong>와, 재학생 인증을 거쳐 질문과 자료를
+                          <strong>cnsh.life</strong>와, 재학생 인증을 거쳐 질문과 자료를
                           나누고 AI 기능을 쓰는 커뮤니티{" "}
-                          <strong>cnsh.space (Space Track)</strong>로 나뉘어 운영됩니다. 두 서비스는
-                          같은 무채색 디자인 시스템을 공유합니다.
+                          <strong>cnsh.space</strong>로 나뉘어 운영됩니다.
                         </p>
                       </div>
                     </div>
@@ -699,14 +689,14 @@ export const App: React.FC = () => {
                     <div className="brand-chapter-meta">
                       <span>서비스 분리 구조</span>
                       <span className="brand-chapter-submeta">
-                        Life Track · Space Track
+                        cnsh.life · cnsh.space
                       </span>
                     </div>
 
                     <div className="brand-chapter-content">
                       <h3>
                         {renderWithCenteredStar(
-                          "바로 여는 학교생활 포털(Life)과 재학생 전용 커뮤니티(Space)"
+                          "바로 여는 학교생활 포털과 재학생 전용 커뮤니티"
                         )}
                       </h3>
                       <div className="brand-prose-wrap">
@@ -725,10 +715,10 @@ export const App: React.FC = () => {
                               <tr>
                                 <th style={{ width: "22%" }}>구분</th>
                                 <th style={{ width: "39%" }}>
-                                  cnsh.life (Life Track)
+                                  cnsh.life
                                 </th>
                                 <th style={{ width: "39%" }}>
-                                  cnsh.space (Space Track)
+                                  cnsh.space
                                 </th>
                               </tr>
                             </thead>
@@ -822,11 +812,10 @@ export const App: React.FC = () => {
                       <div className="brand-chapter-meta">
                         <div className="service-track-stack">
                           <span
-                            className={`service-track-badge ${
-                              srv.trackType === "Life Track"
-                                ? "ast-badge ast-badge-solid"
-                                : "ast-badge ast-badge-outline"
-                            }`}
+                            className={`service-track-badge ${srv.trackType === "Life Track"
+                              ? "ast-badge ast-badge-solid"
+                              : "ast-badge ast-badge-outline"
+                              }`}
                           >
                             {srv.trackType}
                           </span>
@@ -910,18 +899,16 @@ export const App: React.FC = () => {
                   <div className="ds-theme-toggle-row">
                     <button
                       type="button"
-                      className={`board-filter-btn ${
-                        !isDarkTheme ? "active" : ""
-                      }`}
+                      className={`board-filter-btn ${!isDarkTheme ? "active" : ""
+                        }`}
                       onClick={() => setIsDarkTheme(false)}
                     >
                       LIGHT (:root)
                     </button>
                     <button
                       type="button"
-                      className={`board-filter-btn ${
-                        isDarkTheme ? "active" : ""
-                      }`}
+                      className={`board-filter-btn ${isDarkTheme ? "active" : ""
+                        }`}
                       onClick={() => setIsDarkTheme(true)}
                     >
                       DARK ([data-theme=&apos;dark&apos;])
@@ -1005,9 +992,8 @@ export const App: React.FC = () => {
                           return (
                             <div
                               key={token.cssVar}
-                              className={`brand-color-row-item ${
-                                isSelected ? "active" : ""
-                              }`}
+                              className={`brand-color-row-item ${isSelected ? "active" : ""
+                                }`}
                               onClick={() => setActiveColor(token)}
                             >
                               <div className="brand-color-row-left">
@@ -1269,9 +1255,8 @@ export const App: React.FC = () => {
                           <button
                             key={cat}
                             type="button"
-                            className={`board-filter-btn ${
-                              demoCategory === cat ? "active" : ""
-                            }`}
+                            className={`board-filter-btn ${demoCategory === cat ? "active" : ""
+                              }`}
                             onClick={() => setDemoCategory(cat)}
                           >
                             {cat}
@@ -1406,9 +1391,8 @@ export const App: React.FC = () => {
                     <button
                       key={cat.id}
                       type="button"
-                      className={`board-filter-btn ${
-                        tokenCategory === cat.id ? "active" : ""
-                      }`}
+                      className={`board-filter-btn ${tokenCategory === cat.id ? "active" : ""
+                        }`}
                       onClick={() => setTokenCategory(cat.id)}
                     >
                       {cat.label}
@@ -1450,9 +1434,8 @@ export const App: React.FC = () => {
                             <td>
                               <div className="matrix-col-label">DARK OVERRIDE</div>
                               <span
-                                className={`ds-token-val ${
-                                  token.darkValue ? "" : "ds-token-muted"
-                                }`}
+                                className={`ds-token-val ${token.darkValue ? "" : "ds-token-muted"
+                                  }`}
                               >
                                 {token.darkValue || "—"}
                               </span>
@@ -1764,9 +1747,8 @@ export const App: React.FC = () => {
                     return (
                       <article
                         key={member.id}
-                        className={`credit-profile-card ${
-                          isKnoblab ? "is-knoblab" : ""
-                        }`}
+                        className={`credit-profile-card ${isKnoblab ? "is-knoblab" : ""
+                          }`}
                       >
                         <div className="credit-card-top">
                           <div className="credit-head-bar">
@@ -1793,11 +1775,10 @@ export const App: React.FC = () => {
                                 href={member.githubUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={`credit-contact-pill ${
-                                  isKnoblab
-                                    ? "knoblab-primary-pill"
-                                    : "primary-black-pill"
-                                }`}
+                                className={`credit-contact-pill ${isKnoblab
+                                  ? "knoblab-primary-pill"
+                                  : "primary-black-pill"
+                                  }`}
                               >
                                 <span>@{member.githubHandle}</span>
                                 <ExternalArrowIcon size={11} />

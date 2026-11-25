@@ -117,26 +117,26 @@ export const servicesData: ServiceDetail[] = [
     repoName: "kuchipatchi09/everytime",
     repoUrl: "https://github.com/kuchipatchi09/everytime",
     tier: "학교생활 포털",
-    trackType: "Life Track",
+    trackType: "Life",
     license: "GNU AGPL-3.0",
-    tagline: "학교생활 유틸리티 · 실시간 시정 · NEIS 연동",
+    tagline: "학교생활 포털",
     description:
-      "충남과학고 일과(수·금·일 특수 시정 포함)에 맞춘 학교생활 포털입니다. 로그인 없이 접속하자마자 현재 교시 남은 시간, NEIS 시간표, 조·중·석식 식단과 알레르기 정보, 방과후 편성, 학교 공지를 확인할 수 있습니다.",
+      "충남과학고 일과에 맞춘 학교생활 포털입니다. 로그인 없이 접속하자마자 현재 교시 남은 시간, 시간표, 조·중·석식 식단과 알레르기 정보, 방과후 편성, 학교 공지를 확인할 수 있습니다.",
     modules: [
       {
-        name: "실시간 시정 & 천체 배경",
+        name: "실시간 하늘 배경",
         description:
-          "수·금·일 특수 시정표 카운트다운(NOW)과 충남과학고 좌표 기준 일출·일몰·달 위상·별자리 배경 표시",
+          "실시간 날씨와 연동되는 하늘 표시",
       },
       {
-        name: "NEIS 시간표 & 수업 교체",
+        name: "시간표",
         description:
-          "학년·반별 NEIS 시간표 조회 및 주간 변경 사항 반영",
+          "변동사항이 반영되는 학급 시간표 조회",
       },
       {
-        name: "급식 식단 & 알레르기",
+        name: "급식 식단",
         description:
-          "시간대에 맞춘 조·중·석식 자동 표시 및 1~18번 알레르기 유발 식품 안내",
+          "시간대에 맞춘 조·중·석식 표시",
       },
       {
         name: "방과후 편성 & 학교 공지",
@@ -144,9 +144,9 @@ export const servicesData: ServiceDetail[] = [
           "요일·반별 방과후 수업 편성표와 학교 홈페이지 공지·가정통신문 연동",
       },
       {
-        name: "면학실 자습 타이머 & PWA",
+        name: "자습 타이머",
         description:
-          "백색소음·빗소리 뽀모도로 타이머 및 모바일·태블릿 홈 화면 설치 지원",
+          "백색소음·빗소리 뽀모도로 타이머",
       },
     ],
   },
@@ -158,26 +158,16 @@ export const servicesData: ServiceDetail[] = [
     repoName: "knoblab/asterisk-community-frontend",
     repoUrl: "https://github.com/knoblab/asterisk-community-frontend",
     tier: "재학생 커뮤니티",
-    trackType: "Space Track",
+    trackType: "Space",
     license: "MIT / Proprietary",
-    tagline: "재학생 인증 커뮤니티 · 수식·미디어 · asterisk* AI",
+    tagline: "재학생 커뮤니티",
     description:
-      "Knoblab SSO로 재학생 인증을 거쳐 기수 배지를 받고 활동하는 충남과학고 전용 커뮤니티입니다. KaTeX 수식과 최대 45MB 동영상 스트리밍을 지원하며, 급식·시간표·과제 등 10종의 내부 도구를 연동한 asterisk* AI를 사용할 수 있습니다.",
+      "재학생 인증을 거쳐 활동하는 충남과학고 전용 커뮤니티입니다. 급식·시간표·과제 등 10여종의 내부 도구를 연동한 asterisk* AI를 사용할 수 있습니다.",
     modules: [
       {
-        name: "재학생 인증 & 게시판",
+        name: "재학생 인증 게시판",
         description:
-          "Knoblab SSO 연동(기수 배지 부여), 공지·자유·질문·정보·자료 등 목적별 게시판과 인기글",
-      },
-      {
-        name: "KaTeX 수식 & 마크다운",
-        description:
-          "LaTeX 인라인·디스플레이 수식, GFM 표, 코드 블록 렌더링 지원",
-      },
-      {
-        name: "45MB 비디오 스트리밍 & 보안",
-        description:
-          "클라이언트 썸네일 추출, Nginx Range Requests(HTTP 206) 기반 무인코딩 스트리밍 및 파일 매직 넘버 검증",
+          "재학생 인증을 통한 공지·자유·질문·정보·자료 등 목적별 게시판과 인기글",
       },
       {
         name: "asterisk* AI & 내부 도구 연동",
@@ -212,40 +202,39 @@ export const twoTrackStrategyData: TwoTrackStrategy = {
   summary:
     "시간표나 급식을 잠깐 확인하는 용도와 재학생끼리 글을 쓰고 자료를 나누는 커뮤니티는 필요한 로그인 방식과 구조가 다릅니다. asterisk*는 두 기능을 한 앱에 합치지 않고 목적에 맞게 두 서비스로 나눴습니다.",
   philosophy: [
-    "쉬는 시간이나 이동 중에 급식·시간표를 확인할 때는 로그인 절차 없이 바로 열려야 합니다 (Life Track).",
-    "질문 답변, 자료 공유, 기수 간 소통은 외부인 접근을 막는 재학생 인증과 수식·미디어 기능이 필요합니다 (Space Track).",
-    "서비스는 나뉘어 있지만 같은 무채색 UI를 쓰고, asterisk* AI가 포털 데이터를 불러오는 방식으로 이어져 있습니다.",
+    "쉬는 시간이나 이동 중에 급식·시간표를 확인할 때는 로그인 절차 없이 바로 열려야 합니다.",
+    "질문 답변, 자료 공유, 기수 간 소통은 외부인 접근을 막는 재학생 인증과 수식·미디어 기능이 필요합니다."
   ],
   matrixRows: [
     {
       dimension: "서비스 및 도메인",
-      lifeTrack: "cnsh.life (학교생활 포털)",
-      spaceTrack: "cnsh.space (재학생 커뮤니티)",
+      lifeTrack: "cnsh.life",
+      spaceTrack: "cnsh.space",
     },
     {
-      dimension: "주요 역할",
-      lifeTrack: "로그인 없이 확인하는 시정표·시간표·급식·공지",
-      spaceTrack: "재학생 게시판, 수식·자료 공유, AI 질의응답",
+      dimension: "역할",
+      lifeTrack: "로그인 없이 확인하는 학교생활 정보",
+      spaceTrack: "재학생 게시판, asterisk AI",
     },
     {
       dimension: "접근 및 인증",
-      lifeTrack: "별도 로그인 없음 (PWA 오프라인 지원)",
-      spaceTrack: "Knoblab SSO 재학생 기수 인증",
+      lifeTrack: "별도 로그인 없음",
+      spaceTrack: "Knoblab 통합 로그인 이용",
     },
     {
       dimension: "기술 구성",
-      lifeTrack: "클라이언트 중심 SPA (NEIS·공공 API 연동)",
-      spaceTrack: "풀스택 웹 + Nginx 동영상 스트리밍 + asterisk AI 모델 라우터",
+      lifeTrack: "클라이언트 중심 SPA",
+      spaceTrack: "풀스택 웹 + asterisk AI",
     },
     {
       dimension: "주요 기능",
-      lifeTrack: "수·금·일 특수 시정 카운트다운, 급식, 하늘 배경, 자습 타이머",
-      spaceTrack: "KaTeX 수식, 동영상·이미지 업로드, 목적별 게시판, @asterisk AI",
+      lifeTrack: "급식·시간표·시정표·자습타이머",
+      spaceTrack: "재학생 게시판 + asterisk AI",
     },
     {
       dimension: "AI 연동",
-      lifeTrack: "급식·시간표·시정표 데이터 제공",
-      spaceTrack: "Decisions 모델 라우터가 10종 내부 도구로 포털·커뮤니티 데이터를 불러와 답변",
+      lifeTrack: "없음",
+      spaceTrack: "외부 캘린더에 일정을 추가하거나 게시판 데이터를 불러와 답변",
     },
     {
       dimension: "라이선스",
@@ -255,14 +244,14 @@ export const twoTrackStrategyData: TwoTrackStrategy = {
   ],
   synergies: [
     {
-      title: "공통 모노크롬 디자인",
+      title: "디자인 시스템",
       description:
-        "Paper(#F7F6F2)와 검정(#000000), 1px 실선 테두리, Asta Sans·Pretendard 서체를 양쪽에 공통 적용해 두 사이트를 오가도 화면 구성이 어색하지 않습니다.",
+        "asterisk design system을 적용해 두 사이트를 오가도 화면 구성이 어색하지 않습니다.",
     },
     {
-      title: "asterisk* AI 데이터 연동",
+      title: "asterisk* AI",
       description:
-        "cnsh.space의 @asterisk AI는 cnsh.life의 급식·시간표 데이터를 내부 도구(school_meal, school_timetable)로 불러와 게시판 댓글이나 채팅에서 바로 답합니다.",
+        "cnsh.space의 @asterisk AI는 cnsh.life의 급식·시간표 데이터를 내부 도구로 불러와 게시판 댓글이나 채팅에서 바로 답합니다.",
     },
     {
       title: "일과 확인과 커뮤니티의 역할 분담",
@@ -283,26 +272,18 @@ export interface BrandChapter {
 export const brandChapters: BrandChapter[] = [
   {
     num: "01",
-    title: "숫자 42와 ASCII 별표(*)",
+    title: "숫자 42와 asterisk",
     quote:
       '"The Answer to the Ultimate Question of Life, the Universe, and Everything is... Forty-two."',
-    quoteAuthor: "Douglas Adams, 《The Hitchhiker's Guide to the Galaxy》",
     paragraphs: [
-      "더글러스 애덤스의 소설 《은하수를 여행하는 히치하이커를 위한 안내서》에서 삶과 우주, 모든 것의 해답으로 등장하는 숫자 42는 컴퓨터 ASCII 코드에서 별표 기호(*)에 해당합니다.",
+      "더글러스 애덤스의 소설 《은하수를 여행하는 히치하이커를 위한 안내서》에서 삶과 우주, 모든 것의 해답으로 등장하는 숫자 42는 컴퓨터 ASCII 코드에서 애스터리스크(*)에 해당합니다.",
     ],
   },
   {
     num: "02",
-    title: "와일드카드(*)",
+    title: "와일드카드",
     paragraphs: [
-      "프로그래밍에서 * 기호는 모든 조건을 가리키는 와일드카드(Everything)로 쓰입니다. 시간표와 급식을 확인하는 포털(cnsh.life)부터 학생 게시판(cnsh.space)까지 학교 생활에 필요한 여러 서비스를 하나로 묶는다는 뜻을 담았습니다.",
-    ],
-  },
-  {
-    num: "03",
-    title: "각주 기호와 무채색 화면",
-    paragraphs: [
-      "문서에서 부연 설명을 달 때 쓰는 각주 기호(*)에서 착안해, 불필요한 장식 색상을 빼고 종이 색(#F7F6F2)과 검정(#000000), 1px 실선 위주로 화면을 구성했습니다.",
+      "프로그래밍에서 애스터리스크는 모든 조건을 가리키는 와일드카드로 쓰입니다. 시간표와 급식을 확인하는 포털부터 학생 게시판까지 학교 생활에 필요한 여러 서비스를 하나로 묶는다는 뜻을 담았습니다.",
     ],
   },
 ];
