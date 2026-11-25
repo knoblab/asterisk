@@ -117,7 +117,7 @@ export const servicesData: ServiceDetail[] = [
     repoName: "kuchipatchi09/everytime",
     repoUrl: "https://github.com/kuchipatchi09/everytime",
     tier: "학교생활 포털",
-    trackType: "Life",
+    trackType: "Life Track",
     license: "GNU AGPL-3.0",
     tagline: "학교생활 포털",
     description:
@@ -158,7 +158,7 @@ export const servicesData: ServiceDetail[] = [
     repoName: "knoblab/asterisk-community-frontend",
     repoUrl: "https://github.com/knoblab/asterisk-community-frontend",
     tier: "재학생 커뮤니티",
-    trackType: "Space",
+    trackType: "Space Track",
     license: "MIT / Proprietary",
     tagline: "재학생 커뮤니티",
     description:
