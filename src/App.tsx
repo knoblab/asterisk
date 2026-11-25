@@ -232,8 +232,9 @@ export const App: React.FC = () => {
   );
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
   const [copiedValue, setCopiedValue] = useState<string | null>(null);
-  const [isTokensOpen, setIsTokensOpen] = useState<boolean>(false);
-  const [tokenCategory, setTokenCategory] = useState<DesignTokenCategoryId>("all");
+  const [openTokenCategories, setOpenTokenCategories] = useState<Set<DesignTokenCategoryId>>(
+    () => new Set()
+  );
 
   const [demoCategory, setDemoCategory] = useState<string>("전체");
   const [demoSkyToggle, setDemoSkyToggle] = useState<boolean>(true);
@@ -332,10 +333,33 @@ export const App: React.FC = () => {
     ? activeColor.darkContrastText
     : activeColor.contrastText;
 
-  const filteredDesignTokens =
-    tokenCategory === "all"
-      ? designTokensCatalog
-      : designTokensCatalog.filter((t) => t.category === tokenCategory);
+  const tokenCategoryGroups = designTokenCategories
+    .filter((cat) => cat.id !== "all")
+    .map((cat) => ({
+      ...cat,
+      tokens: designTokensCatalog.filter((t) => t.category === cat.id),
+    }));
+
+  const allTokenCategoriesOpen =
+    tokenCategoryGroups.length > 0 &&
+    openTokenCategories.size === tokenCategoryGroups.length;
+
+  const toggleTokenCategory = (id: DesignTokenCategoryId) => {
+    setOpenTokenCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleAllTokenCategories = () => {
+    setOpenTokenCategories((prev) =>
+      prev.size === tokenCategoryGroups.length
+        ? new Set()
+        : new Set(tokenCategoryGroups.map((cat) => cat.id))
+    );
+  };
 
   const externalBaseUrl =
     typeof window !== "undefined" &&
@@ -348,20 +372,20 @@ export const App: React.FC = () => {
 
   const integrationSnippets = [
     {
+      id: "full-bundle",
+      title: "1. 풀 키트 한 번에 불러오기 (토큰 + 기본 + UI + 서체) (권장)",
+      tag: "ONE-LINE BUNDLE",
+      description:
+        "단일 평탄화 번들(/ds/asterisk.css)과 웹폰트(/ds/fonts.css)를 로드하면 토큰, 기본 스타일, 버튼·배지·필터·토글·헤더·푸터 등 공용 UI 클래스를 즉시 사용할 수 있습니다.",
+      code: `<link rel="stylesheet" href="${externalBaseUrl}/ds/fonts.css" />\n<link rel="stylesheet" href="${externalBaseUrl}/ds/asterisk.css" />`,
+    },
+    {
       id: "tokens-only",
-      title: "1. CSS 변수만 안전하게 불러오기 (권장)",
+      title: "2. CSS 변수만 안전하게 불러오기",
       tag: "ZERO-POLLUTION",
       description:
         "전역 요소 리셋 없이 순수 CSS 커스텀 프로퍼티(:root)만 불러옵니다. Tailwind CSS 또는 기존 스타일시트가 있는 외부 웹(cnsh.life, cnsh.space 등)에 충돌 없이 바로 적용할 수 있습니다.",
       code: `<link rel="stylesheet" href="${externalBaseUrl}/ds/tokens.css" />`,
-    },
-    {
-      id: "full-bundle",
-      title: "2. 풀 키트 한 번에 불러오기 (토큰 + 기본 + UI + 서체)",
-      tag: "ONE-LINE BUNDLE",
-      description:
-        "단일 평탄화 번들(/ds/asterisk.css)과 웹폰트(/ds/fonts.css)를 로드하면 버튼, 배지, 필터, 토글, 매트릭스 표 등 디자인 탭 공용 UI 클래스를 즉시 사용할 수 있습니다.",
-      code: `<link rel="stylesheet" href="${externalBaseUrl}/ds/fonts.css" />\n<link rel="stylesheet" href="${externalBaseUrl}/ds/asterisk.css" />`,
     },
     {
       id: "css-import-cdn",
@@ -1197,6 +1221,52 @@ export const App: React.FC = () => {
                 </div>
 
                 <div className="ds-primitives-grid">
+                  <div className="ds-primitive-box is-full">
+                    <div className="ds-primitive-head">
+                      <span>HEADER · NAVIGATION</span>
+                      <span>var(--header-height) · 64px / 56px</span>
+                    </div>
+                    <div className="ds-specimen-frame">
+                      <div className="ds-specimen-header-desktop">
+                        <span className="brand asterisk-brand">
+                          <div className="asterisk-wordmark">
+                            <div>aste</div>
+                            <div className="asterisk-wordmark-bottom">
+                              <span>risk</span>
+                              <span className="asterisk-wordmark-star">*</span>
+                            </div>
+                          </div>
+                        </span>
+                        <div className="desktop-nav" aria-hidden="true">
+                          <button type="button" className="active">홈</button>
+                          <button type="button">시간표</button>
+                          <button type="button">커뮤니티</button>
+                          <button type="button">디자인</button>
+                        </div>
+                        <div className="nav-controls-right">
+                          <span className="nav-ext-pill">
+                            <span>cnsh.life</span>
+                            <ExternalArrowIcon size={11} />
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="ds-specimen-header-mobile">
+                        <div className="head-mobile-left" />
+                        <div className="head-mobile-center">
+                          <span className="asterisk-wordmark-inline">
+                            asterisk<span className="asterisk-wordmark-star">*</span>
+                          </span>
+                        </div>
+                        <div className="head-mobile-right">
+                          <span className="mobile-menu-toggle" aria-hidden="true">
+                            <MenuIcon size={18} />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="ds-primitive-box">
                     <div className="ds-primitive-head">
                       <span>BUTTONS &amp; AUTH</span>
@@ -1374,6 +1444,44 @@ export const App: React.FC = () => {
                       </div>
                     </div>
                   </div>
+
+                  <div className="ds-primitive-box is-full">
+                    <div className="ds-primitive-head">
+                      <span>FOOTER · UNIFIED LAYOUT</span>
+                      <span>DESKTOP ROW / MOBILE STACK</span>
+                    </div>
+                    <div className="ds-specimen-frame">
+                      <div className="ds-specimen-footer">
+                        <div className="footer-content">
+                          <div className="footer-copy">
+                            <b>
+                              asterisk<span className="ast-star">*</span> — 충남과학고등학교 웹 서비스
+                            </b>
+                            <span>The Answer to Campus Life, and Everything.</span>
+                          </div>
+                          <div className="footer-links-row">
+                            <div className="footer-links-primary">
+                              <span className="footer-nav-link">소개</span>
+                              <span className="footer-nav-link">디자인 시스템</span>
+                              <span className="footer-nav-link">이용약관</span>
+                              <span className="footer-nav-link">개인정보처리방침</span>
+                              <span className="footer-ext-link">
+                                <span>cnsh.life</span>
+                                <ExternalArrowIcon size={11} />
+                              </span>
+                            </div>
+                            <div className="footer-links-meta">
+                              <span className="footer-version-tag">v1.0</span>
+                              <span className="status-mini-pill">
+                                <span>status</span>
+                                <ExternalArrowIcon size={10} />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
 
@@ -1383,128 +1491,122 @@ export const App: React.FC = () => {
                   <h2>Design Tokens Reference</h2>
                   <div className="ds-tokens-head-controls">
                     <p>
-                      {isTokensOpen
-                        ? `${filteredDesignTokens.length} tokens · 클릭 시 var(--...) 복사`
-                        : `${designTokensCatalog.length} tokens · ${designTokenCategories.length - 1} categories`}
+                      {designTokensCatalog.length} tokens ·{" "}
+                      {tokenCategoryGroups.length} categories · 클릭 시 var(--...) 복사
                     </p>
                     <button
                       type="button"
-                      className={`board-filter-btn ${isTokensOpen ? "active" : ""}`}
-                      aria-expanded={isTokensOpen}
-                      aria-controls="design-tokens-panel"
-                      onClick={() => setIsTokensOpen((prev) => !prev)}
+                      className={`board-filter-btn ${allTokenCategoriesOpen ? "active" : ""}`}
+                      aria-expanded={allTokenCategoriesOpen}
+                      onClick={toggleAllTokenCategories}
                     >
-                      {isTokensOpen
-                        ? "접기 −"
-                        : `펼쳐보기 (${designTokensCatalog.length}) +`}
+                      {allTokenCategoriesOpen ? "모두 접기 −" : "모두 펼치기 +"}
                     </button>
                   </div>
                 </div>
 
-                {!isTokensOpen ? (
-                  <button
-                    type="button"
-                    className="ds-tokens-collapsed-bar"
-                    aria-expanded={false}
-                    aria-controls="design-tokens-panel"
-                    onClick={() => setIsTokensOpen(true)}
-                  >
-                    <span className="ds-tokens-collapsed-meta">
-                      {designTokensCatalog.length}개 토큰 ·{" "}
-                      {designTokenCategories.length - 1}개 카테고리 (시맨틱 컬러 ·
-                      서피스 · 타이포 · 여백 · 그림자 · 모션 · 컴포넌트)
-                    </span>
-                    <span className="ds-tokens-collapsed-cta">
-                      클릭하여 열기 +
-                    </span>
-                  </button>
-                ) : (
-                  <div id="design-tokens-panel" className="ds-tokens-panel">
-                    <div className="ds-token-filters">
-                      {designTokenCategories.map((cat) => (
+                <div className="ds-token-accordion-list">
+                  {tokenCategoryGroups.map((group) => {
+                    const isCatOpen = openTokenCategories.has(group.id);
+                    const panelId = `ds-token-cat-${group.id}`;
+                    return (
+                      <div key={group.id} className="ds-token-accordion-item">
                         <button
-                          key={cat.id}
                           type="button"
-                          className={`board-filter-btn ${
-                            tokenCategory === cat.id ? "active" : ""
-                          }`}
-                          onClick={() => setTokenCategory(cat.id)}
+                          className={`ds-token-accordion-trigger ${isCatOpen ? "is-open" : ""}`}
+                          aria-expanded={isCatOpen}
+                          aria-controls={panelId}
+                          onClick={() => toggleTokenCategory(group.id)}
                         >
-                          {cat.label}
+                          <span className="ds-token-accordion-left">
+                            <span className="ds-token-accordion-title">
+                              {group.label}
+                            </span>
+                            <span className="ast-badge ast-badge-vellum">
+                              {group.tokens.length}
+                            </span>
+                          </span>
+                          <span className="ds-token-accordion-icon">
+                            {isCatOpen ? "−" : "+"}
+                          </span>
                         </button>
-                      ))}
-                    </div>
 
-                    <div className="matrix-table-wrap">
-                      <table className="matrix-table">
-                        <thead>
-                          <tr>
-                            <th style={{ width: "26%" }}>토큰 (CSS VARIABLE)</th>
-                            <th style={{ width: "22%" }}>LIGHT (:root)</th>
-                            <th style={{ width: "20%" }}>DARK OVERRIDE</th>
-                            <th style={{ width: "24%" }}>용도</th>
-                            <th style={{ width: "8%" }}>복사</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filteredDesignTokens.map((token) => {
-                            const varExpr = `var(${token.cssVar})`;
-                            return (
-                              <tr key={token.cssVar}>
-                                <td>
-                                  <div className="matrix-col-label">토큰</div>
-                                  <div className="ds-token-name-cell">
-                                    {renderTokenSwatch(token, isDarkTheme)}
-                                    <span className="ds-token-code">
-                                      {token.cssVar}
-                                    </span>
-                                  </div>
-                                </td>
-                                <td>
-                                  <div className="matrix-col-label">LIGHT (:root)</div>
-                                  <span className="ds-token-val">
-                                    {token.lightValue}
-                                  </span>
-                                </td>
-                                <td>
-                                  <div className="matrix-col-label">DARK OVERRIDE</div>
-                                  <span
-                                    className={`ds-token-val ${
-                                      token.darkValue ? "" : "ds-token-muted"
-                                    }`}
-                                  >
-                                    {token.darkValue || "—"}
-                                  </span>
-                                </td>
-                                <td>
-                                  <div className="matrix-col-label">용도</div>
-                                  <span className="tool-desc-text">
-                                    {token.role}
-                                  </span>
-                                </td>
-                                <td>
-                                  <button
-                                    type="button"
-                                    className="ds-token-copy-btn"
-                                    onClick={(e) => handleCopyText(varExpr, e)}
-                                    title={`${varExpr} 복사`}
-                                  >
-                                    {copiedValue === varExpr ? (
-                                      <CheckIcon size={12} />
-                                    ) : (
-                                      <CopyIcon size={12} />
-                                    )}
-                                    <span>VAR</span>
-                                  </button>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
+                        {isCatOpen && (
+                          <div id={panelId} className="ds-token-accordion-body">
+                            <div className="matrix-table-wrap">
+                              <table className="matrix-table">
+                                <thead>
+                                  <tr>
+                                    <th style={{ width: "26%" }}>토큰 (CSS VARIABLE)</th>
+                                    <th style={{ width: "22%" }}>LIGHT (:root)</th>
+                                    <th style={{ width: "20%" }}>DARK OVERRIDE</th>
+                                    <th style={{ width: "24%" }}>용도</th>
+                                    <th style={{ width: "8%" }}>복사</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {group.tokens.map((token) => {
+                                    const varExpr = `var(${token.cssVar})`;
+                                    return (
+                                      <tr key={token.cssVar}>
+                                        <td>
+                                          <div className="matrix-col-label">토큰</div>
+                                          <div className="ds-token-name-cell">
+                                            {renderTokenSwatch(token, isDarkTheme)}
+                                            <span className="ds-token-code">
+                                              {token.cssVar}
+                                            </span>
+                                          </div>
+                                        </td>
+                                        <td>
+                                          <div className="matrix-col-label">LIGHT (:root)</div>
+                                          <span className="ds-token-val">
+                                            {token.lightValue}
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <div className="matrix-col-label">DARK OVERRIDE</div>
+                                          <span
+                                            className={`ds-token-val ${
+                                              token.darkValue ? "" : "ds-token-muted"
+                                            }`}
+                                          >
+                                            {token.darkValue || "—"}
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <div className="matrix-col-label">용도</div>
+                                          <span className="tool-desc-text">
+                                            {token.role}
+                                          </span>
+                                        </td>
+                                        <td>
+                                          <button
+                                            type="button"
+                                            className="ds-token-copy-btn"
+                                            onClick={(e) => handleCopyText(varExpr, e)}
+                                            title={`${varExpr} 복사`}
+                                          >
+                                            {copiedValue === varExpr ? (
+                                              <CheckIcon size={12} />
+                                            ) : (
+                                              <CopyIcon size={12} />
+                                            )}
+                                            <span>VAR</span>
+                                          </button>
+                                        </td>
+                                      </tr>
+                                    );
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </section>
 
               {/* External Web Integration */}
@@ -1936,86 +2038,90 @@ export const App: React.FC = () => {
           </div>
 
           <div className="footer-links-row">
-            <a
-              href="/"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("overview");
-              }}
-              className="footer-nav-link"
-            >
-              소개
-            </a>
-            <a
-              href="/ai"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("ai");
-              }}
-              className="footer-nav-link"
-            >
-              AI
-            </a>
-            <a
-              href="/design"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("design");
-              }}
-              className="footer-nav-link"
-            >
-              디자인 시스템
-            </a>
-            <a
-              href="/license"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("license");
-              }}
-              className="footer-nav-link"
-            >
-              라이선스
-            </a>
-            <a
-              href="/credits"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("credits");
-              }}
-              className="footer-nav-link"
-            >
-              크레딧
-            </a>
-            <a
-              href="/terms"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("terms");
-              }}
-              className="footer-nav-link"
-            >
-              이용약관
-            </a>
-            <a
-              href="/privacy"
-              onClick={(e) => {
-                e.preventDefault();
-                switchView("privacy");
-              }}
-              className="footer-nav-link"
-            >
-              개인정보처리방침
-            </a>
-            <a
-              href="https://status.knoblab.xyz/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="status-mini-pill"
-              title="cnsh.space 서버 상태"
-            >
-              <span>status</span>
-              <ExternalArrowIcon size={10} />
-            </a>
+            <div className="footer-links-primary">
+              <a
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("overview");
+                }}
+                className="footer-nav-link"
+              >
+                소개
+              </a>
+              <a
+                href="/ai"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("ai");
+                }}
+                className="footer-nav-link"
+              >
+                AI
+              </a>
+              <a
+                href="/design"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("design");
+                }}
+                className="footer-nav-link"
+              >
+                디자인 시스템
+              </a>
+              <a
+                href="/license"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("license");
+                }}
+                className="footer-nav-link"
+              >
+                라이선스
+              </a>
+              <a
+                href="/credits"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("credits");
+                }}
+                className="footer-nav-link"
+              >
+                크레딧
+              </a>
+              <a
+                href="/terms"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("terms");
+                }}
+                className="footer-nav-link"
+              >
+                이용약관
+              </a>
+              <a
+                href="/privacy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  switchView("privacy");
+                }}
+                className="footer-nav-link"
+              >
+                개인정보처리방침
+              </a>
+            </div>
+            <div className="footer-links-meta">
+              <a
+                href="https://status.knoblab.xyz/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="status-mini-pill"
+                title="cnsh.space 서버 상태"
+              >
+                <span>status</span>
+                <ExternalArrowIcon size={10} />
+              </a>
+            </div>
           </div>
         </div>
       </footer>

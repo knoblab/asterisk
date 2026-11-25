@@ -1,7 +1,8 @@
 /* ==========================================================================
    asterisk* Design System — Design Tokens (Zero-Pollution Pure Variables)
-   Version: 1.0.0
+   Version: 1.1.0
    Palette: Absolute Ink Black (#000000) & Base Paper White (#F7F6F2)
+   Shared SSOT for asterisk*, cnsh.space (chating-main), and cnsh.life (cnsh-eta).
    Safe to import into any existing web project (contains no element resets).
    ========================================================================== */
 
@@ -70,13 +71,94 @@
   --color-knoblab-bg-subtle: rgba(85, 96, 66, 0.08);
   --color-knoblab-border-subtle: rgba(85, 96, 66, 0.35);
 
+  --alpha-subtle: rgba(0, 0, 0, 0.04);
+  --alpha-soft: rgba(0, 0, 0, 0.08);
+  --alpha-medium: rgba(0, 0, 0, 0.14);
+  --alpha-strong: rgba(0, 0, 0, 0.22);
+  --alpha-on-dark-subtle: rgba(255, 255, 255, 0.08);
+  --alpha-on-dark-soft: rgba(255, 255, 255, 0.14);
+  --alpha-on-dark-medium: rgba(255, 255, 255, 0.2);
+
   --color-backdrop: rgba(0, 0, 0, 0.6);
   --color-divider-alpha: rgba(0, 0, 0, 0.15);
   --color-inverse-subtle: rgba(247, 246, 242, 0.2);
   --blur-backdrop: blur(4px);
 
   /* ------------------------------------------------------------------------
-     5. Surface Modes (Paper Light / Carbon Dark / Translucent Glass)
+     5. Status & Feedback Colors
+     ------------------------------------------------------------------------ */
+  --color-danger: #DC2626;
+  --color-danger-strong: #B91C1C;
+  --color-danger-bg: rgba(220, 38, 38, 0.08);
+  --color-danger-border: rgba(220, 38, 38, 0.3);
+
+  --color-success: #16A34A;
+  --color-success-strong: #15803D;
+  --color-success-bg: rgba(22, 163, 74, 0.08);
+  --color-success-border: rgba(22, 163, 74, 0.3);
+
+  --color-warning: #D97706;
+  --color-warning-strong: #B45309;
+  --color-warning-bg: rgba(217, 119, 6, 0.08);
+  --color-warning-border: rgba(217, 119, 6, 0.3);
+
+  --color-info: #2563EB;
+  --color-info-strong: #1D4ED8;
+  --color-info-bg: rgba(37, 99, 235, 0.08);
+  --color-info-border: rgba(37, 99, 235, 0.3);
+  --color-mention-blue: var(--color-info);
+
+  /* ------------------------------------------------------------------------
+     6. Market & Ticker Telemetry
+     ------------------------------------------------------------------------ */
+  --up-red: #E03020;
+  --up-red-bg: rgba(224, 48, 32, 0.08);
+  --up-red-border: rgba(224, 48, 32, 0.28);
+  --down-blue: #0066CC;
+  --down-blue-bg: rgba(0, 102, 204, 0.08);
+  --down-blue-border: rgba(0, 102, 204, 0.28);
+
+  --ticker-height: 36px;
+  --z-ticker: 90;
+  --ticker-live: #00E676;
+  --ticker-live-bg: rgba(0, 230, 118, 0.15);
+  --ticker-live-border: rgba(0, 230, 118, 0.35);
+  --ticker-up: #FF5252;
+  --ticker-up-bg: rgba(255, 82, 82, 0.15);
+  --ticker-up-border: rgba(255, 82, 82, 0.3);
+  --ticker-down: #448AFF;
+  --ticker-down-bg: rgba(68, 138, 255, 0.15);
+  --ticker-down-border: rgba(68, 138, 255, 0.3);
+  --ticker-prepost: #FFB74D;
+  --ticker-prepost-bg: rgba(255, 183, 77, 0.15);
+  --ticker-prepost-border: rgba(255, 183, 77, 0.35);
+  --ticker-closed: #A0A0A5;
+
+  /* ------------------------------------------------------------------------
+     7. Bot Mentions & Markdown Callouts
+     ------------------------------------------------------------------------ */
+  --mention-dasein-fg: #8B1F28;
+  --mention-dasein-bg: rgba(139, 31, 40, 0.12);
+  --mention-meal-fg: #EA580C;
+  --mention-meal-bg: rgba(234, 88, 12, 0.12);
+  --mention-timetable-fg: var(--color-info);
+  --mention-timetable-bg: var(--color-info-bg);
+  --mention-calendar-fg: var(--color-success);
+  --mention-calendar-bg: var(--color-success-bg);
+  --mention-classroom-fg: #7C3AED;
+  --mention-classroom-bg: rgba(124, 58, 237, 0.12);
+  --mention-archive-fg: var(--color-warning);
+  --mention-archive-bg: var(--color-warning-bg);
+
+  --callout-note: var(--color-info);
+  --callout-tip: var(--color-success);
+  --callout-important: #8250DF;
+  --callout-important-bg: rgba(130, 80, 223, 0.08);
+  --callout-warning: var(--color-warning);
+  --callout-caution: var(--color-danger);
+
+  /* ------------------------------------------------------------------------
+     8. Surface Modes (Paper Light / Carbon Dark / Translucent Glass)
      ------------------------------------------------------------------------ */
   --surface-paper-bg: var(--raw-paper);
   --surface-paper-fg: var(--raw-black);
@@ -91,6 +173,8 @@
 
   --surface-glass-bg: rgba(242, 246, 247, 0.72);
   --surface-glass-bg-strong: rgba(242, 246, 247, 0.78);
+  --surface-glass-panel: rgba(242, 246, 247, 0.8);
+  --surface-glass-hover: rgba(235, 233, 225, 0.8);
   --surface-glass-fg: var(--raw-black);
   --surface-glass-muted: var(--raw-carbon);
   --surface-glass-eyebrow: var(--raw-ink-soft);
@@ -100,7 +184,7 @@
   --surface-sky-gradient: linear-gradient(135deg, var(--raw-sky-start) 0%, var(--raw-sky-mid) 55%, var(--raw-sky-end) 100%);
 
   /* ------------------------------------------------------------------------
-     6. Typography & Wordmark
+     9. Typography & Wordmark
      ------------------------------------------------------------------------ */
   --font-sans: 'Asta Sans', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Asta Sans', 'Pretendard', monospace;
@@ -185,7 +269,7 @@
   --wordmark-hero-star-gap: 6px;
 
   /* ------------------------------------------------------------------------
-     7. Spacing Scale
+     10. Spacing Scale
      ------------------------------------------------------------------------ */
   --space-0: 0px;
   --space-px: 1px;
@@ -220,7 +304,7 @@
   --space-25: 100px;
 
   /* ------------------------------------------------------------------------
-     8. Layout & Breakpoints
+     11. Layout & Breakpoints
      ------------------------------------------------------------------------ */
   --max-content-width: 1200px;
   --max-doc-width: 860px;
@@ -239,7 +323,7 @@
   --bp-xl: 1024px;
 
   /* ------------------------------------------------------------------------
-     9. Borders & Radii
+     12. Borders & Radii
      ------------------------------------------------------------------------ */
   --border-width-thin: 1px;
   --border-width-medium: 2px;
@@ -260,7 +344,7 @@
   --radius-full: 50%;
 
   /* ------------------------------------------------------------------------
-     10. Elevation & Shadows
+     13. Elevation & Shadows
      ------------------------------------------------------------------------ */
   --shadow-subtle: 0 1px 2px rgba(0, 0, 0, 0.05);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -272,7 +356,7 @@
   --shadow-focus-ring: inset 0 0 0 1px var(--color-black);
 
   /* ------------------------------------------------------------------------
-     11. Motion & Transitions
+     14. Motion & Transitions
      ------------------------------------------------------------------------ */
   --duration-fast: 150ms;
   --duration-theme: 180ms;
@@ -289,7 +373,7 @@
   --transition-colors: background-color var(--duration-theme) var(--ease-default), color var(--duration-theme) var(--ease-default), border-color var(--duration-theme) var(--ease-default);
 
   /* ------------------------------------------------------------------------
-     12. Z-Index Scale
+     15. Z-Index Scale
      ------------------------------------------------------------------------ */
   --z-base: 1;
   --z-elevated: 2;
@@ -299,15 +383,29 @@
   --z-toast: 1100;
 
   /* ------------------------------------------------------------------------
-     13. Component Tokens (Layer 3)
+     16. Component Tokens (Layer 3)
      ------------------------------------------------------------------------ */
-  --btn-py: var(--space-2-5);
-  --btn-px: var(--space-4-5);
+  --btn-py-sm: var(--space-1-5);
+  --btn-px-sm: var(--space-3);
+  --btn-py: var(--space-2);
+  --btn-px: var(--space-3-5);
+  --btn-py-lg: var(--space-2-5);
+  --btn-px-lg: var(--space-4-5);
   --btn-gap: var(--space-1-5);
   --btn-sso-gap: var(--space-2);
   --btn-font-size: var(--text-sm);
   --btn-font-weight: var(--font-weight-semibold);
   --btn-radius: var(--radius-sm);
+
+  --nav-item-height: 32px;
+  --nav-item-py: var(--space-1-5);
+  --nav-item-px: var(--space-3);
+  --nav-item-font-size: var(--text-md);
+  --nav-item-radius: var(--radius-sm);
+
+  --class-badge-py: var(--space-1-5);
+  --class-badge-px: var(--space-3-5);
+  --class-badge-font-size: var(--text-label);
 
   --badge-height: 22px;
   --badge-height-sm: 20px;
@@ -391,12 +489,60 @@
   --color-knoblab-bg-subtle: rgba(143, 161, 113, 0.14);
   --color-knoblab-border-subtle: rgba(143, 161, 113, 0.4);
 
+  --alpha-subtle: rgba(255, 255, 255, 0.05);
+  --alpha-soft: rgba(255, 255, 255, 0.08);
+  --alpha-medium: rgba(255, 255, 255, 0.14);
+  --alpha-strong: rgba(255, 255, 255, 0.22);
+
   --color-backdrop: rgba(0, 0, 0, 0.78);
   --color-divider-alpha: rgba(247, 246, 242, 0.18);
   --color-inverse-subtle: rgba(0, 0, 0, 0.2);
 
+  --color-danger: #F87171;
+  --color-danger-strong: #EF4444;
+  --color-danger-bg: rgba(239, 68, 68, 0.16);
+  --color-danger-border: rgba(248, 113, 113, 0.35);
+
+  --color-success: #4ADE80;
+  --color-success-strong: #22C55E;
+  --color-success-bg: rgba(34, 197, 94, 0.16);
+  --color-success-border: rgba(74, 222, 128, 0.35);
+
+  --color-warning: #FBBF24;
+  --color-warning-strong: #F59E0B;
+  --color-warning-bg: rgba(245, 158, 11, 0.16);
+  --color-warning-border: rgba(251, 191, 36, 0.35);
+
+  --color-info: #60A5FA;
+  --color-info-strong: #3B82F6;
+  --color-info-bg: rgba(96, 165, 250, 0.16);
+  --color-info-border: rgba(96, 165, 250, 0.35);
+  --color-mention-blue: var(--color-info);
+
+  --mention-dasein-fg: #E57373;
+  --mention-dasein-bg: rgba(229, 115, 115, 0.18);
+  --mention-meal-fg: #FB923C;
+  --mention-meal-bg: rgba(251, 146, 60, 0.18);
+  --mention-timetable-fg: var(--color-info);
+  --mention-timetable-bg: var(--color-info-bg);
+  --mention-calendar-fg: var(--color-success);
+  --mention-calendar-bg: var(--color-success-bg);
+  --mention-classroom-fg: #A78BFA;
+  --mention-classroom-bg: rgba(167, 139, 250, 0.18);
+  --mention-archive-fg: var(--color-warning);
+  --mention-archive-bg: var(--color-warning-bg);
+
+  --callout-note: var(--color-info);
+  --callout-tip: var(--color-success);
+  --callout-important: #A78BFA;
+  --callout-important-bg: rgba(167, 139, 250, 0.16);
+  --callout-warning: var(--color-warning);
+  --callout-caution: var(--color-danger);
+
   --surface-glass-bg: rgba(24, 25, 28, 0.72);
   --surface-glass-bg-strong: rgba(24, 25, 28, 0.82);
+  --surface-glass-panel: rgba(24, 25, 28, 0.84);
+  --surface-glass-hover: rgba(44, 44, 46, 0.85);
   --surface-glass-fg: var(--raw-paper);
   --surface-glass-muted: var(--raw-dark-graphite);
   --surface-glass-eyebrow: var(--raw-vellum);
@@ -447,12 +593,60 @@
     --color-knoblab-bg-subtle: rgba(143, 161, 113, 0.14);
     --color-knoblab-border-subtle: rgba(143, 161, 113, 0.4);
 
+    --alpha-subtle: rgba(255, 255, 255, 0.05);
+    --alpha-soft: rgba(255, 255, 255, 0.08);
+    --alpha-medium: rgba(255, 255, 255, 0.14);
+    --alpha-strong: rgba(255, 255, 255, 0.22);
+
     --color-backdrop: rgba(0, 0, 0, 0.78);
     --color-divider-alpha: rgba(247, 246, 242, 0.18);
     --color-inverse-subtle: rgba(0, 0, 0, 0.2);
 
+    --color-danger: #F87171;
+    --color-danger-strong: #EF4444;
+    --color-danger-bg: rgba(239, 68, 68, 0.16);
+    --color-danger-border: rgba(248, 113, 113, 0.35);
+
+    --color-success: #4ADE80;
+    --color-success-strong: #22C55E;
+    --color-success-bg: rgba(34, 197, 94, 0.16);
+    --color-success-border: rgba(74, 222, 128, 0.35);
+
+    --color-warning: #FBBF24;
+    --color-warning-strong: #F59E0B;
+    --color-warning-bg: rgba(245, 158, 11, 0.16);
+    --color-warning-border: rgba(251, 191, 36, 0.35);
+
+    --color-info: #60A5FA;
+    --color-info-strong: #3B82F6;
+    --color-info-bg: rgba(96, 165, 250, 0.16);
+    --color-info-border: rgba(96, 165, 250, 0.35);
+    --color-mention-blue: var(--color-info);
+
+    --mention-dasein-fg: #E57373;
+    --mention-dasein-bg: rgba(229, 115, 115, 0.18);
+    --mention-meal-fg: #FB923C;
+    --mention-meal-bg: rgba(251, 146, 60, 0.18);
+    --mention-timetable-fg: var(--color-info);
+    --mention-timetable-bg: var(--color-info-bg);
+    --mention-calendar-fg: var(--color-success);
+    --mention-calendar-bg: var(--color-success-bg);
+    --mention-classroom-fg: #A78BFA;
+    --mention-classroom-bg: rgba(167, 139, 250, 0.18);
+    --mention-archive-fg: var(--color-warning);
+    --mention-archive-bg: var(--color-warning-bg);
+
+    --callout-note: var(--color-info);
+    --callout-tip: var(--color-success);
+    --callout-important: #A78BFA;
+    --callout-important-bg: rgba(167, 139, 250, 0.16);
+    --callout-warning: var(--color-warning);
+    --callout-caution: var(--color-danger);
+
     --surface-glass-bg: rgba(24, 25, 28, 0.72);
     --surface-glass-bg-strong: rgba(24, 25, 28, 0.82);
+    --surface-glass-panel: rgba(24, 25, 28, 0.84);
+    --surface-glass-hover: rgba(44, 44, 46, 0.85);
     --surface-glass-fg: var(--raw-paper);
     --surface-glass-muted: var(--raw-dark-graphite);
     --surface-glass-eyebrow: var(--raw-vellum);
