@@ -172,7 +172,7 @@ export const servicesData: ServiceDetail[] = [
       {
         name: "asterisk* AI & 내부 도구 연동",
         description:
-          "Decisions 모델 라우터 기반 모델 선택 및 급식·시간표·게시글·이미지 분석 등 10종 도구 연동",
+          "Decisions 모델 기반 모델 선택 및 급식·시간표·게시글·이미지 분석 등 10종 도구 연동",
       },
     ],
   },
