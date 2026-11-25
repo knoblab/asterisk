@@ -1,0 +1,55 @@
+/* ==========================================================================
+   asterisk* Design System — Optional Base Reset & Global Typography
+   Uses 100% CSS Custom Properties from tokens.css.
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: var(--space-0);
+  padding: var(--space-0);
+}
+
+::selection {
+  background-color: var(--color-black);
+  color: var(--color-paper);
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background-color: var(--color-paper);
+  color: var(--color-black);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: var(--leading-normal);
+  word-break: keep-all;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  transition: var(--transition-colors);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}

@@ -1,80 +1,62 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="auto">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>asterisk* 서비스 이용약관 (Terms of Service)</title>
   <meta name="description" content="충남과학고등학교 학생 생활을 위한 통합 디지털 생태계 asterisk* (cnsh.life & cnsh.space) 서비스 이용약관" />
 
-  <!-- Fonts -->
+  <!-- Fonts & Design Tokens -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Asta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="/ds/tokens.css" />
 
   <style>
     :root {
-      --color-black: #000000;
-      --color-carbon: #1C1C1E;
-      --color-graphite: #48484A;
-      --color-telemetry: #8E8E93;
-      --color-silver: #D1D1D6;
-      --color-vellum: #EBE9E1;
-      --color-paper: #F7F6F2;
-      --font-brand: 'Asta Sans', sans-serif;
-      --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --color-black: #F7F6F2;
-        --color-carbon: #EBE9E1;
-        --color-graphite: #A0A19B;
-        --color-telemetry: #77777A;
-        --color-silver: #2C2C2E;
-        --color-vellum: #18191C;
-        --color-paper: #0D0E10;
-      }
+      --font-brand: var(--font-sans);
+      --font-body: var(--font-sans);
     }
 
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      margin: var(--space-0);
+      padding: var(--space-0);
     }
 
     body {
       background-color: var(--color-paper);
       color: var(--color-black);
       font-family: var(--font-body);
-      line-height: 1.75;
-      font-size: 15px;
+      line-height: var(--leading-prose);
+      font-size: var(--text-body-lg);
       -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 40px 24px 100px;
+      max-width: var(--max-doc-width);
+      margin: var(--space-0) auto;
+      padding: var(--space-10) var(--space-6) var(--space-25);
     }
 
     header {
-      border-bottom: 2px solid var(--color-black);
-      padding-bottom: 24px;
-      margin-bottom: 40px;
+      border-bottom: var(--border-width-medium) solid var(--color-black);
+      padding-bottom: var(--space-6);
+      margin-bottom: var(--space-10);
     }
 
     .brand-mark {
       font-family: var(--font-brand);
-      font-size: 26px;
+      font-size: var(--contact-pill-height);
       font-weight: 800;
       letter-spacing: -0.5px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: var(--space-1-5);
       text-decoration: none;
       color: var(--color-black);
-      margin-bottom: 12px;
+      margin-bottom: var(--space-3);
     }
 
     .brand-mark span.asterisk {
@@ -82,19 +64,19 @@
     }
 
     h1 {
-      font-size: 28px;
+      font-size: var(--space-7);
       font-weight: 800;
       letter-spacing: -0.5px;
-      margin-bottom: 8px;
+      margin-bottom: var(--space-2);
     }
 
     .meta-bar {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
-      font-size: 13px;
+      gap: var(--space-4);
+      font-size: var(--text-md);
       color: var(--color-telemetry);
-      margin-top: 12px;
+      margin-top: var(--space-3);
     }
 
     .meta-bar span strong {
@@ -103,16 +85,16 @@
 
     .toc {
       background-color: var(--color-vellum);
-      border: 1px solid var(--color-silver);
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin-bottom: 40px;
+      border: var(--border-sub);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-10);
     }
 
     .toc-title {
-      font-weight: 700;
-      font-size: 14px;
-      margin-bottom: 12px;
+      font-weight: var(--font-weight-bold);
+      font-size: var(--text-base);
+      margin-bottom: var(--space-3);
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
@@ -120,8 +102,8 @@
     .toc-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 8px 16px;
-      font-size: 13px;
+      gap: var(--space-2) var(--space-4);
+      font-size: var(--text-md);
     }
 
     .toc-grid a {
@@ -134,79 +116,79 @@
     }
 
     section {
-      margin-bottom: 48px;
+      margin-bottom: var(--space-12);
     }
 
     h2 {
-      font-size: 20px;
-      font-weight: 700;
-      border-bottom: 1px solid var(--color-silver);
-      padding-bottom: 8px;
-      margin-top: 36px;
-      margin-bottom: 20px;
+      font-size: var(--space-5);
+      font-weight: var(--font-weight-bold);
+      border-bottom: var(--border-sub);
+      padding-bottom: var(--space-2);
+      margin-top: var(--space-9);
+      margin-bottom: var(--space-5);
     }
 
     h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-top: 24px;
-      margin-bottom: 10px;
+      font-size: var(--space-4);
+      font-weight: var(--font-weight-bold);
+      margin-top: var(--space-6);
+      margin-bottom: var(--space-2-5);
       color: var(--color-carbon);
     }
 
     p {
-      margin-bottom: 14px;
+      margin-bottom: var(--space-3-5);
       color: var(--color-carbon);
       word-break: keep-all;
     }
 
     ul, ol {
-      margin-left: 20px;
-      margin-bottom: 16px;
+      margin-left: var(--space-5);
+      margin-bottom: var(--space-4);
       color: var(--color-carbon);
     }
 
     li {
-      margin-bottom: 6px;
+      margin-bottom: var(--space-1-5);
     }
 
     .badge-service {
       display: inline-block;
-      padding: 2px 8px;
+      padding: var(--space-0-5) var(--space-2);
       background: var(--color-silver);
       color: var(--color-black);
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-weight-semibold);
       font-family: var(--font-brand);
-      margin-right: 6px;
+      margin-right: var(--space-1-5);
     }
 
     .box-notice {
       background-color: var(--color-vellum);
-      border-left: 4px solid var(--color-black);
-      padding: 16px 20px;
-      border-radius: 0 6px 6px 0;
-      margin: 20px 0;
-      font-size: 14px;
+      border-left: var(--border-width-accent) solid var(--color-black);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--space-0) var(--radius-lg) var(--radius-lg) var(--space-0);
+      margin: var(--space-5) var(--space-0);
+      font-size: var(--text-base);
     }
 
     footer {
-      border-top: 1px solid var(--color-silver);
-      padding-top: 32px;
+      border-top: var(--border-sub);
+      padding-top: var(--space-8);
       margin-top: 60px;
-      font-size: 13px;
+      font-size: var(--text-md);
       color: var(--color-telemetry);
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: var(--space-4);
     }
 
     @media print {
       body {
-        background: white;
-        color: black;
+        background: var(--raw-white);
+        color: var(--raw-black);
       }
       .toc, .btn-back {
         display: none;

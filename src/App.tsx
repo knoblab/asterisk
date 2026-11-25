@@ -9,6 +9,12 @@ import {
   creditsList,
   type MonochromeToken,
 } from "./data/ecosystemData";
+import {
+  designTokenCategories,
+  designTokensCatalog,
+  type DesignTokenCategoryId,
+  type DesignTokenItem,
+} from "./data/designTokens";
 import { AsteriskAiTab } from "./components/AsteriskAiTab";
 
 type ActiveTab = "overview" | "ai" | "design" | "license" | "credits" | "terms" | "privacy";
@@ -189,6 +195,33 @@ const getTabFromLocation = (): ActiveTab => {
   return "overview";
 };
 
+const renderTokenSwatch = (token: DesignTokenItem, isDarkTheme: boolean): React.ReactNode => {
+  if (token.previewType === "color" || token.previewType === "surface") {
+    const bg = isDarkTheme
+      ? token.previewDarkColor || token.previewColor
+      : token.previewColor;
+    if (!bg) return null;
+    return <span className="ds-token-swatch" style={{ background: bg }} />;
+  }
+  if (token.previewType === "radius") {
+    return (
+      <span
+        className="ds-token-swatch is-radius"
+        style={{ borderRadius: `var(${token.cssVar})` }}
+      />
+    );
+  }
+  if (token.previewType === "shadow") {
+    return (
+      <span
+        className="ds-token-swatch is-shadow"
+        style={{ boxShadow: `var(${token.cssVar})` }}
+      />
+    );
+  }
+  return null;
+};
+
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ActiveTab>(() =>
     getTabFromLocation()
@@ -198,7 +231,8 @@ export const App: React.FC = () => {
     monochromeTokens[0]
   );
   const [isDarkTheme, setIsDarkTheme] = useState<boolean>(false);
-  const [copiedHex, setCopiedHex] = useState<string | null>(null);
+  const [copiedValue, setCopiedValue] = useState<string | null>(null);
+  const [tokenCategory, setTokenCategory] = useState<DesignTokenCategoryId>("all");
 
   const [demoCategory, setDemoCategory] = useState<string>("전체");
   const [demoSkyToggle, setDemoSkyToggle] = useState<boolean>(true);
@@ -214,7 +248,6 @@ export const App: React.FC = () => {
 
   // Sync tab with URL navigation and PopState / HashChange
   useEffect(() => {
-    // If the initial URL had a query like ?ai or ?/ai or ?tab=ai, clean it up to /ai
     const initialTab = getTabFromLocation();
     const cleanPath = tabToPath(initialTab);
     if (window.location.search) {
@@ -287,9 +320,9 @@ export const App: React.FC = () => {
       }
       document.body.removeChild(textArea);
     }
-    setCopiedHex(val);
+    setCopiedValue(val);
     window.setTimeout(() => {
-      setCopiedHex((prev) => (prev === val ? null : prev));
+      setCopiedValue((prev) => (prev === val ? null : prev));
     }, 2000);
   };
 
@@ -298,18 +331,78 @@ export const App: React.FC = () => {
     ? activeColor.darkContrastText
     : activeColor.contrastText;
 
+  const filteredDesignTokens =
+    tokenCategory === "all"
+      ? designTokensCatalog
+      : designTokensCatalog.filter((t) => t.category === tokenCategory);
+
+  const externalBaseUrl =
+    typeof window !== "undefined" &&
+    !["localhost", "127.0.0.1"].includes(window.location.hostname)
+      ? window.location.origin
+      : "https://asterisk.knoblab.xyz";
+
+  const cdnTokensUrl =
+    "https://cdn.jsdelivr.net/gh/knoblab/asterisk@main/src/design-system/tokens.css";
+
+  const integrationSnippets = [
+    {
+      id: "tokens-only",
+      title: "1. CSS 변수만 안전하게 불러오기 (권장)",
+      tag: "ZERO-POLLUTION",
+      description:
+        "전역 요소 리셋 없이 순수 CSS 커스텀 프로퍼티(:root)만 불러옵니다. Tailwind CSS 또는 기존 스타일시트가 있는 외부 웹(cnsh.life, cnsh.space 등)에 충돌 없이 바로 적용할 수 있습니다.",
+      code: `<link rel="stylesheet" href="${externalBaseUrl}/ds/tokens.css" />`,
+    },
+    {
+      id: "full-bundle",
+      title: "2. 풀 키트 한 번에 불러오기 (토큰 + 기본 + UI + 서체)",
+      tag: "ONE-LINE BUNDLE",
+      description:
+        "단일 평탄화 번들(/ds/asterisk.css)과 웹폰트(/ds/fonts.css)를 로드하면 버튼, 배지, 필터, 토글, 매트릭스 표 등 디자인 탭 공용 UI 클래스를 즉시 사용할 수 있습니다.",
+      code: `<link rel="stylesheet" href="${externalBaseUrl}/ds/fonts.css" />\n<link rel="stylesheet" href="${externalBaseUrl}/ds/asterisk.css" />`,
+    },
+    {
+      id: "css-import-cdn",
+      title: "3. CSS @import 및 jsDelivr GitHub CDN",
+      tag: "CDN / @IMPORT",
+      description:
+        "CSS 파일 최상단에서 @import 하거나 GitHub main 브랜치와 동기화된 jsDelivr 글로벌 CDN을 통해 불러올 수 있습니다.",
+      code: `@import url("${externalBaseUrl}/ds/tokens.css");\n/* 또는 GitHub CDN */\n@import url("${cdnTokensUrl}");`,
+    },
+    {
+      id: "theme-and-json",
+      title: "4. 다크 모드 전환 & JSON 토큰 연동",
+      tag: "DARK / AUTO / JSON",
+      description:
+        "수동 토글(data-theme='dark')과 OS 자동 추종(data-theme='auto')을 모두 지원합니다. JavaScript나 Tailwind 설정에는 /ds/tokens.json을 fetch해 연동하세요.",
+      code: `<!-- 수동 다크 모드 / OS 자동 추종 -->\n<html data-theme="dark">\n<html data-theme="auto">\n\n// JSON 토큰 명세 엔드포인트\nfetch("${externalBaseUrl}/ds/tokens.json")`,
+    },
+  ];
+
+  const toastSwatchBg =
+    copiedValue &&
+    (copiedValue.startsWith("#") ||
+      copiedValue.startsWith("rgb") ||
+      copiedValue.startsWith("linear-gradient"))
+      ? copiedValue
+      : "var(--color-black)";
+
+  const toastLabel =
+    copiedValue && copiedValue.length > 64
+      ? `${copiedValue.slice(0, 61)}...`
+      : copiedValue;
+
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      {copiedHex && (
+    <div className="shell">
+      {copiedValue && (
         <div className="brand-toast" role="status" aria-live="polite">
           <div
             className="brand-toast-swatch"
-            style={{
-              background: copiedHex.startsWith("#") ? copiedHex : "#000000",
-            }}
+            style={{ background: toastSwatchBg }}
           />
           <span>
-            COPIED: <strong>{copiedHex}</strong>
+            COPIED: <strong>{toastLabel}</strong>
           </span>
         </div>
       )}
@@ -389,17 +482,11 @@ export const App: React.FC = () => {
           </nav>
 
           <div className="nav-controls-right">
-            <a
-              href="https://cnsh.life"
-              className="nav-ext-pill"
-            >
+            <a href="https://cnsh.life" className="nav-ext-pill">
               <span>cnsh.life</span>
               <ExternalArrowIcon size={11} />
             </a>
-            <a
-              href="https://cnsh.space"
-              className="nav-ext-pill"
-            >
+            <a href="https://cnsh.space" className="nav-ext-pill">
               <span>cnsh.space</span>
               <ExternalArrowIcon size={11} />
             </a>
@@ -527,18 +614,12 @@ export const App: React.FC = () => {
               </a>
             </nav>
 
-            <div className="drawer-ext-links" style={{ marginTop: "20px" }}>
-              <a
-                href="https://cnsh.life"
-                className="drawer-ext-item"
-              >
+            <div className="drawer-ext-links">
+              <a href="https://cnsh.life" className="drawer-ext-item">
                 <span>cnsh.life</span>
                 <ExternalArrowIcon size={12} />
               </a>
-              <a
-                href="https://cnsh.space"
-                className="drawer-ext-item"
-              >
+              <a href="https://cnsh.space" className="drawer-ext-item">
                 <span>cnsh.space</span>
                 <ExternalArrowIcon size={12} />
               </a>
@@ -636,19 +717,8 @@ export const App: React.FC = () => {
                       </div>
 
                       {/* 비교 매트릭스 표 */}
-                      <div style={{ marginTop: "28px", marginBottom: "36px" }}>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "12px",
-                            fontWeight: 600,
-                            color: "var(--color-graphite)",
-                            marginBottom: "12px",
-                            letterSpacing: "0.02em",
-                          }}
-                        >
-                          서비스 비교
-                        </div>
+                      <div className="brand-subsection-block">
+                        <div className="brand-subsection-label">서비스 비교</div>
                         <div className="matrix-table-wrap">
                           <table className="matrix-table">
                             <thead>
@@ -666,7 +736,7 @@ export const App: React.FC = () => {
                               {twoTrackStrategyData.matrixRows.map((row, rIdx) => (
                                 <tr key={rIdx}>
                                   <td>
-                                    <strong style={{ fontFamily: "var(--font-mono)" }}>
+                                    <strong className="matrix-col-dim-title">
                                       {row.dimension}
                                     </strong>
                                   </td>
@@ -681,16 +751,7 @@ export const App: React.FC = () => {
 
                       {/* 시너지 3대 포인트 */}
                       <div>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "12px",
-                            fontWeight: 600,
-                            color: "var(--color-graphite)",
-                            marginBottom: "14px",
-                            letterSpacing: "0.02em",
-                          }}
-                        >
+                        <div className="brand-subsection-label is-spacious">
                           공통 기반 및 연계
                         </div>
                         <div className="service-features-clean">
@@ -747,7 +808,7 @@ export const App: React.FC = () => {
               </section>
 
               {/* 4. Core Services */}
-              <section className="section-end-double" style={{ marginBottom: 0 }}>
+              <section className="section-end-double is-last">
                 <div className="brand-story-title-row">
                   <h2>Core Services</h2>
                 </div>
@@ -759,19 +820,13 @@ export const App: React.FC = () => {
                       className="brand-chapter-block with-subtle-sep"
                     >
                       <div className="brand-chapter-meta">
-                        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        <div className="service-track-stack">
                           <span
-                            className={
+                            className={`service-track-badge ${
                               srv.trackType === "Life Track"
                                 ? "ast-badge ast-badge-solid"
                                 : "ast-badge ast-badge-outline"
-                            }
-                            style={{
-                              alignSelf: "flex-start",
-                              height: "20px",
-                              fontSize: "10.5px",
-                              padding: "0 6px",
-                            }}
+                            }`}
                           >
                             {srv.trackType}
                           </span>
@@ -786,15 +841,7 @@ export const App: React.FC = () => {
                         <h3>
                           {renderWithCenteredStar(srv.title)} — {srv.tagline}
                         </h3>
-                        <p
-                          style={{
-                            fontSize: "14.5px",
-                            lineHeight: 1.65,
-                            color: "var(--color-graphite)",
-                          }}
-                        >
-                          {srv.description}
-                        </p>
+                        <p className="service-summary-desc">{srv.description}</p>
 
                         <div className="service-features-clean">
                           {srv.modules.map((mod) => (
@@ -810,10 +857,7 @@ export const App: React.FC = () => {
                         </div>
 
                         <div className="service-editorial-actions">
-                          <a
-                            href={srv.url}
-                            className="btn-primary-action"
-                          >
+                          <a href={srv.url} className="btn-primary-action">
                             <span>{renderWithCenteredStar(srv.title)} 바로가기</span>
                             <ExternalArrowIcon size={13} />
                           </a>
@@ -858,17 +902,12 @@ export const App: React.FC = () => {
               VIEW 3: 디자인 시스템 (DESIGN SYSTEM)
               ============================================================== */}
           {activeTab === "design" && (
-            <div
-              className="page-transition-wrap"
-              style={{ paddingTop: "36px" }}
-            >
+            <div className="page-transition-wrap with-top-gap">
               {/* Color & Theme System */}
               <section className="section-end-double">
                 <div className="brand-section-head">
                   <h2>Color &amp; Theme System</h2>
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: "8px" }}
-                  >
+                  <div className="ds-theme-toggle-row">
                     <button
                       type="button"
                       className={`board-filter-btn ${
@@ -890,28 +929,20 @@ export const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div
-                  className="brand-colors-grid"
-                  style={{ marginBottom: "20px" }}
-                >
+                <div className="brand-colors-grid">
                   <div
                     className="brand-color-main-card"
-                    style={{
-                      backgroundColor: resolvedHex,
-                      color: resolvedContrast,
-                    }}
+                    style={
+                      {
+                        backgroundColor: resolvedHex,
+                        color: resolvedContrast,
+                        "--card-bg": resolvedHex,
+                        "--card-fg": resolvedContrast,
+                      } as React.CSSProperties
+                    }
                   >
                     <div>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "12px",
-                          opacity: 0.8,
-                          marginBottom: "24px",
-                        }}
-                      >
+                      <div className="brand-color-meta-row">
                         <span>{activeColor.cssVar}</span>
                         <span>{isDarkTheme ? "DARK MODE" : "LIGHT MODE"}</span>
                       </div>
@@ -924,22 +955,16 @@ export const App: React.FC = () => {
 
                     <div className="brand-color-bottom-bar">
                       <div>
-                        <span
-                          style={{
-                            fontSize: "11px",
-                            opacity: 0.7,
-                            display: "block",
-                          }}
-                        >
+                        <span className="brand-color-hex-label">
                           {isDarkTheme ? "DARK HEX" : "LIGHT HEX"} (
                           {isDarkTheme
                             ? `Light: ${activeColor.hex}`
                             : `Dark: ${activeColor.darkHex}`}
                           )
                         </span>
-                        <span style={{ fontSize: "1.4rem" }}>{resolvedHex}</span>
+                        <span className="brand-color-hex-value">{resolvedHex}</span>
                       </div>
-                      <div style={{ display: "flex", gap: "6px" }}>
+                      <div className="brand-color-actions">
                         <button
                           type="button"
                           className="brand-copy-action-btn"
@@ -954,7 +979,7 @@ export const App: React.FC = () => {
                           className="brand-copy-action-btn"
                           onClick={(e) => handleCopyText(resolvedHex, e)}
                         >
-                          {copiedHex === resolvedHex ? (
+                          {copiedValue === resolvedHex ? (
                             <CheckIcon size={14} />
                           ) : (
                             <CopyIcon size={14} />
@@ -970,10 +995,7 @@ export const App: React.FC = () => {
                       <div className="brand-color-list-title">
                         MONOCHROME PALETTE (7 STEPS)
                       </div>
-                      <div
-                        className="brand-color-items-stack"
-                        style={{ marginTop: "12px" }}
-                      >
+                      <div className="brand-color-items-stack">
                         {monochromeTokens.map((token, idx) => {
                           const isSelected =
                             activeColor.cssVar === token.cssVar;
@@ -989,20 +1011,14 @@ export const App: React.FC = () => {
                               onClick={() => setActiveColor(token)}
                             >
                               <div className="brand-color-row-left">
-                                <span
-                                  style={{
-                                    opacity: 0.6,
-                                    width: "18px",
-                                    fontSize: "11px",
-                                  }}
-                                >
+                                <span className="brand-color-index">
                                   0{idx + 1}
                                 </span>
                                 <div
                                   className="brand-chip-sq"
                                   style={{ backgroundColor: itemHex }}
                                 />
-                                <span style={{ fontWeight: 600 }}>
+                                <span className="brand-color-var-label">
                                   {token.cssVar}
                                 </span>
                               </div>
@@ -1014,7 +1030,7 @@ export const App: React.FC = () => {
                                   title="HEX 복사"
                                   onClick={(e) => handleCopyText(itemHex, e)}
                                 >
-                                  {copiedHex === itemHex ? (
+                                  {copiedValue === itemHex ? (
                                     <CheckIcon size={14} />
                                   ) : (
                                     <CopyIcon size={14} />
@@ -1042,7 +1058,6 @@ export const App: React.FC = () => {
                         style={{
                           backgroundColor: cellHex,
                           color: cellText,
-                          cursor: "pointer",
                         }}
                         onClick={() => {
                           setActiveColor(token);
@@ -1052,7 +1067,7 @@ export const App: React.FC = () => {
                         <div className="brand-swatch-cell-hex">{cellHex}</div>
                         <div className="brand-swatch-cell-name">
                           <strong>{token.name}</strong>
-                          <div style={{ opacity: 0.75, fontSize: "9.5px" }}>
+                          <div className="brand-swatch-cell-sub">
                             {token.koreanName}
                           </div>
                         </div>
@@ -1071,70 +1086,39 @@ export const App: React.FC = () => {
                 <div className="brand-typo-section">
                   <div className="brand-typo-row">
                     <div className="brand-typo-label">
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          color: "var(--color-black)",
-                          marginBottom: "4px",
-                        }}
-                      >
-                        워드마크 규격
-                      </div>
+                      <div className="brand-typo-label-title">워드마크 규격</div>
                       <div>.asterisk-wordmark</div>
                       <div>.asterisk-wordmark-inline</div>
                     </div>
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns:
-                          "repeat(auto-fit, minmax(220px, 1fr))",
-                        gap: "16px",
-                      }}
-                    >
+                    <div className="brand-wordmark-grid">
                       <div className="module-card">
                         <span className="eyebrow">데스크톱 2줄 워드마크</span>
-                        <div
-                          className="asterisk-wordmark"
-                          style={{ fontSize: "42px", margin: "12px 0" }}
-                        >
+                        <div className="asterisk-wordmark brand-wordmark-preview-desktop">
                           <div>aste</div>
                           <div className="asterisk-wordmark-bottom">
                             <span>risk</span>
                             <span className="asterisk-wordmark-star">*</span>
                           </div>
                         </div>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "11px",
-                            color: "var(--color-graphite)",
-                          }}
-                        >
-                          weight: 300 · star: 0.85em (수직 중앙) · line-height:
-                          0.85
+                        <div className="brand-wordmark-spec">
+                          weight: var(--font-weight-light) · star:
+                          var(--wordmark-star-size) · line-height:
+                          var(--leading-wordmark)
                         </div>
                       </div>
 
                       <div className="module-card">
                         <span className="eyebrow">모바일 1줄 워드마크</span>
-                        <div style={{ margin: "18px 0" }}>
-                          <span
-                            className="asterisk-wordmark-inline"
-                            style={{ fontSize: "36px" }}
-                          >
+                        <div className="brand-wordmark-preview-inline-wrap">
+                          <span className="asterisk-wordmark-inline brand-wordmark-preview-inline">
                             asterisk
                             <span className="asterisk-wordmark-star">*</span>
                           </span>
                         </div>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "11px",
-                            color: "var(--color-graphite)",
-                          }}
-                        >
-                          weight: 300 · star: 0.85em (수직 중앙) · line-height:
-                          1.0
+                        <div className="brand-wordmark-spec">
+                          weight: var(--font-weight-light) · star:
+                          var(--wordmark-star-size) · line-height:
+                          var(--leading-none)
                         </div>
                       </div>
                     </div>
@@ -1142,41 +1126,22 @@ export const App: React.FC = () => {
 
                   <div className="brand-typo-row">
                     <div className="brand-typo-label">
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          color: "var(--color-black)",
-                          marginBottom: "4px",
-                        }}
-                      >
-                        서체 및 굵기
-                      </div>
+                      <div className="brand-typo-label-title">서체 및 굵기</div>
                       <div>Asta Sans · Pretendard</div>
                     </div>
                     <div className="brand-typo-body">
                       <div className="brand-weights-demo">
-                        <div
-                          style={{
-                            fontWeight: 300,
-                            fontSize: "1.5rem",
-                            letterSpacing: "-0.03em",
-                          }}
-                        >
+                        <div className="brand-weight-light-sample">
                           300 Light — 페이지 제목 및 디스플레이
                         </div>
-                        <div style={{ fontWeight: 400 }}>
+                        <div className="brand-weight-regular-sample">
                           400 Regular — 본문 및 게시글 텍스트 (14.5px / 1.75)
                         </div>
-                        <div style={{ fontWeight: 600 }}>
+                        <div className="brand-weight-semibold-sample">
                           600 SemiBold — 카드 제목 및 주요 라벨 (asterisk
                           <span className="ast-star">*</span>)
                         </div>
-                        <div
-                          style={{
-                            fontWeight: 700,
-                            fontVariantNumeric: "tabular-nums",
-                          }}
-                        >
+                        <div className="brand-weight-bold-sample">
                           700 Bold Tabular — 08:40 ~ 09:30 · 25:00 · #0042
                         </div>
                       </div>
@@ -1191,58 +1156,30 @@ export const App: React.FC = () => {
                   <h2>Surface Modes</h2>
                 </div>
 
-                <div className="ds-surface-grid" style={{ marginBottom: 0 }}>
+                <div className="ds-surface-grid">
                   <div className="ds-surface-card mode-paper">
                     <div>
-                      <span className="eyebrow" style={{ color: "#48484A" }}>
+                      <span className="eyebrow ds-surface-eyebrow-paper">
                         DEFAULT LIGHT
                       </span>
-                      <h3
-                        style={{
-                          fontSize: "1.2rem",
-                          fontWeight: 600,
-                          marginTop: "6px",
-                        }}
-                      >
-                        Paper Light
-                      </h3>
+                      <h3 className="ds-surface-title">Paper Light</h3>
                     </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "11.5px",
-                        color: "#48484A",
-                      }}
-                    >
-                      bg: #F7F6F2 (--color-paper)
+                    <div className="ds-surface-spec ds-surface-spec-paper">
+                      bg: #F7F6F2 (--surface-paper-bg)
                       <br />
-                      border: 1px solid #000000
+                      fg: #000000 · border: var(--border-main)
                     </div>
                   </div>
 
                   <div className="ds-surface-card mode-dark">
                     <div>
-                      <span className="eyebrow" style={{ color: "#A0A19B" }}>
+                      <span className="eyebrow ds-surface-eyebrow-dark">
                         DARK / NOW CARD
                       </span>
-                      <h3
-                        style={{
-                          fontSize: "1.2rem",
-                          fontWeight: 600,
-                          marginTop: "6px",
-                        }}
-                      >
-                        Carbon Dark
-                      </h3>
+                      <h3 className="ds-surface-title">Carbon Dark</h3>
                     </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "11.5px",
-                        color: "#A0A19B",
-                      }}
-                    >
-                      bg: #000000 · surface: #18191C
+                    <div className="ds-surface-spec ds-surface-spec-dark">
+                      bg: #000000 (--surface-dark-bg) · surface: #18191C
                       <br />
                       ink: #F7F6F2 ([data-theme=&apos;dark&apos;])
                     </div>
@@ -1251,29 +1188,15 @@ export const App: React.FC = () => {
                   <div className="ds-surface-card mode-glass">
                     <div className="ds-glass-inner">
                       <div>
-                        <span className="eyebrow" style={{ color: "#111111" }}>
+                        <span className="eyebrow ds-surface-eyebrow-glass">
                           SKY BACKGROUND
                         </span>
-                        <h3
-                          style={{
-                            fontSize: "1.2rem",
-                            fontWeight: 600,
-                            marginTop: "6px",
-                          }}
-                        >
-                          Translucent Glass
-                        </h3>
+                        <h3 className="ds-surface-title">Translucent Glass</h3>
                       </div>
-                      <div
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11.5px",
-                          color: "#1C1C1E",
-                        }}
-                      >
-                        rgba(242, 246, 247, 0.72)
+                      <div className="ds-surface-spec ds-surface-spec-glass">
+                        rgba(242, 246, 247, 0.72) (--surface-glass-bg)
                         <br />
-                        backdrop-filter: blur(14px)
+                        backdrop-filter: var(--surface-glass-blur)
                       </div>
                     </div>
                   </div>
@@ -1281,16 +1204,16 @@ export const App: React.FC = () => {
               </section>
 
               {/* UI Components */}
-              <section className="section-end-double" style={{ marginBottom: 0 }}>
+              <section className="section-end-double">
                 <div className="brand-section-head">
                   <h2>UI Components</h2>
                 </div>
 
-                <div className="ds-primitives-grid" style={{ marginBottom: "24px" }}>
+                <div className="ds-primitives-grid">
                   <div className="ds-primitive-box">
                     <div className="ds-primitive-head">
                       <span>BUTTONS &amp; AUTH</span>
-                      <span>2px radius</span>
+                      <span>var(--btn-radius) · 2px</span>
                     </div>
                     <div className="ds-primitive-stage">
                       <button type="button" className="btn-primary-action">
@@ -1320,7 +1243,7 @@ export const App: React.FC = () => {
                   <div className="ds-primitive-box">
                     <div className="ds-primitive-head">
                       <span>BADGES &amp; TAGS</span>
-                      <span>22px Height</span>
+                      <span>var(--badge-height) · 22px</span>
                     </div>
                     <div className="ds-primitive-stage">
                       <span className="badge-pinned">공지</span>
@@ -1363,27 +1286,9 @@ export const App: React.FC = () => {
                       <span>SWITCH &amp; SEARCH</span>
                       <span>.toggle-switch · .board-search-input</span>
                     </div>
-                    <div
-                      className="ds-primitive-stage"
-                      style={{ justifyContent: "space-between", width: "100%" }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                        }}
-                      >
-                        <label
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "12px",
-                            cursor: "pointer",
-                          }}
-                        >
+                    <div className="ds-primitive-stage is-split">
+                      <div className="ds-toggle-group">
+                        <label className="ds-toggle-label">
                           <span className="toggle-switch">
                             <input
                               type="checkbox"
@@ -1397,16 +1302,7 @@ export const App: React.FC = () => {
                           <span>하늘 배경</span>
                         </label>
 
-                        <label
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "12px",
-                            cursor: "pointer",
-                          }}
-                        >
+                        <label className="ds-toggle-label">
                           <span className="toggle-switch">
                             <input
                               type="checkbox"
@@ -1430,36 +1326,20 @@ export const App: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="ds-primitives-grid" style={{ marginBottom: 0 }}>
+                <div className="ds-primitives-grid is-last">
                   <div className="specimen-now-card">
                     <div className="specimen-now-top">
                       <span>
                         <span className="specimen-now-dot" />
                         NOW · 3교시 수업 중
                       </span>
-                      <span style={{ fontVariantNumeric: "tabular-nums" }}>
-                        64%
-                      </span>
+                      <span className="specimen-now-pct">64%</span>
                     </div>
                     <div>
-                      <div
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11.5px",
-                          color: "var(--color-telemetry)",
-                          marginBottom: "4px",
-                        }}
-                      >
+                      <div className="specimen-now-sub">
                         10:40 — 11:30 · 고급물리학
                       </div>
-                      <div
-                        style={{
-                          fontSize: "1.75rem",
-                          fontWeight: 300,
-                          letterSpacing: "-0.04em",
-                          fontVariantNumeric: "tabular-nums",
-                        }}
-                      >
+                      <div className="specimen-now-countdown">
                         18분 12초 남음
                       </div>
                     </div>
@@ -1467,14 +1347,7 @@ export const App: React.FC = () => {
                       <div className="specimen-progress">
                         <span style={{ width: "64%" }} />
                       </div>
-                      <div
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11px",
-                          color: "var(--color-silver)",
-                          marginTop: "10px",
-                        }}
-                      >
+                      <div className="specimen-now-next">
                         NEXT → <strong>점심시간 (12:20 — 13:20)</strong>
                       </div>
                     </div>
@@ -1485,76 +1358,31 @@ export const App: React.FC = () => {
                       <span>NO</span>
                       <span>TITLE</span>
                       <span>AUTHOR</span>
-                      <span style={{ textAlign: "right" }}>LIKE</span>
+                      <span className="specimen-board-like-head">LIKE</span>
                     </div>
                     <div className="specimen-board-row">
-                      <span
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11.5px",
-                          color: "var(--color-telemetry)",
-                        }}
-                      >
-                        0042
-                      </span>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "6px",
-                          minWidth: 0,
-                        }}
-                      >
+                      <span className="specimen-board-no">0042</span>
+                      <div className="specimen-board-title-wrap">
                         <span className="badge-popular">인기</span>
-                        <span
-                          style={{
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                            fontWeight: 500,
-                          }}
-                        >
+                        <span className="specimen-board-title-text">
                           @asterisk 오늘 석식 메뉴 알려줘
                         </span>
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
-                      >
-                        <span style={{ fontSize: "12px" }}>재학생</span>
+                      <div className="specimen-board-author-wrap">
+                        <span className="specimen-board-author-name">
+                          재학생
+                        </span>
                         <span className="author-generation-badge">33기</span>
                       </div>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11.5px",
-                          fontWeight: 700,
-                          textAlign: "right",
-                        }}
-                      >
-                        +12
-                      </span>
+                      <span className="specimen-board-like-count">+12</span>
                     </div>
                     <div className="specimen-ai-reply">
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "6px",
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11px",
-                        }}
-                      >
+                      <div className="specimen-ai-reply-head">
                         <span className="badge-pinned">
                           @asterisk<span className="ast-star">*</span> AI
                         </span>
                       </div>
-                      <div
-                        style={{ color: "var(--color-black)", lineHeight: 1.5 }}
-                      >
+                      <div className="specimen-ai-reply-body">
                         오늘 충남과학고 석식(18:00~18:50)은 수제등심돈까스, 크림스프,
                         배추김치입니다. (892 kcal)
                       </div>
@@ -1562,17 +1390,182 @@ export const App: React.FC = () => {
                   </div>
                 </div>
               </section>
+
+              {/* Design Tokens Reference */}
+              <section className="section-end-double">
+                <div className="brand-section-head">
+                  <h2>Design Tokens Reference</h2>
+                  <p>
+                    {filteredDesignTokens.length} tokens · 행 또는 버튼을 클릭해
+                    var(--...) 복사
+                  </p>
+                </div>
+
+                <div className="ds-token-filters">
+                  {designTokenCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      className={`board-filter-btn ${
+                        tokenCategory === cat.id ? "active" : ""
+                      }`}
+                      onClick={() => setTokenCategory(cat.id)}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="matrix-table-wrap">
+                  <table className="matrix-table">
+                    <thead>
+                      <tr>
+                        <th style={{ width: "26%" }}>토큰 (CSS VARIABLE)</th>
+                        <th style={{ width: "22%" }}>LIGHT (:root)</th>
+                        <th style={{ width: "20%" }}>DARK OVERRIDE</th>
+                        <th style={{ width: "24%" }}>용도</th>
+                        <th style={{ width: "8%" }}>복사</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredDesignTokens.map((token) => {
+                        const varExpr = `var(${token.cssVar})`;
+                        return (
+                          <tr key={token.cssVar}>
+                            <td>
+                              <div className="matrix-col-label">토큰</div>
+                              <div className="ds-token-name-cell">
+                                {renderTokenSwatch(token, isDarkTheme)}
+                                <span className="ds-token-code">
+                                  {token.cssVar}
+                                </span>
+                              </div>
+                            </td>
+                            <td>
+                              <div className="matrix-col-label">LIGHT (:root)</div>
+                              <span className="ds-token-val">
+                                {token.lightValue}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="matrix-col-label">DARK OVERRIDE</div>
+                              <span
+                                className={`ds-token-val ${
+                                  token.darkValue ? "" : "ds-token-muted"
+                                }`}
+                              >
+                                {token.darkValue || "—"}
+                              </span>
+                            </td>
+                            <td>
+                              <div className="matrix-col-label">용도</div>
+                              <span className="tool-desc-text">
+                                {token.role}
+                              </span>
+                            </td>
+                            <td>
+                              <button
+                                type="button"
+                                className="ds-token-copy-btn"
+                                onClick={(e) => handleCopyText(varExpr, e)}
+                                title={`${varExpr} 복사`}
+                              >
+                                {copiedValue === varExpr ? (
+                                  <CheckIcon size={12} />
+                                ) : (
+                                  <CopyIcon size={12} />
+                                )}
+                                <span>VAR</span>
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              {/* External Web Integration */}
+              <section className="section-end-double is-last">
+                <div className="brand-section-head">
+                  <h2>External Web Integration</h2>
+                  <p>CORS (*) · Zero-Pollution CSS &amp; JSON</p>
+                </div>
+
+                <div className="ds-integration-grid">
+                  {integrationSnippets.map((item) => (
+                    <article key={item.id} className="ds-snippet-card">
+                      <div>
+                        <div className="ds-snippet-head">
+                          <h3 className="ds-snippet-title">{item.title}</h3>
+                          <span className="ast-badge ast-badge-vellum">
+                            {item.tag}
+                          </span>
+                        </div>
+                        <p className="ds-snippet-desc">
+                          {item.description}
+                        </p>
+                      </div>
+
+                      <pre className="ds-snippet-pre">{item.code}</pre>
+
+                      <div className="ds-primitive-stage is-split">
+                        <div className="ds-endpoint-list">
+                          {item.id === "theme-and-json" && (
+                            <>
+                              <a
+                                href="/ds/tokens.css"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ds-endpoint-pill"
+                              >
+                                /ds/tokens.css ↗
+                              </a>
+                              <a
+                                href="/ds/asterisk.css"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ds-endpoint-pill"
+                              >
+                                /ds/asterisk.css ↗
+                              </a>
+                              <a
+                                href="/ds/tokens.json"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="ds-endpoint-pill"
+                              >
+                                /ds/tokens.json ↗
+                              </a>
+                            </>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="ds-token-copy-btn"
+                          onClick={(e) => handleCopyText(item.code, e)}
+                        >
+                          {copiedValue === item.code ? (
+                            <CheckIcon size={12} />
+                          ) : (
+                            <CopyIcon size={12} />
+                          )}
+                          <span>COPY SNIPPET</span>
+                        </button>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
             </div>
           )}
 
           {/* ==============================================================
-              VIEW 3: 라이선스 (LICENSE)
+              VIEW 4: 라이선스 (LICENSE)
               ============================================================== */}
           {activeTab === "license" && (
-            <div
-              className="page-transition-wrap"
-              style={{ paddingTop: "36px" }}
-            >
+            <div className="page-transition-wrap with-top-gap">
               {/* Governance Matrix Table */}
               <section className="section-end-double">
                 <div className="brand-section-head">
@@ -1595,20 +1588,17 @@ export const App: React.FC = () => {
                           <strong>cnsh.life</strong>
                         </td>
                         <td>학교생활 포털 (시간표·급식·방과후·타이머)</td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <a
                             href="https://github.com/kuchipatchi09/everytime"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "underline",
-                              textUnderlineOffset: "3px",
-                            }}
+                            className="matrix-ext-link"
                           >
                             kuchipatchi09/everytime ↗
                           </a>
                         </td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <strong>GNU AGPL-3.0</strong>
                         </td>
                       </tr>
@@ -1617,20 +1607,17 @@ export const App: React.FC = () => {
                           <strong>cnsh.space (FE)</strong>
                         </td>
                         <td>학생 커뮤니티 웹 클라이언트</td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <a
                             href="https://github.com/knoblab/asterisk-community-frontend"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "underline",
-                              textUnderlineOffset: "3px",
-                            }}
+                            className="matrix-ext-link"
                           >
                             knoblab/asterisk-community-frontend ↗
                           </a>
                         </td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <strong>MIT License</strong>
                         </td>
                       </tr>
@@ -1639,10 +1626,8 @@ export const App: React.FC = () => {
                           <strong>cnsh.space (BE)</strong>
                         </td>
                         <td>학생 인증, DB, 보안 및 @asterisk AI 서버</td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
-                          Knoblab Private
-                        </td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">Knoblab Private</td>
+                        <td className="font-mono-cell">
                           <strong>Proprietary</strong>
                         </td>
                       </tr>
@@ -1654,20 +1639,17 @@ export const App: React.FC = () => {
                           </strong>
                         </td>
                         <td>워드마크, 로고(SVG) 및 브랜드 자산</td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <a
                             href="https://github.com/knoblab/asterisk"
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                              textDecoration: "underline",
-                              textUnderlineOffset: "3px",
-                            }}
+                            className="matrix-ext-link"
                           >
                             knoblab/asterisk ↗
                           </a>
                         </td>
-                        <td style={{ fontFamily: "var(--font-mono)" }}>
+                        <td className="font-mono-cell">
                           <strong>All Rights Reserved</strong>
                         </td>
                       </tr>
@@ -1690,23 +1672,14 @@ export const App: React.FC = () => {
                     >
                       <div className="brand-chapter-meta">
                         <span className="service-tier-tag">{spec.spdx}</span>
-                        <span
-                          className="brand-chapter-submeta"
-                          style={{ marginTop: "4px" }}
-                        >
+                        <span className="brand-chapter-submeta with-top-gap">
                           {spec.repoLabel}
                         </span>
                       </div>
 
                       <div className="brand-chapter-content">
                         <h3>{renderWithCenteredStar(spec.moduleName)}</h3>
-                        <p
-                          style={{
-                            fontSize: "14px",
-                            lineHeight: 1.65,
-                            color: "var(--color-graphite)",
-                          }}
-                        >
+                        <p className="license-summary-desc">
                           {renderWithCenteredStar(spec.summary)}
                         </p>
 
@@ -1754,7 +1727,7 @@ export const App: React.FC = () => {
               </section>
 
               {/* Font Licenses */}
-              <section className="section-end-double" style={{ marginBottom: 0 }}>
+              <section className="section-end-double is-last">
                 <div className="brand-section-head">
                   <h2>서체 라이선스</h2>
                 </div>
@@ -1776,14 +1749,11 @@ export const App: React.FC = () => {
           )}
 
           {/* ==============================================================
-              VIEW 4: 크레딧 (CREDITS)
+              VIEW 5: 크레딧 (CREDITS)
               ============================================================== */}
           {activeTab === "credits" && (
-            <div
-              className="page-transition-wrap"
-              style={{ paddingTop: "36px" }}
-            >
-              <section className="section-end-double" style={{ marginBottom: 0 }}>
+            <div className="page-transition-wrap with-top-gap">
+              <section className="section-end-double is-last">
                 <div className="brand-section-head">
                   <h2>Credits</h2>
                 </div>
@@ -1871,29 +1841,15 @@ export const App: React.FC = () => {
           )}
 
           {/* ==============================================================
-              VIEW 5: 이용약관 (TERMS)
+              VIEW 6: 이용약관 (TERMS)
               ============================================================== */}
           {activeTab === "terms" && (
-            <div
-              className="page-transition-wrap"
-              style={{ paddingTop: "24px" }}
-            >
-              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="page-transition-wrap with-legal-gap">
+              <div className="legal-iframe-bar">
                 <button
                   type="button"
                   onClick={() => switchView("overview")}
-                  style={{
-                    background: "none",
-                    border: 0,
-                    padding: 0,
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    color: "inherit",
-                    cursor: "pointer",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                  }}
+                  className="legal-iframe-back"
                 >
                   ← 소개로 돌아가기
                 </button>
@@ -1901,12 +1857,7 @@ export const App: React.FC = () => {
                   href="/terms/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontSize: "12px",
-                    color: "inherit",
-                    textDecoration: "underline",
-                    textUnderlineOffset: "3px",
-                  }}
+                  className="legal-iframe-ext"
                 >
                   새 창으로 열기 ↗
                 </a>
@@ -1914,40 +1865,21 @@ export const App: React.FC = () => {
               <iframe
                 src="/terms/index.html"
                 title="asterisk* 서비스 이용약관"
-                style={{
-                  width: "100%",
-                  height: "85vh",
-                  border: "1px solid var(--color-silver)",
-                  background: "var(--color-paper)",
-                }}
+                className="legal-iframe-frame"
               />
             </div>
           )}
 
           {/* ==============================================================
-              VIEW 6: 개인정보 처리방침 (PRIVACY)
+              VIEW 7: 개인정보 처리방침 (PRIVACY)
               ============================================================== */}
           {activeTab === "privacy" && (
-            <div
-              className="page-transition-wrap"
-              style={{ paddingTop: "24px" }}
-            >
-              <div style={{ marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="page-transition-wrap with-legal-gap">
+              <div className="legal-iframe-bar">
                 <button
                   type="button"
                   onClick={() => switchView("overview")}
-                  style={{
-                    background: "none",
-                    border: 0,
-                    padding: 0,
-                    fontSize: "13px",
-                    fontWeight: 600,
-                    color: "inherit",
-                    cursor: "pointer",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "6px",
-                  }}
+                  className="legal-iframe-back"
                 >
                   ← 소개로 돌아가기
                 </button>
@@ -1955,12 +1887,7 @@ export const App: React.FC = () => {
                   href="/privacy/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    fontSize: "12px",
-                    color: "inherit",
-                    textDecoration: "underline",
-                    textUnderlineOffset: "3px",
-                  }}
+                  className="legal-iframe-ext"
                 >
                   새 창으로 열기 ↗
                 </a>
@@ -1968,12 +1895,7 @@ export const App: React.FC = () => {
               <iframe
                 src="/privacy/index.html"
                 title="asterisk* 개인정보 처리방침"
-                style={{
-                  width: "100%",
-                  height: "85vh",
-                  border: "1px solid var(--color-silver)",
-                  background: "var(--color-paper)",
-                }}
+                className="legal-iframe-frame"
               />
             </div>
           )}
@@ -1994,31 +1916,14 @@ export const App: React.FC = () => {
             </span>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="footer-links-row">
             <a
               href="/"
               onClick={(e) => {
                 e.preventDefault();
                 switchView("overview");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               소개
             </a>
@@ -2028,17 +1933,7 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("ai");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               AI
             </a>
@@ -2048,17 +1943,7 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("design");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               디자인 시스템
             </a>
@@ -2068,17 +1953,7 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("license");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               라이선스
             </a>
@@ -2088,17 +1963,7 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("credits");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               크레딧
             </a>
@@ -2108,17 +1973,7 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("terms");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               이용약관
             </a>
@@ -2128,21 +1983,11 @@ export const App: React.FC = () => {
                 e.preventDefault();
                 switchView("privacy");
               }}
-              style={{
-                background: "none",
-                border: 0,
-                padding: 0,
-                fontFamily: "var(--font-mono)",
-                fontSize: "11.5px",
-                cursor: "pointer",
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-                color: "inherit",
-              }}
+              className="footer-nav-link"
             >
               개인정보처리방침
             </a>
-<a
+            <a
               href="https://status.knoblab.xyz/"
               target="_blank"
               rel="noopener noreferrer"

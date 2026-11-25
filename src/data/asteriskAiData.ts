@@ -33,8 +33,8 @@ export const aiPipelineSteps: AiPipelineStep[] = [
   },
   {
     step: "02",
-    title: "Gemini Decision 1 라우팅 판단",
-    desc: "경량 라우터 Gemini Decision 1이 한 번의 호출로 사용할 모델과 필요한 내부 도구를 100~200ms 안에 결정합니다.",
+    title: "라우팅 판단",
+    desc: "경량 라우터 모델 Gemini Decision 1이 한 번의 호출로 사용할 모델과 필요한 내부 도구를 100~200ms 안에 결정합니다.",
   },
   {
     step: "03",
@@ -108,7 +108,7 @@ export const aiCandidateModels: AiModelSpec[] = [
     badge: "장애 대체(Fallback)",
     role: "상위 API 장애 시 대체 응답",
     description:
-      "상위 API 지연이나 Gemini Decision 1 오류가 발생했을 때 대신 호출되는 예비 모델입니다. 수집된 내부 도구 데이터에서 필요한 내용을 골라 응답을 이어갑니다.",
+      "상위 API 지연이나 라우팅 오류가 발생했을 때 대신 호출되는 예비 모델입니다. 수집된 내부 도구 데이터에서 필요한 내용을 골라 응답을 이어갑니다.",
     features: [
       "Gemini Decision 1 타임아웃·오류 발생 시 자동 대체 호출",
       "내부 도구 데이터 중 필요한 항목 선별",

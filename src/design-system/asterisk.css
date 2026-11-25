@@ -1,0 +1,8 @@
+/* ==========================================================================
+   asterisk* Design System — Unified Entrypoint
+   Includes Tokens, Optional Base Reset, and Shared UI Components.
+   ========================================================================== */
+
+@import './tokens.css';
+@import './base.css';
+@import './components.css';

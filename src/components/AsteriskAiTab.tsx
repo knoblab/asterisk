@@ -31,7 +31,7 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
       : aiInternalTools.filter((t) => t.categoryLabel === selectedCategory);
 
   return (
-    <div className="page-transition-wrap" style={{ paddingTop: "36px" }}>
+    <div className="page-transition-wrap with-top-gap">
       {/* 1. What is asterisk* AI */}
       <section className="section-end-double">
         <div className="brand-story-title-row">
@@ -90,13 +90,12 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
         </div>
       </section>
 
-      {/* 2. Gemini Decision 1 모델 선택 */}
       <section className="section-end-double">
         <div className="brand-section-head">
-          <h2>Gemini Decision 1 모델 선택</h2>
+          <h2>모델 라우팅</h2>
         </div>
 
-        <div className="matrix-table-wrap" style={{ marginBottom: "28px" }}>
+        <div className="matrix-table-wrap with-bottom-gap">
           <table className="matrix-table">
             <thead>
               <tr>
@@ -111,22 +110,9 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
                 <tr key={m.id}>
                   <td>
                     <strong>{m.name}</strong>
-                    {m.badge && (
-                      <div
-                        style={{
-                          fontFamily: "var(--font-mono)",
-                          fontSize: "11px",
-                          color: "var(--color-telemetry)",
-                          marginTop: "2px",
-                        }}
-                      >
-                        {m.badge}
-                      </div>
-                    )}
+                    {m.badge && <div className="ai-model-badge">{m.badge}</div>}
                   </td>
-                  <td style={{ fontFamily: "var(--font-mono)" }}>
-                    {m.provider}
-                  </td>
+                  <td className="font-mono-cell">{m.provider}</td>
                   <td>{m.role}</td>
                   <td>{m.description}</td>
                 </tr>
@@ -144,7 +130,7 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
 
             <div className="brand-chapter-content timeline-chapter-content">
               <h3>질문 분석부터 답변 생성까지의 처리 흐름</h3>
-              
+
               <div className="ai-timeline-container">
                 <div className="ai-timeline-track" aria-hidden="true" />
                 <div className="ai-timeline-steps">
@@ -173,17 +159,16 @@ export const AsteriskAiTab: React.FC<AsteriskAiTabProps> = ({
       </section>
 
       {/* 3. 연동 도구 목록 */}
-      <section className="section-end-double" style={{ marginBottom: 0 }}>
+      <section className="section-end-double is-last">
         <div className="brand-section-head">
           <h2>연동 도구 목록</h2>
-          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+          <div className="ds-filter-row">
             {toolCategories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
-                className={`board-filter-btn ${
-                  selectedCategory === cat.id ? "active" : ""
-                }`}
+                className={`board-filter-btn ${selectedCategory === cat.id ? "active" : ""
+                  }`}
                 onClick={() => setSelectedCategory(cat.id)}
               >
                 {cat.label}
